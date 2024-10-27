@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "755967361698",
+    "project_id": "estudy-app-14228",
+    "storage_bucket": "estudy-app-14228.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:755967361698:android:3e8099fd9074c2208ecdfb",
+        "android_client_info": {
+          "package_name": "tdtu.EStudy_App"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCossvBqN2gZc-WUayg2qUlMqnw0TkiwNU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
