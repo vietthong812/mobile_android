@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:padding="10dp"
+    android:padding="5dp"
     android:fitsSystemWindows="true"
     android:background="@drawable/open_screen">
 
@@ -24,7 +24,7 @@
         android:id="@+id/cardLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="25dp"
+        android:layout_margin="20dp"
         android:layout_marginTop="20dp"
         app:cardCornerRadius="20dp"
         app:cardElevation="25dp">
@@ -36,19 +36,25 @@
             android:layout_margin="10dp"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:fontFamily="@font/lobster"
-                android:gravity="center"
-                android:text="Login"
-                android:textColor="@color/deepblue"
-                android:textSize="35sp"
-                android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/username"
+                android:id="@+id/createFullname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/input_text_shape"
+                android:drawableStart="@drawable/baseline_person_24"
+                android:drawablePadding="10dp"
+                android:drawableTint="@color/black"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center_vertical"
+                android:hint="Fullname"
+                android:inputType="text"
+                android:paddingStart="20dp" />
+
+            <EditText
+                android:id="@+id/createUsername"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
@@ -60,11 +66,43 @@
                 android:fontFamily="@font/poppins_medium"
                 android:gravity="center_vertical"
                 android:hint="Username"
+                android:inputType="text"
+                android:paddingStart="20dp" />
+
+            <EditText
+                android:id="@+id/createBirth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/input_text_shape"
+                android:drawableStart="@drawable/baseline_calendar_month_24"
+                android:drawablePadding="10dp"
+                android:drawableTint="@color/black"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center_vertical"
+                android:hint="dd/MM/yyyy"
+                android:inputType="date"
+                android:paddingStart="20dp" />
+
+            <EditText
+                android:id="@+id/createEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/input_text_shape"
+                android:drawableStart="@drawable/baseline_email_24"
+                android:drawablePadding="10dp"
+                android:drawableTint="@color/black"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center_vertical"
+                android:hint="Email"
                 android:inputType="textEmailAddress"
                 android:paddingStart="20dp" />
 
             <EditText
-                android:id="@+id/password"
+                android:id="@+id/createPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
@@ -79,19 +117,24 @@
                 android:paddingStart="20dp"
                 android:inputType="textPassword" />
 
-            <TextView
-                android:id="@+id/forgotPassword"
+            <EditText
+                android:id="@+id/createRePassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="10dp"
                 android:layout_margin="10dp"
+                android:background="@drawable/input_text_shape"
+                android:drawableStart="@drawable/baseline_lock_24"
+                android:drawablePadding="10dp"
+                android:drawableTint="@color/black"
                 android:fontFamily="@font/poppins_medium"
                 android:gravity="center_vertical"
-                android:paddingStart="20dp"
-                android:text="Forgot Password?"
-                android:textColor="@color/black"/>
+                android:hint="Re-enter password"
+                android:paddingStart="20dp" />
+
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnSignIn"
+                android:id="@+id/btnSignUp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
@@ -101,22 +144,21 @@
                 android:layout_marginTop="0dp"
                 android:background="@drawable/button_black"
                 android:fontFamily="@font/poppins_medium"
-                android:text="Sign In"
+                android:text="Sign Up"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
 
 
             <TextView
-                android:id="@+id/createAccount"
+                android:id="@+id/backLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:fontFamily="@font/lobster"
                 android:gravity="center"
-                android:text="Create an account"
+                android:text="Back to Login Page"
                 android:textSize="20sp"
                 android:textColor="@color/deepblue"/>
-
 
 
 

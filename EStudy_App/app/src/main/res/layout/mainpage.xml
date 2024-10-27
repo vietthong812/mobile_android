@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:padding="10dp"
     android:fitsSystemWindows="true"
-    android:background="@drawable/open_screen">
+    android:background="@color/white">
 
 
     <TextView
