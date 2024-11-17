@@ -8,10 +8,12 @@
     <color name="grey">#ABABAB</color>
     <color name="blue">#2196F3</color>
     <color name="lightblue">#03A9F4</color>
+    <color name="blue2">#61CCFF</color>
     <color name="darkblue">#0007FF</color>
     <color name="deepblue">#002254</color>
     <color name="beginBlue">#0172B2</color>
     <color name="endBlue">#001645</color>
     <color name="defaultGrey">#848282</color>
+    <color name="yellow">#FFEB3B</color>
 
 </resources>

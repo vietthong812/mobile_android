@@ -32,7 +32,7 @@
             android:background="@drawable/circle"
             android:padding="10dp"
             android:src="@drawable/icon_heart"
-            app:tint="@color/white" />
+            app:tint="@color/red" />
 
         <!-- Bottom Card with topic name and views -->
         <LinearLayout
@@ -60,7 +60,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_medium"
-                android:text="123 Views"
+                android:text="123 words"
                 android:textSize="16sp"
                 android:textColor="@android:color/white"
                 android:layout_marginTop="4dp" />

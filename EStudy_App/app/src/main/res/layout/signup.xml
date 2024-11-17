@@ -37,6 +37,16 @@
             android:orientation="vertical">
 
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="center"
+                android:text="SIGN UP"
+                android:textColor="@color/deepblue"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
             <EditText
                 android:id="@+id/createFullname"
                 android:layout_width="match_parent"
@@ -147,18 +157,6 @@
                 android:text="Sign Up"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
-
-
-            <TextView
-                android:id="@+id/backLogin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:fontFamily="@font/lobster"
-                android:gravity="center"
-                android:text="Back to Login Page"
-                android:textSize="20sp"
-                android:textColor="@color/deepblue"/>
 
 
 

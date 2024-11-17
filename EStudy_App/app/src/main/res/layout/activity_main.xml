@@ -40,11 +40,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:fontFamily="@font/lobster"
                 android:gravity="center"
-                android:text="Login"
+                android:text="LOGIN"
                 android:textColor="@color/deepblue"
-                android:textSize="35sp"
+                android:textSize="25sp"
                 android:textStyle="bold" />
 
             <EditText
@@ -106,20 +105,22 @@
                 android:textSize="18sp" />
 
 
-            <TextView
-                android:id="@+id/createAccount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:fontFamily="@font/lobster"
-                android:gravity="center"
-                android:text="Create an account"
-                android:textSize="20sp"
-                android:textColor="@color/deepblue"/>
-
-
-
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnSignUp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="0dp"
+        android:gravity="center"
+        android:background="@drawable/button_black"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Create an account"
+        android:backgroundTint="@color/white"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
 </LinearLayout>
