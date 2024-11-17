@@ -21,7 +21,7 @@
         android:textColor="@color/white"/>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardLogin"
+        android:id="@+id/cardRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:gravity="center"
-                android:text="SIGN UP"
+                android:text="REGISTER"
                 android:textColor="@color/deepblue"
                 android:textSize="25sp"
                 android:textStyle="bold" />
@@ -96,7 +96,7 @@
                 android:paddingStart="20dp" />
 
             <EditText
-                android:id="@+id/createEmail"
+                    android:id="@+id/createEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
@@ -140,11 +140,12 @@
                 android:fontFamily="@font/poppins_medium"
                 android:gravity="center_vertical"
                 android:hint="Re-enter password"
+                android:inputType="textPassword"
                 android:paddingStart="20dp" />
 
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnSignUp"
+                android:id="@+id/btnRegister"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
@@ -154,7 +155,7 @@
                 android:layout_marginTop="0dp"
                 android:background="@drawable/button_black"
                 android:fontFamily="@font/poppins_medium"
-                android:text="Sign Up"
+                android:text="Register"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
 
