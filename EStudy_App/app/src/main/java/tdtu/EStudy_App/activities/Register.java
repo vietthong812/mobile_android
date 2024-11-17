@@ -34,7 +34,7 @@ public class Register extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
-        intialize();
+        initialize();
         btnRegister.setOnClickListener(v -> {
             String fullname = createFullname.getText().toString().trim();
             String username = createUsername.getText().toString().trim();
@@ -92,7 +92,7 @@ public class Register extends AppCompatActivity {
             }
         });
     }
-    public void intialize(){
+    public void initialize(){
         createFullname = findViewById(R.id.createFullname);
         createUsername = findViewById(R.id.createUsername);
         createBirth = findViewById(R.id.createBirth);
