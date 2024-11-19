@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -19,6 +20,7 @@ public class SignIn extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseFirestore fStore;
     EditText edtEmail, edtPassword;
+    TextView forgotPassword;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +44,10 @@ public class SignIn extends AppCompatActivity {
             Intent intent = new Intent(SignIn.this, Register.class);
             startActivity(intent);
         });
+        forgotPassword.setOnClickListener(v -> {
+            Intent intent = new Intent(SignIn.this, ForgotPassword.class);
+            startActivity(intent);
+        });
     }
     public void initialize(){
         mAuth = FirebaseAuth.getInstance();
@@ -50,5 +56,6 @@ public class SignIn extends AppCompatActivity {
         btnSignIn = findViewById(R.id.btnSignIn);
         edtEmail = findViewById(R.id.edtEmail);
         edtPassword = findViewById(R.id.edtPassword);
+        forgotPassword = findViewById(R.id.forgotPassword);
     }
 }
