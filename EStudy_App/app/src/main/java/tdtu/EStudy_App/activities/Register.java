@@ -1,5 +1,6 @@
 package tdtu.EStudy_App.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
@@ -21,12 +22,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import tdtu.EStudy_App.R;
+import tdtu.EStudy_App.utils.ToastUtils;
 
 public class Register extends AppCompatActivity {
     FirebaseFirestore db;
     FirebaseAuth mAuth;
     EditText createFullname, createUsername, createBirth, createEmail, createPassword, createRePassword;
-    Button btnRegister;
+    Button btnRegister,btnCancel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +37,11 @@ public class Register extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         initialize();
+        btnCancel.setOnClickListener(v -> {
+            Intent intent = new Intent(Register.this, SignIn.class);
+            startActivity(intent);
+            finish();
+        });
         btnRegister.setOnClickListener(v -> {
             String fullname = createFullname.getText().toString().trim();
             String username = createUsername.getText().toString().trim();
@@ -65,16 +72,19 @@ public class Register extends AppCompatActivity {
             if (!fullname.isEmpty() && !username.isEmpty() && !birth.isEmpty() && !email.isEmpty() && !password.isEmpty() && !rePassword.isEmpty()) {
                 if (password.equals(rePassword)) {
                     mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+
                         if (task.isSuccessful()) {
-                            DocumentReference documentReference = db.collection("users").document();
+                            String userId = task.getResult().getUser().getUid();
+                            //tao document trong collection users
+                            DocumentReference documentReference = db.collection("users").document(userId);
                             Map<String, Object> user = new HashMap<>();
                             user.put("fullname", fullname);
                             user.put("username", username);
                             user.put("birth", birth);
                             user.put("email", email);
-                            user.put("password", password);
+                            //user.put("password", password);
                             documentReference.set(user);
-                            Toast.makeText(Register.this, "User created", Toast.LENGTH_SHORT).show();
+                            ToastUtils.showShortToast(Register.this, "User created");
                             finish();
                         }
                         else {
@@ -83,11 +93,11 @@ public class Register extends AppCompatActivity {
                                 String errorMessage = exception.getMessage();
                                 Log.e("SignUpError", errorMessage);
                             }
-                            Toast.makeText(Register.this, "Error", Toast.LENGTH_SHORT).show();
+                            ToastUtils.showShortToast(Register.this, "Error");
                         }
                     });
                 } else {
-                    Toast.makeText(Register.this, "Password does not match", Toast.LENGTH_SHORT).show();
+                    ToastUtils.showShortToast(Register.this, "Password does not match");
                 }
             }
         });
@@ -100,6 +110,7 @@ public class Register extends AppCompatActivity {
         createPassword = findViewById(R.id.createPassword);
         createRePassword = findViewById(R.id.createRePassword);
         btnRegister = findViewById(R.id.btnRegister);
+        btnCancel = findViewById(R.id.btnCancel);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
