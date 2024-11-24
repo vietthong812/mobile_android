@@ -19,41 +19,23 @@
         android:orientation="horizontal"
         android:gravity="center_vertical">
 
-        <ImageButton
+        <ImageView
             android:id="@+id/btnSave"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginRight="10dp"
-            android:background="@drawable/folder_icon"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?attr/selectableItemBackground"
+            android:background="@drawable/folder_topic_icon"
             android:contentDescription="Save the word"/>
-
-        <LinearLayout
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="left"
-                android:text="Tên topic"
-                android:textStyle="bold"
-                android:textSize="18dp"
-                android:layout_gravity="start"
-                android:id="@+id/tvNameTopic" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="left"
-                android:text="Số lượng từ vựng"
-                android:textSize="18dp"
-                android:layout_gravity="center"
-                android:id="@+id/tvNumWord" />
-        </LinearLayout>
+            android:layout_weight="1"
+            android:gravity="left"
+            android:text="Tên folder"
+            android:textStyle="bold"
+            android:textSize="18dp"
+            android:layout_gravity="center"
+            android:id="@+id/tvFolderName" />
 
 
 
