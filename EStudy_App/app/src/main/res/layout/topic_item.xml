@@ -5,6 +5,9 @@
     android:layout_width="300dp"
     android:layout_height="400dp"
     android:layout_margin="20dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
     app:cardCornerRadius="20dp"
     app:cardElevation="4dp">
 
@@ -21,18 +24,6 @@
             android:scaleType="centerCrop"
             android:src="@drawable/open_screen" />
 
-        <!-- Heart Icon -->
-        <ImageView
-            android:id="@+id/iconFavorite"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_margin="15dp"
-            android:background="@drawable/circle"
-            android:padding="10dp"
-            android:src="@drawable/icon_heart"
-            app:tint="@color/red" />
 
         <!-- Bottom Card with topic name and views -->
         <LinearLayout
