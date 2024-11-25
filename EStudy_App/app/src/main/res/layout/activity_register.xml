@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:gravity="center"
-                android:text="CREATE NEW ACCOUNT"
+                android:text="TẠO TÀI KHOẢN"
                 android:textColor="@color/deepblue"
                 android:textSize="25sp"
                 android:textStyle="bold" />
@@ -69,9 +69,8 @@
                 android:drawableStart="@drawable/baseline_person_24"
                 android:drawablePadding="10dp"
                 android:drawableTint="@color/black"
-                android:fontFamily="@font/poppins_medium"
                 android:gravity="center_vertical"
-                android:hint="Fullname"
+                android:hint="Họ tên"
                 android:inputType="text"
                 android:paddingStart="20dp" />
 
@@ -85,7 +84,6 @@
                 android:drawableStart="@drawable/baseline_person_24"
                 android:drawablePadding="10dp"
                 android:drawableTint="@color/black"
-                android:fontFamily="@font/poppins_medium"
                 android:gravity="center_vertical"
                 android:hint="Username"
                 android:inputType="text"
@@ -101,9 +99,8 @@
                 android:drawableStart="@drawable/baseline_calendar_month_24"
                 android:drawablePadding="10dp"
                 android:drawableTint="@color/black"
-                android:fontFamily="@font/poppins_medium"
                 android:gravity="center_vertical"
-                android:hint="dd/MM/yyyy"
+                android:hint="Ngày sinh"
                 android:inputType="date"
                 android:paddingStart="20dp" />
 
@@ -117,7 +114,6 @@
                 android:drawableStart="@drawable/baseline_email_24"
                 android:drawablePadding="10dp"
                 android:drawableTint="@color/black"
-                android:fontFamily="@font/poppins_medium"
                 android:gravity="center_vertical"
                 android:hint="Email"
                 android:inputType="textEmailAddress"
@@ -133,9 +129,8 @@
                 android:drawableStart="@drawable/baseline_lock_24"
                 android:drawablePadding="10dp"
                 android:drawableTint="@color/black"
-                android:fontFamily="@font/poppins_medium"
                 android:gravity="center_vertical"
-                android:hint="Password"
+                android:hint="Mật khẩu"
                 android:paddingStart="20dp"
                 android:inputType="textPassword" />
 
@@ -149,9 +144,8 @@
                 android:drawableStart="@drawable/baseline_lock_24"
                 android:drawablePadding="10dp"
                 android:drawableTint="@color/black"
-                android:fontFamily="@font/poppins_medium"
                 android:gravity="center_vertical"
-                android:hint="Re-enter password"
+                android:hint="Nhập lại mật khẩu"
                 android:inputType="textPassword"
                 android:paddingStart="20dp" />
 

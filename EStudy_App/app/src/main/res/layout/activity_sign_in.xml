@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:gravity="center"
-                android:text="LOGIN"
+                android:text="ĐĂNG NHẬP"
                 android:textColor="@color/deepblue"
                 android:textSize="25sp"
                 android:textStyle="bold" />
@@ -56,9 +56,8 @@
                 android:drawableStart="@drawable/baseline_person_24"
                 android:drawablePadding="10dp"
                 android:drawableTint="@color/black"
-                android:fontFamily="@font/poppins_medium"
                 android:gravity="center_vertical"
-                android:hint="Email"
+                android:hint="Username"
                 android:inputType="textEmailAddress"
                 android:paddingStart="20dp" />
 
@@ -72,9 +71,8 @@
                 android:drawableStart="@drawable/baseline_lock_24"
                 android:drawablePadding="10dp"
                 android:drawableTint="@color/black"
-                android:fontFamily="@font/poppins_medium"
                 android:gravity="center_vertical"
-                android:hint="Password"
+                android:hint="Mật khẩu"
                 android:paddingStart="20dp"
                 android:inputType="textPassword" />
 
@@ -83,10 +81,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:fontFamily="@font/poppins_medium"
                 android:gravity="center_vertical"
-                android:paddingStart="20dp"
-                android:text="Forgot Password?"
+                android:text="Quên mật khẩu?"
                 android:textColor="@color/black"/>
 
             <androidx.appcompat.widget.AppCompatButton
@@ -100,7 +96,7 @@
                 android:layout_marginTop="0dp"
                 android:background="@drawable/button_black"
                 android:fontFamily="@font/poppins_medium"
-                android:text="Sign In"
+                android:text="Đăng nhập"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
 
@@ -119,7 +115,7 @@
         android:gravity="center"
         android:background="@drawable/button_black"
         android:fontFamily="@font/poppins_medium"
-        android:text="Create an account"
+        android:text="tạo tài khoản"
         android:backgroundTint="@color/white"
         android:textColor="@color/black"
         android:textSize="18sp" />
