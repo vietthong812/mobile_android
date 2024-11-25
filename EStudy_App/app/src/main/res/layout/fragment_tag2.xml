@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/lightgrey"
+    tools:context=".Tag2Fragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+
+            <EditText
+                android:id="@+id/searchTopic"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/input_text_shape"
+                android:drawableStart="@drawable/baseline_search_24"
+                android:drawablePadding="10dp"
+                android:drawableTint="@color/black"
+                android:gravity="center_vertical"
+                android:hint="Tìm kiếm topic"
+                android:maxLines="@integer/material_motion_duration_long_1"
+                android:padding="10dp"
+                android:paddingStart="20dp"
+                android:layout_marginBottom="10dp"
+                android:textSize="18sp" />
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/green"
+                app:cardCornerRadius="50dp">
+                <TextView
+                    android:id="@+id/topic_moi_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Topic Mới"
+                    android:textColor="@color/white"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingTop="5dp"
+                    android:textSize="18sp"
+
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"/>
+            </androidx.cardview.widget.CardView>
+
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewTopicMoi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:nestedScrollingEnabled="false" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/deepblue"
+                android:layout_marginTop="20dp"
+                app:cardCornerRadius="50dp">
+                <TextView
+                    android:id="@+id/topic_all_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tất cả Topic"
+                    android:textColor="@color/white"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingTop="5dp"
+                    android:textSize="18sp"
+
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"/>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Folder hiện theo dạng size mini, hàng dọc -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewTatCaTopic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>

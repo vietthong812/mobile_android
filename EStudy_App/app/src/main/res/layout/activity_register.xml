@@ -6,19 +6,31 @@
     android:orientation="vertical"
     android:padding="5dp"
     android:fitsSystemWindows="true"
-    android:background="@drawable/open_screen">
+    android:background="@drawable/bg_main_cat">
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnCancel"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="left"
+        android:background="@drawable/baseline_keyboard_arrow_left_24"
+        android:backgroundTint="@color/black"
+        android:textColor="@color/white"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground" />
 
     <TextView
         android:id="@+id/tvAppName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
         android:gravity="center"
         android:fontFamily="@font/lobster"
         android:text="EStudy"
         android:textSize="50sp"
         android:textColor="@color/white"/>
+
+
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardRegister"
@@ -42,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:gravity="center"
-                android:text="REGISTER"
+                android:text="TẠO TÀI KHOẢN"
                 android:textColor="@color/deepblue"
                 android:textSize="25sp"
                 android:textStyle="bold" />
@@ -57,9 +69,8 @@
                 android:drawableStart="@drawable/baseline_person_24"
                 android:drawablePadding="10dp"
                 android:drawableTint="@color/black"
-                android:fontFamily="@font/poppins_medium"
                 android:gravity="center_vertical"
-                android:hint="Fullname"
+                android:hint="Họ tên"
                 android:inputType="text"
                 android:paddingStart="20dp" />
 
@@ -73,7 +84,6 @@
                 android:drawableStart="@drawable/baseline_person_24"
                 android:drawablePadding="10dp"
                 android:drawableTint="@color/black"
-                android:fontFamily="@font/poppins_medium"
                 android:gravity="center_vertical"
                 android:hint="Username"
                 android:inputType="text"
@@ -89,9 +99,8 @@
                 android:drawableStart="@drawable/baseline_calendar_month_24"
                 android:drawablePadding="10dp"
                 android:drawableTint="@color/black"
-                android:fontFamily="@font/poppins_medium"
                 android:gravity="center_vertical"
-                android:hint="dd/MM/yyyy"
+                android:hint="Ngày sinh"
                 android:inputType="date"
                 android:paddingStart="20dp" />
 
@@ -105,7 +114,6 @@
                 android:drawableStart="@drawable/baseline_email_24"
                 android:drawablePadding="10dp"
                 android:drawableTint="@color/black"
-                android:fontFamily="@font/poppins_medium"
                 android:gravity="center_vertical"
                 android:hint="Email"
                 android:inputType="textEmailAddress"
@@ -121,9 +129,8 @@
                 android:drawableStart="@drawable/baseline_lock_24"
                 android:drawablePadding="10dp"
                 android:drawableTint="@color/black"
-                android:fontFamily="@font/poppins_medium"
                 android:gravity="center_vertical"
-                android:hint="Password"
+                android:hint="Mật khẩu"
                 android:paddingStart="20dp"
                 android:inputType="textPassword" />
 
@@ -137,21 +144,17 @@
                 android:drawableStart="@drawable/baseline_lock_24"
                 android:drawablePadding="10dp"
                 android:drawableTint="@color/black"
-                android:fontFamily="@font/poppins_medium"
                 android:gravity="center_vertical"
-                android:hint="Re-enter password"
+                android:hint="Nhập lại mật khẩu"
                 android:inputType="textPassword"
                 android:paddingStart="20dp" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btnRegister"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
+                    android:layout_gravity="center"
+                    android:gravity="center"
                     android:paddingLeft="25dp"
                     android:paddingRight="25dp"
                     android:layout_margin="10dp"
@@ -161,24 +164,6 @@
                     android:text="Register"
                     android:textColor="@color/white"
                     android:textSize="18sp" />
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btnCancel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:paddingLeft="25dp"
-                    android:paddingRight="25dp"
-                    android:layout_margin="10dp"
-                    android:layout_marginTop="0dp"
-                    android:background="@drawable/button_black"
-                    android:fontFamily="@font/poppins_medium"
-                    android:text="Cancel"
-                    android:textColor="@color/white"
-                    android:textSize="18sp" />
-            </LinearLayout>
-
-
-
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
