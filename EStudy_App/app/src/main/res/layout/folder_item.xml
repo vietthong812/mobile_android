@@ -19,37 +19,25 @@
         android:orientation="horizontal"
         android:gravity="center_vertical">
 
+        <ImageView
+            android:id="@+id/btnSave"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/folder_topic_icon"
+            android:contentDescription="Save the word"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="left"
-            android:text="Name"
+            android:text="Tên folder"
             android:textStyle="bold"
             android:textSize="18dp"
             android:layout_gravity="center"
-            android:id="@+id/tvNameUser" />
-        <ImageButton
-            android:id="@+id/btnSave"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginRight="10dp"
-            android:padding="12dp"
-            android:background="@drawable/save_icon"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?attr/selectableItemBackground"
-            android:contentDescription="Save the word"/>
-        <ImageButton
-            android:id="@+id/btnSound"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:padding="12dp"
-            android:background="@drawable/sound_icon"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?attr/selectableItemBackground"
-            android:contentDescription="Save the word"/>
+            android:id="@+id/tvFolderName" />
+
+
 
 
     </LinearLayout>
