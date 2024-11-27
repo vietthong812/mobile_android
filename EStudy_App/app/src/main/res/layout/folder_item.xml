@@ -18,34 +18,16 @@
         android:padding="10dp"
         android:orientation="horizontal"
         android:gravity="center_vertical">
-
-        <ImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/folder_topic_icon"
-            android:contentDescription="Save the word"/>
-        <LinearLayout
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:text="Tên folder"
-                android:textStyle="bold"
-                android:textSize="18dp"
-                android:id="@+id/tvFolderName" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Số lượng topic"
-                android:textSize="15sp"
-                android:layout_gravity="center"
-                android:id="@+id/tvFolderSoLuong" />
-        </LinearLayout>
-
+            android:layout_weight="1"
+            android:gravity="left"
+            android:text="Tên folder"
+            android:textStyle="bold"
+            android:textSize="18dp"
+            android:layout_gravity="center"
+            android:id="@+id/tvFolderName" />
 
 
 

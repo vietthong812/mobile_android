@@ -8,11 +8,13 @@ public class Word {
     private boolean isMarked;
     private String topic;
     private String state;
+    public Word() {
+    }
+
 
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         this.id = id;
     }

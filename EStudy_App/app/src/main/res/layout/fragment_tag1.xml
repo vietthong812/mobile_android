@@ -110,7 +110,7 @@
 
             <!-- Folder hiện theo dạng size mini, hàng dọc -->
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewTatCaFolder"
+                android:id="@+id/recyclerViewFolder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false" />

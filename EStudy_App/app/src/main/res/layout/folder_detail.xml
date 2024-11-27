@@ -73,7 +73,7 @@
                     android:id="@+id/tenFolder"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Tenfolder"
+                    android:text="@string/tenfolder"
                     android:textSize="25sp"
                     android:textStyle="bold"
                     android:textColor="@color/black" />

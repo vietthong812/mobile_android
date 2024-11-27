@@ -1,47 +1,63 @@
 package tdtu.EStudy_App.models;
 
+
+import com.google.firebase.Timestamp;
+
 import java.time.LocalDateTime;
 
 public class Topic {
-    private int id;
+    private String id;
     private String name;
-    private String access;
-    private String state;
-    private LocalDateTime createTime;
+    private String status;
+    private String userid;
+    private Timestamp createTime;
+    private int numWord;
 
-    public Topic() {
+    public int getNumWord() {
+        return numWord;
     }
 
-    public int getId() {
+    public void setNumWord(int numWord) {
+        this.numWord = numWord;
+    }
+
+    public Topic(String id, String name, String status, String userid, Timestamp createTime, int numWord) {
+        this.id = id;
+        this.name = name;
+        this.status = status;
+        this.userid = userid;
+        this.createTime = createTime;
+        this.numWord = numWord;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public LocalDateTime getCreateTime() {
+    public Timestamp getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(LocalDateTime createTime) {
+    public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
     }
 
-    public String getState() {
-        return state;
+    public String getStatus() {
+        return status;
+    }
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    public void setState(String state) {
-        this.state = state;
+    public String getUserid() {
+        return userid;
     }
-
-    public String getAccess() {
-        return access;
-    }
-
-    public void setAccess(String access) {
-        this.access = access;
+    public void setUserid(String userid) {
+        this.userid = userid;
     }
 
     public String getName() {

@@ -1,14 +1,18 @@
 package tdtu.EStudy_App.models;
 
 public class Folder {
-    private int id;
+    private String id;
     private String name;
 
-    public int getId() {
+    public Folder(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
