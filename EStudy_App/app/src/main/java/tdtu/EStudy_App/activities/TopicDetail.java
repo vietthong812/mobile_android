@@ -83,7 +83,7 @@ public class TopicDetail extends AppCompatActivity {
                             String name = document.getString("vietnameseMean");
                             String mean = document.getString("englishMean");
                             String state = document.getString("status");
-                            boolean marked = document.getBoolean("star");
+                            boolean marked = document.getBoolean("marked");
                             Word word1 = new Word();
                             word1.setName(name);
                             word1.setMeaning(mean);
