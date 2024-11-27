@@ -101,7 +101,7 @@
                 android:drawableTint="@color/black"
                 android:gravity="center_vertical"
                 android:hint="Ngày sinh"
-                android:inputType="date"
+                android:inputType="datetime"
                 android:paddingStart="20dp" />
 
             <EditText
