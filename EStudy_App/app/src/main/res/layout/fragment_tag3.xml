@@ -38,35 +38,6 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/green"
-                app:cardCornerRadius="50dp">
-                <TextView
-                    android:id="@+id/tu_moi_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Từ Mới"
-                    android:textColor="@color/white"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:paddingTop="5dp"
-                    android:textSize="18sp"
-
-                    android:textStyle="bold"
-                    android:layout_marginBottom="8dp"/>
-            </androidx.cardview.widget.CardView>
-
-
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewTuMoi"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-                android:nestedScrollingEnabled="false" />
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:backgroundTint="@color/deepblue"
                 android:layout_marginTop="20dp"
                 app:cardCornerRadius="50dp">
@@ -74,14 +45,12 @@
                     android:id="@+id/topic_all_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Tất cả từ vựng"
+                    android:text="Từ vựng đã lưu"
                     android:textColor="@color/white"
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     android:paddingTop="5dp"
-                    android:textSize="18sp"
-
-                    android:textStyle="bold"
+                    android:textSize="15sp"
                     android:layout_marginBottom="8dp"/>
             </androidx.cardview.widget.CardView>
 

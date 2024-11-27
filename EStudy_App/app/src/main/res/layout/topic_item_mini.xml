@@ -51,21 +51,32 @@
                 android:layout_weight="1"
                 android:gravity="left"
                 android:text="Số lượng từ vựng"
-                android:textSize="18dp"
+                android:textSize="15sp"
                 android:id="@+id/tvNumWord" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:text="Ngày tạo:"
+                android:textSize="15sp"
+                android:id="@+id/tvDate" />
+
 
         </LinearLayout>
-        <ImageButton
-            android:id="@+id/btnShare"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnEditFolder"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_gravity="center"
-            android:background="@drawable/share_button_2"
+            android:background="@drawable/edit_icon"
+            android:backgroundTint="@color/deepblue"
+            android:textColor="@color/white"
+            android:layout_marginRight="10dp"
             android:clickable="true"
             android:focusable="true"
-            android:foreground="?attr/selectableItemBackground"
-            android:contentDescription="Save the word"/>
-
+            android:foreground="?attr/selectableItemBackground" />
 
 
 
