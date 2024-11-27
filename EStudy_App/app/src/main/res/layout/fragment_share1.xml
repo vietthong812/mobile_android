@@ -49,9 +49,7 @@
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     android:paddingTop="5dp"
-                    android:textSize="18sp"
-
-                    android:textStyle="bold"
+                    android:textSize="15sp"
                     android:layout_marginBottom="8dp"/>
             </androidx.cardview.widget.CardView>
 

@@ -20,17 +20,29 @@
         android:orientation="horizontal"
         android:background="@color/white"
         android:gravity="center_vertical">
-
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="left"
-            android:text="Name"
-            android:textStyle="bold"
-            android:textSize="18dp"
-            android:layout_gravity="center"
-            android:id="@+id/tvNameUser" />
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="Name"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:id="@+id/tuVung" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="Trạng thái"
+                android:textSize="15sp"
+                android:id="@+id/trangThai" />
+
+        </LinearLayout>
+
         <ImageButton
             android:id="@+id/btnSave"
             android:layout_width="35dp"

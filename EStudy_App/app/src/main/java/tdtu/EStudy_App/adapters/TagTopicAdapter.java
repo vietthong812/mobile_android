@@ -44,7 +44,7 @@ public class TagTopicAdapter extends FragmentStatePagerAdapter {
             case 1:
                 return "Topic";
             case 2:
-                return "Từ vựng";
+                return "Từ đã lưu";
             default:
                 return "Folder";
         }

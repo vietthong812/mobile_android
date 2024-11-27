@@ -1,11 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/lightgrey"
-    tools:context=".Tag1Fragment">
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:fitsSystemWindows="true"
+    android:background="@color/lightgrey">
+    <LinearLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnCancel"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="left"
+            android:background="@drawable/back_icon"
+            android:backgroundTint="@color/black"
+            android:textColor="@color/white"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnEditFolder"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="left"
+            android:background="@drawable/edit_icon"
+            android:backgroundTint="@color/deepblue"
+            android:textColor="@color/white"
+            android:layout_marginRight="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnDeleteFolder"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="left"
+            android:background="@drawable/trash_icon"
+            android:backgroundTint="@color/red"
+            android:textColor="@color/white"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground" />
+
+    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -14,21 +63,47 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tenFolder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tenfolder"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black" />
+                <TextView
+                    android:id="@+id/numTopic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Số lượng Topic:"
+                    android:textSize="18sp"
+                    android:textColor="@color/black" />
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ngày tạo:"
+                    android:textSize="18sp"
+                    android:textColor="@color/black" />
+            </LinearLayout>
             <EditText
-                android:id="@+id/search"
+                android:id="@+id/timTopicTrongFolder"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/input_text_shape"
                 android:drawableStart="@drawable/baseline_search_24"
                 android:drawablePadding="10dp"
                 android:drawableTint="@color/black"
                 android:gravity="center_vertical"
-                android:hint="Tìm kiếm folder"
-                android:maxLines="@integer/material_motion_duration_long_1"
+                android:hint="Tìm kiếm topic"
+                android:maxLines="1"
                 android:padding="10dp"
                 android:paddingStart="20dp"
                 android:layout_marginBottom="10dp"
@@ -37,6 +112,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+
                 android:background="@color/lightgrey">
 
                 <!-- CardView chứa "Tất cả Folder" nằm bên trái -->
@@ -48,10 +124,10 @@
                     app:cardCornerRadius="50dp">
 
                     <TextView
-                        android:id="@+id/folder_all_title"
+                        android:id="@+id/topic_all_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Tất cả Folder"
+                        android:text="Danh sách Topics"
                         android:textColor="@color/white"
                         android:paddingLeft="20dp"
                         android:paddingRight="20dp"
@@ -83,7 +159,7 @@
                         android:orientation="horizontal">
 
                         <ImageButton
-                            android:id="@+id/btnAdd"
+                            android:id="@+id/btnAddTopic"
                             android:layout_width="35dp"
                             android:layout_height="35dp"
                             android:background="@drawable/add_icon"
@@ -105,17 +181,16 @@
 
             </LinearLayout>
 
-
-
-
-            <!-- Folder hiện theo dạng size mini, hàng dọc -->
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewTatCaFolder"
+                android:id="@+id/recyclerViewTatCaCacTopic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
                 android:nestedScrollingEnabled="false" />
 
+
         </LinearLayout>
+
     </ScrollView>
 
-</FrameLayout>
+</LinearLayout>

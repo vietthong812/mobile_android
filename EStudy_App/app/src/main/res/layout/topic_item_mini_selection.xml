@@ -20,33 +20,60 @@
         android:gravity="center_vertical">
 
         <ImageView
+            android:id="@+id/btnSave"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginRight="10dp"
-            android:background="@drawable/folder_topic_icon"
+            android:background="@drawable/folder_icon"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
             android:contentDescription="Save the word"/>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:orientation="vertical">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:gravity="left"
-                android:text="Tên folder"
+                android:text="Tên topic"
                 android:textStyle="bold"
                 android:textSize="18dp"
-                android:id="@+id/tvFolderName" />
+                android:layout_gravity="start"
+                android:id="@+id/tvNameTopicAdd" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Số lượng topic"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:text="Số lượng từ vựng"
                 android:textSize="15sp"
-                android:layout_gravity="center"
-                android:id="@+id/tvFolderSoLuong" />
+                android:id="@+id/tvNumWordAdd" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:text="Ngày tạo:"
+                android:textSize="15sp"
+                android:id="@+id/tvDateAdd" />
+
+
         </LinearLayout>
 
-
+        <CheckBox
+            android:id="@+id/btnEditFolder"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/deepblue"
+            android:textColor="@color/white"
+            android:layout_marginRight="10dp"
+            />
 
 
 

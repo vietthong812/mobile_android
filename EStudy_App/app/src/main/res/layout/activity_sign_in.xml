@@ -118,5 +118,8 @@
         android:text="tạo tài khoản"
         android:backgroundTint="@color/white"
         android:textColor="@color/black"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
         android:textSize="18sp" />
 </LinearLayout>
