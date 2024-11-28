@@ -36,6 +36,11 @@ public class FolderListAdapter extends RecyclerView.Adapter<FolderListAdapter.Fo
         holder.itemView.setTag(folder);
         holder.itemView.setOnClickListener(holder);
     }
+    public void updateFolders(List<Folder> newFolders) {
+        this.folderList.clear();
+        this.folderList.addAll(newFolders);
+        notifyDataSetChanged();
+    }
     @Override
     public int getItemCount() {
         return folderList.size();

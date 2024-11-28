@@ -3,9 +3,11 @@ package tdtu.EStudy_App.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
@@ -25,11 +27,12 @@ import tdtu.EStudy_App.R;
 import tdtu.EStudy_App.adapters.OnTopicClickListener;
 import tdtu.EStudy_App.adapters.TopicListAdapter;
 import tdtu.EStudy_App.models.Topic;
+import tdtu.EStudy_App.utils.ToastUtils;
 import tdtu.EStudy_App.viewmodels.TopicViewModel;
 
 public class FolderDetail extends AppCompatActivity implements OnTopicClickListener {
     private static final int REQUEST_CODE = 1; // Define REQUEST_CODE as a constant
-
+    Button btnDeleteFolder;
     TextView nameFolder;
     RecyclerView recyclerViewTatCaCacTopic;
     TopicListAdapter topicListAdapter;
@@ -45,6 +48,7 @@ public class FolderDetail extends AppCompatActivity implements OnTopicClickListe
         EdgeToEdge.enable(this);
         setContentView(R.layout.folder_detail);
         nameFolder = findViewById(R.id.tenFolder);
+        btnDeleteFolder = findViewById(R.id.btnDeleteFolder);
         db = FirebaseFirestore.getInstance();
         recyclerViewTatCaCacTopic = findViewById(R.id.recyclerViewTatCaCacTopic);
         recyclerViewTatCaCacTopic.setLayoutManager(new LinearLayoutManager(this));
@@ -67,6 +71,25 @@ public class FolderDetail extends AppCompatActivity implements OnTopicClickListe
         topicViewModel.loadTopicsByFolderId(folderId);
         topicViewModel.getTopics().observe(this, topics -> {
             topicListAdapter.updateTopics(topics);
+        });
+        btnDeleteFolder.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Xác nhận xóa");
+            builder.setMessage("Bạn có chắc chắn muốn xóa thư mục này không?");
+            builder.setPositiveButton("OK", (dialogInterface, i) -> {
+                db.collection("folders").document(folderId).delete().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        ToastUtils.showShortToast(this, "Xóa thư mục thành công");
+                        finish();
+                    }
+                });
+                dialogInterface.dismiss();
+            });
+            builder.setNegativeButton("Cancel", (dialogInterface, i) -> {
+                dialogInterface.dismiss();
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
         });
     }
 
