@@ -58,7 +58,9 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -127,7 +129,6 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/deepblue"
                 android:layout_marginTop="20dp"
-                android:layout_marginLeft="10dp"
                 app:cardCornerRadius="50dp">
                 <TextView
                     android:id="@+id/hoc_title"
@@ -147,12 +148,12 @@
                 android:id="@+id/cardStudy"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                android:layout_margin="10dp"
+                android:layout_marginVertical="10dp"
                 app:cardCornerRadius="10dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
-                app:cardElevation="5dp">
+                app:cardElevation="2dp">
 
 
                 <LinearLayout
@@ -187,14 +188,12 @@
                 android:id="@+id/cardTracNghiem"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
                 android:layout_marginBottom="10dp"
                 app:cardCornerRadius="10dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
-                app:cardElevation="5dp">
+                app:cardElevation="2dp">
 
 
                 <LinearLayout
@@ -229,13 +228,12 @@
                 android:id="@+id/cardChoose"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
                 app:cardCornerRadius="10dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
-                app:cardElevation="5dp">
+                app:cardElevation="2dp">
 
 
                 <LinearLayout

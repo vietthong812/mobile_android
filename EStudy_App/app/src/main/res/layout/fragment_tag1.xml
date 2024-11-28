@@ -69,18 +69,18 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="8dp"
-                    android:layout_marginVertical="4dp"
-                    android:foreground="?android:attr/selectableItemBackground"
+                    android:layout_margin="2dp"
                     android:clickable="true"
                     android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
                     app:cardCornerRadius="8dp"
-                    app:cardElevation="5dp">
+                    app:cardElevation="2dp">
+
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="3dp"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:padding="3dp">
 
                         <ImageButton
                             android:id="@+id/btnAdd"
@@ -89,14 +89,15 @@
                             android:background="@drawable/add_icon"
                             android:backgroundTint="@color/deepblue"
                             android:contentDescription="Add Folder" />
+
                         <TextView
                             android:id="@+id/tvAdd"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Add"
                             android:layout_gravity="center"
-                            android:gravity="center"
                             android:layout_marginRight="2dp"
+                            android:gravity="center"
+                            android:text="Thêm mới"
                             android:textColor="@color/deepblue"
                             android:textSize="15sp" />
                     </LinearLayout>
