@@ -35,7 +35,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardRegister"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="450dp"
         android:layout_margin="20dp"
         android:layout_marginTop="20dp"
         app:cardCornerRadius="20dp"
@@ -74,20 +74,6 @@
                 android:inputType="text"
                 android:paddingStart="20dp" />
 
-            <EditText
-                android:id="@+id/createUsername"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:layout_margin="10dp"
-                android:background="@drawable/input_text_shape"
-                android:drawableStart="@drawable/baseline_person_24"
-                android:drawablePadding="10dp"
-                android:drawableTint="@color/black"
-                android:gravity="center_vertical"
-                android:hint="Username"
-                android:inputType="text"
-                android:paddingStart="20dp" />
 
             <EditText
                 android:id="@+id/createBirth"
@@ -101,7 +87,8 @@
                 android:drawableTint="@color/black"
                 android:gravity="center_vertical"
                 android:hint="Ngày sinh"
-                android:inputType="datetime"
+                android:focusable="false"
+                android:inputType="none"
                 android:paddingStart="20dp" />
 
             <EditText
@@ -157,21 +144,20 @@
                 android:progressBackgroundTint="@color/deepblue"
                 android:progressTint="@color/deepblue"
                 android:visibility="gone"/>
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btnRegister"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:paddingLeft="25dp"
-                    android:paddingRight="25dp"
-                    android:layout_margin="10dp"
-                    android:layout_marginTop="0dp"
-                    android:background="@drawable/button_black"
-                    android:fontFamily="@font/poppins_medium"
-                    android:text="Register"
-                    android:textColor="@color/white"
-                    android:textSize="18sp" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnRegister"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingLeft="25dp"
+                android:paddingRight="25dp"
+                android:layout_margin="10dp"
+                android:layout_marginTop="0dp"
+                android:background="@drawable/button_black"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Đăng ký"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

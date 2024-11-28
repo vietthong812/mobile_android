@@ -70,24 +70,50 @@
                             android:layout_margin="10dp"
                             app:cardCornerRadius="70dp">
 
+
                             <ImageView
-                                android:id="@+id/avtUserUP"
+                                android:id="@+id/avtUserHome"
                                 android:layout_width="70dp"
                                 android:layout_height="70dp"
                                 android:layout_gravity="start"
                                 android:scaleType="centerCrop"
-                                android:src="@drawable/bg_main_cat" />
+                                android:src="@color/white" />
+                            <ProgressBar
+                                android:id="@+id/progressHome"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:indeterminate="true"
+                                android:visibility="visible"/>
                         </androidx.cardview.widget.CardView>
-                        <TextView
-                            android:id="@+id/tvUser"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:layout_gravity="center"
-                            android:gravity="left"
-                            android:text="Tên người dùng"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+
+                                android:gravity="left"
+                                android:text="Xin chào"
+                                android:textColor="@color/green"
+                                android:textSize="18sp" />
+                            <TextView
+                                android:id="@+id/tenUserHome"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="left"
+                                android:text="Tên người dùng"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+                        <Space
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
                         <ImageView
                             android:layout_width="35dp"
                             android:layout_height="35dp"

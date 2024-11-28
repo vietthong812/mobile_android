@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnCancel"
+            android:id="@+id/btnBackEdit"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="left"
@@ -61,7 +61,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center"
-                android:background="@drawable/baseline_photo_camera_24"
+                android:background="@drawable/camera_icon"
                 android:backgroundTint="@color/white"
                 android:scaleType="centerCrop" />
 
@@ -76,20 +76,6 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/usernameUP"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_margin="10dp"
-            android:background="@drawable/input_text_shape"
-            android:drawableStart="@drawable/baseline_person_24"
-            android:drawablePadding="10dp"
-            android:drawableTint="@color/black"
-            android:gravity="center_vertical"
-            android:maxLines="@integer/material_motion_duration_long_1"
-            android:textSize="18sp"
-            android:hint="Username"
-            android:paddingStart="20dp" />
 
         <EditText
             android:id="@+id/fullname"
@@ -134,11 +120,18 @@
             android:paddingStart="20dp"
             android:hint="Ngày sinh"
             android:inputType="date" />
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/progressUpdateUP"
+            android:visibility="gone"/>
         <ImageButton
             android:id="@+id/btnSaveProfile"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_gravity="center"
+            android:layout_marginTop="20dp"
             android:background="@drawable/save_icon"
             android:clickable="true"
             android:focusable="true"

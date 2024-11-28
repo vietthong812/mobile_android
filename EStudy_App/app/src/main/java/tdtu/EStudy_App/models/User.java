@@ -1,6 +1,8 @@
 package tdtu.EStudy_App.models;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     private String email;
     private String password;
     private String avatar = null;
@@ -43,14 +45,16 @@ public class User {
         this.avatar = avatar;
     }
 
-    public User(String password, String email, String fullName, String birthday) {
-        this.password = password;
+    public User(String email, String fullName, String birthday, String avt) {
         this.email = email;
         this.fullName = fullName;
         this.birthday = birthday;
+        this.avatar = avt;
+
     }
 
     public String getPassword() {
         return password;
     }
+
 }
