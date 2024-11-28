@@ -1,10 +1,13 @@
 package tdtu.EStudy_App.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.graphics.Insets;
@@ -39,6 +42,7 @@ public class TopicDetail extends AppCompatActivity {
     WordListAdapter wordListAdapter;
     FirebaseFirestore db;
     AppCompatButton btnCancel;
+    Button btnEdit,btnDelete;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +75,7 @@ public class TopicDetail extends AppCompatActivity {
                 if (userCreateRef != null) {
                     userCreateRef.get().addOnCompleteListener(userTask -> {
                         if (userTask.isSuccessful()) {
-                            String userName = userTask.getResult().getString("fullname");
+                            String userName = userTask.getResult().getString("fullName");
                             author.setText(getString(R.string.author, userName));
                         }
                     });
@@ -98,6 +102,55 @@ public class TopicDetail extends AppCompatActivity {
                     }
                 });
             }
+        });
+
+        btnEdit=findViewById(R.id.btnEdit);
+        btnDelete=findViewById(R.id.btnDelete);
+        btnDelete.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Xoá topic");
+            builder.setMessage("Bạn có chắc chắn muốn xoá topic này không?");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // Handle the OK button click
+                    db.collection("folders").whereArrayContains("topics", db.document("topics/" + id)).get().addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                List<DocumentReference> topics = (List<DocumentReference>) document.get("topics");
+                                if (topics != null) {
+                                    for (int i = 0; i < topics.size(); i++) {
+                                        if (topics.get(i).getId().equals(id)) {
+                                            topics.remove(i);
+                                            break;
+                                        }
+                                    }
+                                    document.getReference().update("topics", topics);
+                                }
+                            }
+                        }
+                    });
+                    db.collection("topics").document(id).delete().addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            ToastUtils.showShortToast(TopicDetail.this, "Xoá topic thành công");
+                            Intent resultIntent = new Intent();
+                            resultIntent.putExtra("topicID", id);
+                            setResult(RESULT_OK, resultIntent);
+                            finish();
+                        } else {
+                            ToastUtils.showShortToast(TopicDetail.this, "Error: " + task.getException().getMessage());
+                        }
+                    });
+                    dialog.dismiss();
+                }
+            });
+            builder.setNegativeButton("Cancel", (dialog, which) -> {
+                // Handle the Cancel button click
+                dialog.dismiss();
+            });
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
         });
     }
 }

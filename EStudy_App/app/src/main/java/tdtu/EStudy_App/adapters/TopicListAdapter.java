@@ -1,4 +1,5 @@
 package tdtu.EStudy_App.adapters;
+import androidx.fragment.app.Fragment;
 
 
 import android.content.Context;
@@ -18,15 +19,29 @@ import tdtu.EStudy_App.activities.TopicDetail;
 import tdtu.EStudy_App.models.Topic;
 
 public class TopicListAdapter extends RecyclerView.Adapter<TopicListAdapter.TopicViewHolder> {
-
     private Context context;
     private List<Topic> topicList;
+    private OnTopicClickListener listener;
 
-    public TopicListAdapter(Context context, List<Topic> topicList) {
+    public TopicListAdapter(Context context, List<Topic> topicList, OnTopicClickListener listener) {
         this.context = context;
         this.topicList = topicList;
+        this.listener = listener;
     }
-
+    public void removeTopicById(String topicId) {
+        for (int i = 0; i < topicList.size(); i++) {
+            if (topicList.get(i).getId().equals(topicId)) {
+                topicList.remove(i);
+                notifyItemRemoved(i);
+                break;
+            }
+        }
+    }
+    public void updateTopics(List<Topic> newTopics) {
+        this.topicList.clear();
+        this.topicList.addAll(newTopics);
+        notifyDataSetChanged();
+    }
     @NonNull
     @Override
     public TopicViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -41,7 +56,7 @@ public class TopicListAdapter extends RecyclerView.Adapter<TopicListAdapter.Topi
         holder.tvNumWord.setText("Số từ: " + topic.getNumWord());
 
         holder.itemView.setTag(topic);
-        holder.itemView.setOnClickListener(holder);
+        holder.itemView.setOnClickListener(v -> listener.onTopicClick(topic));
     }
 
     @Override
@@ -49,7 +64,7 @@ public class TopicListAdapter extends RecyclerView.Adapter<TopicListAdapter.Topi
         return topicList.size();
     }
 
-    public static class TopicViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class TopicViewHolder extends RecyclerView.ViewHolder  {
         TextView tvNameTopic;
         TextView tvNumWord;
 
@@ -58,15 +73,6 @@ public class TopicListAdapter extends RecyclerView.Adapter<TopicListAdapter.Topi
             tvNameTopic = itemView.findViewById(R.id.tvNameTopic);
             tvNumWord = itemView.findViewById(R.id.tvNumWord);
         }
-        @Override
-        public void onClick(View v) {
-            Topic topic = (Topic) v.getTag();
-            if (topic != null) {
-                // Create an Intent to start the TopicDetailActivity
-                Intent intent = new Intent(v.getContext(), TopicDetail.class);
-                intent.putExtra("topicID", topic.getId());
-                v.getContext().startActivity(intent);
-            }
-        }
+
     }
 }
