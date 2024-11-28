@@ -93,7 +93,7 @@ public class HomeFragment extends Fragment {
 
                     db.collection("topics")
                             .whereEqualTo("userCreate", db.collection("users").document(userId))
-                            .limit(5)
+                            .limit(5) //Giới hạn hiển thị 5 topic
                             .get()
                             .addOnCompleteListener(task -> {
                                 if (task.isSuccessful() && task.getResult() != null) {
