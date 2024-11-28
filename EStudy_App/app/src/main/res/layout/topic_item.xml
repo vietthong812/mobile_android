@@ -36,7 +36,7 @@
 
             <!-- Topic Name -->
             <TextView
-                android:id="@+id/tvNameTopic"
+                android:id="@+id/tvBigName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Tên Topic"
@@ -45,14 +45,14 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tvView"
+                android:id="@+id/tvBigNumWord"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="123 từ"
                 android:textSize="15sp"
                 android:textColor="@android:color/white" />
             <TextView
-                android:id="@+id/tvDate"
+                android:id="@+id/tvBigDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="20/11/2024"

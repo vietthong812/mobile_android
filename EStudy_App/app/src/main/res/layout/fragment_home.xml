@@ -256,7 +256,7 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:layout_margin="10dp"
                         android:background="@color/lightgrey"
-                        android:id="@+id/recyclerViewYourTopicShare"
+                        android:id="@+id/recyclerViewCacTopicTiepTucHoc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
 
@@ -272,6 +272,7 @@
                     android:layout_gravity="center"
                     app:cardCornerRadius="8dp"
                     app:cardElevation="0dp"
+                    android:visibility="gone"
                     >
 
                     <LinearLayout
@@ -280,6 +281,7 @@
                         android:padding="50dp"
                         android:orientation="vertical"
                         android:gravity="center"
+
                         android:background="@drawable/word_correct_many_time"
                         >
 
