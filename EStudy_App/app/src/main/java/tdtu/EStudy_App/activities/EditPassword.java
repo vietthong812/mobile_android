@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import tdtu.EStudy_App.R;
 import tdtu.EStudy_App.utils.FirebaseUserSingleton;
+import tdtu.EStudy_App.utils.ToastUtils;
 
 public class EditPassword extends AppCompatActivity {
     EditText edtOldPassword, edtNewPassword, edtConfirmPassword;
@@ -43,7 +44,11 @@ public class EditPassword extends AppCompatActivity {
             if (!newPass.equals(reNewPass)) {
                 return;
             }
-            user.updatePassword(newPass);
+            user.updatePassword(newPass).addOnSuccessListener(aVoid -> {
+                ToastUtils.showShortToast(EditPassword.this, "Password updated");
+            }).addOnFailureListener(e -> {
+                ToastUtils.showShortToast(EditPassword.this, e.getMessage());
+            });
         });
     }
 }
