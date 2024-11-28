@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView android:id="@+id/currentCard"
+<androidx.cardview.widget.CardView
+    android:id="@+id/currentCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="8dp"
     android:layout_marginVertical="4dp"
-    android:layout_gravity="center"
     app:cardCornerRadius="8dp"
     app:cardElevation="0dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -13,7 +13,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="50dp"
+        android:padding="40dp"
         android:orientation="vertical"
         android:gravity="center"
         android:background="@drawable/word_correct_many_time"
@@ -27,6 +27,16 @@
             android:text="Tên từ vựng"
             android:textColor="@color/black"
             android:textSize="25sp"
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="center" />
+        <TextView
+            android:id="@+id/tvPhatAm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="/phatam/"
+            android:textColor="@color/black"
+            android:textSize="18sp"
             android:layout_marginBottom="10dp"
             android:layout_gravity="center" />
 

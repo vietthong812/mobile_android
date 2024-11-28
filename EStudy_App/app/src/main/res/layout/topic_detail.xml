@@ -113,10 +113,10 @@
                             android:textSize="18sp"
                             android:textColor="@color/black" />
                         <TextView
-                            android:id="@+id/time"
+                            android:id="@+id/status"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Lượt học:"
+                            android:text="Trạng thái:"
                             android:textSize="18sp"
                             android:textColor="@color/black" />
                     </LinearLayout>
@@ -145,7 +145,7 @@
                     android:layout_marginBottom="8dp"/>
             </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardStudy"
+                android:id="@+id/cardFlashcard"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:layout_marginVertical="10dp"
@@ -161,13 +161,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
                     android:orientation="horizontal">
                     <ImageView
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:layout_gravity="center"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/quiz"/>
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/flashcard_icon"/>
 
                     <TextView
                         android:layout_width="match_parent"
@@ -202,11 +203,11 @@
                     android:layout_margin="10dp"
                     android:orientation="horizontal">
                     <ImageView
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
                         android:layout_gravity="center"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/four_answer"/>
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/tracnghiem_icon"/>
 
                     <TextView
                         android:layout_width="match_parent"
@@ -225,7 +226,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardChoose"
+                android:id="@+id/cardGoTu"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:layout_marginBottom="10dp"
@@ -242,11 +243,11 @@
                     android:layout_margin="10dp"
                     android:orientation="horizontal">
                     <ImageView
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
                         android:layout_gravity="center"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/ask"/>
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/gotu_icon"/>
 
                     <TextView
                         android:layout_width="match_parent"
@@ -270,6 +271,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
                 app:cardCornerRadius="10dp"
                 android:clickable="true"
                 android:focusable="true"
@@ -283,6 +285,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
+
                     android:orientation="horizontal">
                     <ImageView
                         android:layout_width="50dp"
@@ -352,7 +355,9 @@
                 android:id="@+id/recyclerViewTatCaCacThe"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginBottom="50dp"
                 android:nestedScrollingEnabled="false" />
 
 

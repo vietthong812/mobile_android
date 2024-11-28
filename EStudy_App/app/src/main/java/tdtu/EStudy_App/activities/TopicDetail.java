@@ -10,6 +10,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.cardview.widget.CardView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -43,13 +44,38 @@ public class TopicDetail extends AppCompatActivity {
     FirebaseFirestore db;
     AppCompatButton btnCancel;
     Button btnEdit,btnDelete;
+    CardView cardFlashcard, cardTracNghiem, cardGoTu, cardRank;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.topic_detail);
         init();
+        cardFlashcard.setOnClickListener(view -> {
+            Intent intent = new Intent(TopicDetail.this, ChonOptionStudyFlashcard.class);
+            intent.putExtra("topicID", getIntent().getStringExtra("topicID"));
+            startActivity(intent);
+        });
 
+        cardTracNghiem.setOnClickListener(view -> {
+            Intent intent = new Intent(TopicDetail.this, ChonOptionStudy.class);
+            intent.putExtra("topicID", getIntent().getStringExtra("topicID"));
+            intent.putExtra("type", "tracnghiem");
+            startActivity(intent);
+        });
+
+        cardGoTu.setOnClickListener(view -> {
+            Intent intent = new Intent(TopicDetail.this, ChonOptionStudy.class);
+            intent.putExtra("topicID", getIntent().getStringExtra("topicID"));
+            intent.putExtra("type", "gotu");
+            startActivity(intent);
+        });
+
+        cardRank.setOnClickListener(view -> {
+            Intent intent = new Intent(TopicDetail.this, GetRank.class);
+            intent.putExtra("topicID", getIntent().getStringExtra("topicID"));
+            startActivity(intent);
+        });
         Intent intent=getIntent();
         String id=intent.getStringExtra("topicID");
         db.collection("topics").document(id).get().addOnCompleteListener(task -> {
@@ -153,6 +179,10 @@ public class TopicDetail extends AppCompatActivity {
         btnCancel.setOnClickListener(view -> finish());
         btnEdit=findViewById(R.id.btnEdit);
         btnDelete=findViewById(R.id.btnDelete);
+        cardFlashcard=findViewById(R.id.cardFlashcard);
+        cardTracNghiem=findViewById(R.id.cardTracNghiem);
+        cardGoTu=findViewById(R.id.cardGoTu);
+        cardRank=findViewById(R.id.cardRank);
         // Set up the RecyclerView
         recyclerViewTatCaCacThe=findViewById(R.id.recyclerViewTatCaCacThe);
         recyclerViewTatCaCacThe.setLayoutManager(new LinearLayoutManager(this));
