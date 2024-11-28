@@ -45,7 +45,6 @@ import tdtu.EStudy_App.models.Topic;
 
 public class HomeFragment extends Fragment {
 
-    private CardView currentCard;
     private TextView tenUserHome;
     private ImageView avtUserHome;
     private FirebaseAuth mAuth;
@@ -54,6 +53,7 @@ public class HomeFragment extends Fragment {
     private List<Topic> topicListHome;
     private TopicHomeAdapter topicHomeAdapter;
     private RecyclerView recyclerViewTatCaCacTopic;
+    private CardView cardThuVien, cardBrowse, cardUser;
 
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private Handler mainThreadHandler = new Handler(Looper.getMainLooper());
@@ -147,16 +147,34 @@ public class HomeFragment extends Fragment {
 
 
     private void initializeViews(View view) {
-        currentCard = view.findViewById(R.id.currentCard);
         tenUserHome = view.findViewById(R.id.tenUserHome);
         avtUserHome = view.findViewById(R.id.avtUserHome);
         progressHome = view.findViewById(R.id.progressHome);
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+
+        cardThuVien = view.findViewById(R.id.cardThuVien);
+        cardBrowse = view.findViewById(R.id.cardBrowse);
+        cardUser = view.findViewById(R.id.cardUser);
     }
 
     private void setOnClickListeners() {
-        // Set click listeners for card views or other UI elements if needed
+        cardThuVien.setOnClickListener(v -> navigateToFragment(new TopicFragment(), R.id.topic));
+        cardBrowse.setOnClickListener(v -> navigateToFragment(new BrowseFragment(), R.id.browse));
+        cardUser.setOnClickListener(v -> navigateToFragment(new UserFragment(), R.id.user));
+
+    }
+
+    private void navigateToFragment(Fragment fragment, int navId) {
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+
+        // Highlight the bottom navigation item
+        BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setSelectedItemId(navId);
     }
 
 

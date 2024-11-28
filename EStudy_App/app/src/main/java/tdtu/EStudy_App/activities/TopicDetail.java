@@ -7,6 +7,7 @@ import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.cardview.widget.CardView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -39,6 +40,7 @@ public class TopicDetail extends AppCompatActivity {
     WordListAdapter wordListAdapter;
     FirebaseFirestore db;
     AppCompatButton btnCancel;
+    CardView cardFlashcard, cardTracNghiem, cardGoTu, cardRank;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +51,38 @@ public class TopicDetail extends AppCompatActivity {
         author=findViewById(R.id.author);
         date=findViewById(R.id.date);
         btnCancel=findViewById(R.id.btnCancel);
+        cardFlashcard=findViewById(R.id.cardFlashcard);
+        cardTracNghiem=findViewById(R.id.cardTracNghiem);
+        cardGoTu=findViewById(R.id.cardGoTu);
+        cardRank=findViewById(R.id.cardRank);
+
+        cardFlashcard.setOnClickListener(view -> {
+            Intent intent = new Intent(TopicDetail.this, ChonOptionStudyFlashcard.class);
+            intent.putExtra("topicID", getIntent().getStringExtra("topicID"));
+            startActivity(intent);
+        });
+
+        cardTracNghiem.setOnClickListener(view -> {
+            Intent intent = new Intent(TopicDetail.this, ChonOptionStudy.class);
+            intent.putExtra("topicID", getIntent().getStringExtra("topicID"));
+            intent.putExtra("type", "tracnghiem");
+            startActivity(intent);
+        });
+
+        cardGoTu.setOnClickListener(view -> {
+            Intent intent = new Intent(TopicDetail.this, ChonOptionStudy.class);
+            intent.putExtra("topicID", getIntent().getStringExtra("topicID"));
+            intent.putExtra("type", "gotu");
+            startActivity(intent);
+        });
+
+        cardRank.setOnClickListener(view -> {
+            Intent intent = new Intent(TopicDetail.this, GetRank.class);
+            intent.putExtra("topicID", getIntent().getStringExtra("topicID"));
+            startActivity(intent);
+        });
+
+
         btnCancel.setOnClickListener(view -> finish());
         recyclerViewTatCaCacThe=findViewById(R.id.recyclerViewTatCaCacThe);
         recyclerViewTatCaCacThe.setLayoutManager(new LinearLayoutManager(this));
@@ -99,5 +133,9 @@ public class TopicDetail extends AppCompatActivity {
                 });
             }
         });
+
+
     }
+
+
 }
