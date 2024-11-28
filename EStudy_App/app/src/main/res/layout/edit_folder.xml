@@ -26,10 +26,10 @@
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground" />
         <TextView
-            android:id="@+id/titleThem"
+            android:id="@+id/titleThietLap"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Thêm Topic vào Folder"
+            android:text="Tùy chỉnh Folder"
             android:layout_gravity="center"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -73,35 +73,32 @@
                 app:cardCornerRadius="8dp"
                 app:cardElevation="5dp">
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="3dp"
-                    android:layout_gravity="center"
-                    android:orientation="horizontal">
-
-                    <ImageButton
-                        android:id="@+id/btnAddTopic"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:background="@drawable/add_icon"
-                        android:backgroundTint="@color/deepblue"
-                        android:contentDescription="Add Folder" />
+                    android:orientation="vertical">
                     <TextView
-                        android:id="@+id/tvAdd"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Add Topic Mới"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:layout_marginRight="2dp"
-                        android:textColor="@color/deepblue"
-                        android:textSize="15sp" />
+                        android:text="Tên Folder"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/deepblue"/>
+                    <EditText
+                        android:id="@+id/editGoTu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:drawableTint="@color/black"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:hint="Tên folder"
+                        android:inputType="text" />
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewChonTopic"
+                android:id="@+id/recyclerViewTopicTrongFolder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"

@@ -52,7 +52,7 @@ public class TopicDetail extends AppCompatActivity {
         btnCancel.setOnClickListener(view -> finish());
         recyclerViewTatCaCacThe=findViewById(R.id.recyclerViewTatCaCacThe);
         recyclerViewTatCaCacThe.setLayoutManager(new LinearLayoutManager(this));
-        wordList=new ArrayList<>();
+        wordList= new ArrayList<>();
         db=FirebaseFirestore.getInstance();
 
         Intent intent=getIntent();

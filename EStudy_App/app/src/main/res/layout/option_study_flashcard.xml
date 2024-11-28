@@ -77,6 +77,7 @@
                         android:textSize="18sp"
                         android:textColor="@color/deepblue"
                         android:layout_marginLeft="10dp"
+                        android:buttonTint="@color/deepblue"
                         android:text="Hiển thị đáp án ngay sau khi trả lời"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -105,6 +106,7 @@
                         android:textSize="18sp"
                         android:textColor="@color/deepblue"
                         android:layout_marginLeft="10dp"
+                        android:buttonTint="@color/deepblue"
                         android:text="Tự động phát âm từ tiếng Anh"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -118,6 +120,7 @@
                 app:cardCornerRadius="10dp"
                 android:clickable="true"
                 android:focusable="true"
+
                 android:foreground="?attr/selectableItemBackground"
                 app:cardElevation="5dp">
 
@@ -131,6 +134,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="18sp"
+                        android:buttonTint="@color/deepblue"
                         android:textColor="@color/deepblue"
                         android:layout_marginLeft="10dp"
                         android:text="Đảo thứ tự từ"/>
@@ -160,6 +164,7 @@
                         android:textSize="18sp"
                         android:textColor="@color/deepblue"
                         android:layout_marginLeft="10dp"
+                        android:buttonTint="@color/deepblue"
                         android:text="Chỉ học các từ đánh dấu sao"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

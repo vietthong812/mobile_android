@@ -23,7 +23,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardLogin"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="290dp"
         android:layout_margin="25dp"
         android:layout_marginTop="20dp"
         app:cardCornerRadius="20dp"
@@ -85,20 +85,29 @@
                 android:text="Quên mật khẩu?"
                 android:textColor="@color/black"/>
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnSignIn"
+            <ProgressBar
+                android:id="@+id/progressLogin"
+                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:paddingLeft="25dp"
-                android:paddingRight="25dp"
-                android:layout_margin="10dp"
-                android:layout_marginTop="0dp"
-                android:background="@drawable/button_black"
-                android:fontFamily="@font/poppins_medium"
-                android:text="Đăng nhập"
-                android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:progressBackgroundTint="@color/deepblue"
+                android:progressTint="@color/deepblue"
+                android:visibility="gone"/>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnSignIn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:paddingLeft="25dp"
+                    android:paddingRight="25dp"
+                    android:layout_margin="10dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/button_black"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Đăng nhập"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
 
 
 

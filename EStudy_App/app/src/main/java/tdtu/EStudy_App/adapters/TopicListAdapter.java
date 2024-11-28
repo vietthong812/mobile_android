@@ -1,5 +1,6 @@
 package tdtu.EStudy_App.adapters;
 
+
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -36,7 +37,7 @@ public class TopicListAdapter extends RecyclerView.Adapter<TopicListAdapter.Topi
     @Override
     public void onBindViewHolder(@NonNull TopicViewHolder holder, int position) {
         Topic topic = topicList.get(position);
-        holder.tvNameTopic.setText("Tên topic: " +topic.getName());
+        holder.tvNameTopic.setText(topic.getName());
         holder.tvNumWord.setText("Số từ: " + topic.getNumWord());
 
         holder.itemView.setTag(topic);

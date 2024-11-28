@@ -1,9 +1,12 @@
 package tdtu.EStudy_App.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,22 +24,57 @@ public class SignIn extends AppCompatActivity {
     FirebaseFirestore fStore;
     EditText edtEmail, edtPassword;
     TextView forgotPassword;
+    ProgressBar progressLogin;
+
+    SharedPreferences sharedPreferences;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_sign_in);
+
+        // Kiểm tra người dùng đã đăng nhập trước đó
+        sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        String userEmail = sharedPreferences.getString("userEmail", null);
+        if (userEmail != null) {
+            Intent intent = new Intent(SignIn.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+
+
         initialize();
         btnSignIn.setOnClickListener(v -> {
+            if (edtEmail.getText().toString().isEmpty() || edtPassword.getText().toString().isEmpty()) {
+                Toast.makeText(SignIn.this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            progressLogin.setVisibility(View.VISIBLE);
+            btnSignIn.setVisibility(View.GONE);
             String email = edtEmail.getText().toString().trim();
             String password = edtPassword.getText().toString().trim();
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    Toast.makeText(SignIn.this, "Login successful", Toast.LENGTH_SHORT).show();
+
+                    // Save login state to SharedPreferences
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("userEmail", email);
+                    editor.putBoolean("isLoggedIn", true);// Set login state to true
+                    editor.apply();
+
+
+                    Toast.makeText(SignIn.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(SignIn.this, MainActivity.class);
+                    progressLogin.setVisibility(View.GONE);
+                    btnSignIn.setVisibility(View.VISIBLE);
                     startActivity(intent);
                 } else {
-                    Toast.makeText(SignIn.this, "Email or password is incorrect", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignIn.this, "Email hoặc Mật khẩu không chính xác", Toast.LENGTH_SHORT).show();
+                    progressLogin.setVisibility(View.GONE);
+                    btnSignIn.setVisibility(View.VISIBLE);
                 }
             });
         });
@@ -57,5 +95,7 @@ public class SignIn extends AppCompatActivity {
         edtEmail = findViewById(R.id.edtEmail);
         edtPassword = findViewById(R.id.edtPassword);
         forgotPassword = findViewById(R.id.forgotPassword);
+        progressLogin = findViewById(R.id.progressLogin);
+
     }
 }

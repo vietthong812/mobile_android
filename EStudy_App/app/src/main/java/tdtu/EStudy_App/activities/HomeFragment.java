@@ -50,7 +50,7 @@ public class HomeFragment extends Fragment {
             replaceFragment(new BrowseFragment());
         });
 
-        cardUser .setOnClickListener(view -> {
+        cardUser.setOnClickListener(view -> {
             highlightBottomNavItem(R.id.user);
             replaceFragment(new UserFragment());
         });

@@ -58,24 +58,24 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:orientation="vertical">
 
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardImage"
+                    android:layout_marginVertical="4dp"
+                    android:layout_marginHorizontal="4dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-
                     app:cardCornerRadius="10dp"
-                    app:cardElevation="10dp">
+                    app:cardElevation="5dp">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -336,11 +336,12 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"/>
                 <CheckBox
+                    android:buttonTint="@color/deepblue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Các từ đã đánh dấu"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
+                    android:textColor="@color/deepblue"
+                    android:textSize="18sp"
                     android:layout_gravity="center"
                     android:gravity="center"/>
             </LinearLayout>

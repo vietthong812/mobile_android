@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -29,6 +31,7 @@ public class Register extends AppCompatActivity {
     FirebaseAuth mAuth;
     EditText createFullname, createUsername, createBirth, createEmail, createPassword, createRePassword;
     Button btnRegister,btnCancel;
+    ProgressBar progressRegister;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +46,8 @@ public class Register extends AppCompatActivity {
             finish();
         });
         btnRegister.setOnClickListener(v -> {
+            progressRegister.setVisibility(View.VISIBLE);
+            btnRegister.setVisibility(View.GONE);
             String fullname = createFullname.getText().toString().trim();
             String username = createUsername.getText().toString().trim();
             String birth = createBirth.getText().toString().trim();
@@ -85,6 +90,8 @@ public class Register extends AppCompatActivity {
                             //user.put("password", password);
                             documentReference.set(user);
                             ToastUtils.showShortToast(Register.this, "User created");
+                            progressRegister.setVisibility(View.GONE);
+                            btnRegister.setVisibility(View.VISIBLE);
                             finish();
                         }
                         else {
@@ -94,10 +101,14 @@ public class Register extends AppCompatActivity {
                                 Log.e("SignUpError", errorMessage);
                             }
                             ToastUtils.showShortToast(Register.this, "Error");
+                            progressRegister.setVisibility(View.GONE);
+                            btnRegister.setVisibility(View.VISIBLE);
                         }
                     });
                 } else {
                     ToastUtils.showShortToast(Register.this, "Password does not match");
+                    progressRegister.setVisibility(View.GONE);
+                    btnRegister.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -111,6 +122,7 @@ public class Register extends AppCompatActivity {
         createRePassword = findViewById(R.id.createRePassword);
         btnRegister = findViewById(R.id.btnRegister);
         btnCancel = findViewById(R.id.btnCancel);
+        progressRegister = findViewById(R.id.progressRegister);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
