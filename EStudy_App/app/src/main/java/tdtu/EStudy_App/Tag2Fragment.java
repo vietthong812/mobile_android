@@ -46,14 +46,7 @@ public class Tag2Fragment extends Fragment implements OnTopicClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tag2, container, false);
-        recyclerViewTopic = view.findViewById(R.id.recyclerViewTopic);
-        recyclerViewTopic.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        mAuth = FirebaseAuth.getInstance();
-        user = mAuth.getCurrentUser();
-        topicViewModel = new ViewModelProvider(this).get(TopicViewModel.class);
-        topicListAdapter = new TopicListAdapter(getContext(), new ArrayList<>(), this);
-        recyclerViewTopic.setAdapter(topicListAdapter);
+        init(view);
         if (user != null) {
             String userId = user.getUid();
             topicViewModel.loadTopics(userId);
@@ -88,5 +81,17 @@ public class Tag2Fragment extends Fragment implements OnTopicClickListener {
             String userId = user.getUid();
             topicViewModel.loadTopics(userId);
         }
+    }
+    private void init(View view) {
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+
+        // Initialize RecyclerView
+        recyclerViewTopic = view.findViewById(R.id.recyclerViewTopic);
+        recyclerViewTopic.setLayoutManager(new LinearLayoutManager(getContext()));
+        topicViewModel = new ViewModelProvider(this).get(TopicViewModel.class);
+        topicListAdapter = new TopicListAdapter(getContext(), new ArrayList<>(), this);
+        recyclerViewTopic.setAdapter(topicListAdapter);
     }
 }

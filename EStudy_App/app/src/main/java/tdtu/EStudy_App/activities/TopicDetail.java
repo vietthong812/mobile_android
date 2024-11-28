@@ -48,16 +48,7 @@ public class TopicDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.topic_detail);
-        nameTopic=findViewById(R.id.nameTopic);
-        numWord=findViewById(R.id.numWord);
-        author=findViewById(R.id.author);
-        date=findViewById(R.id.date);
-        btnCancel=findViewById(R.id.btnCancel);
-        btnCancel.setOnClickListener(view -> finish());
-        recyclerViewTatCaCacThe=findViewById(R.id.recyclerViewTatCaCacThe);
-        recyclerViewTatCaCacThe.setLayoutManager(new LinearLayoutManager(this));
-        wordList= new ArrayList<>();
-        db=FirebaseFirestore.getInstance();
+        init();
 
         Intent intent=getIntent();
         String id=intent.getStringExtra("topicID");
@@ -104,8 +95,7 @@ public class TopicDetail extends AppCompatActivity {
             }
         });
 
-        btnEdit=findViewById(R.id.btnEdit);
-        btnDelete=findViewById(R.id.btnDelete);
+
         btnDelete.setOnClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Xoá topic");
@@ -152,5 +142,22 @@ public class TopicDetail extends AppCompatActivity {
             AlertDialog dialog = builder.create();
             dialog.show();
         });
+    }
+    private void init(){
+        // Find all views by ID
+        nameTopic=findViewById(R.id.nameTopic);
+        numWord=findViewById(R.id.numWord);
+        author=findViewById(R.id.author);
+        date=findViewById(R.id.date);
+        btnCancel=findViewById(R.id.btnCancel);
+        btnCancel.setOnClickListener(view -> finish());
+        btnEdit=findViewById(R.id.btnEdit);
+        btnDelete=findViewById(R.id.btnDelete);
+        // Set up the RecyclerView
+        recyclerViewTatCaCacThe=findViewById(R.id.recyclerViewTatCaCacThe);
+        recyclerViewTatCaCacThe.setLayoutManager(new LinearLayoutManager(this));
+        wordList= new ArrayList<>();
+        // Set up the Firestore database
+        db=FirebaseFirestore.getInstance();
     }
 }

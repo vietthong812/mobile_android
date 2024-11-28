@@ -27,15 +27,9 @@ public class Tag1Fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tag1, container, false);
-        recyclerViewFolder = view.findViewById(R.id.recyclerViewFolder);
-        recyclerViewFolder.setLayoutManager(new LinearLayoutManager(getContext()));
-        mAuth = FirebaseAuth.getInstance();
-        user = mAuth.getCurrentUser();
-        folderListAdapter = new FolderListAdapter(getContext(), new ArrayList<>());
-        recyclerViewFolder.setAdapter(folderListAdapter);
-        folderViewModel = new ViewModelProvider(this).get(FolderViewModel.class);
+
+        init(view);
 
         folderViewModel.getFolders().observe(getViewLifecycleOwner(), folders -> {
             folderListAdapter.updateFolders(folders);
@@ -50,5 +44,17 @@ public class Tag1Fragment extends Fragment {
             String userId = user.getUid();
             folderViewModel.loadFolders(userId);
         }
+    }
+    private void init(View view) {
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+
+        // Initialize RecyclerView
+        recyclerViewFolder = view.findViewById(R.id.recyclerViewFolder);
+        recyclerViewFolder.setLayoutManager(new LinearLayoutManager(getContext()));
+        folderViewModel = new ViewModelProvider(this).get(FolderViewModel.class);
+        folderListAdapter = new FolderListAdapter(getContext(), new ArrayList<>());
+        recyclerViewFolder.setAdapter(folderListAdapter);
     }
 }
