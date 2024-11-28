@@ -63,6 +63,7 @@ public class SignIn extends AppCompatActivity {
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("userEmail", email);
                     editor.putBoolean("isLoggedIn", true);// Set login state to true
+                    editor.putString("password", password);
                     editor.apply();
 
 
