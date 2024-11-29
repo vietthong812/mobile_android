@@ -5,16 +5,12 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/lightgrey"
-    android:layout_margin="10dp"
     tools:context=".Tag2Fragment">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:padding="16dp">
 
@@ -67,11 +63,12 @@
 
                 <View
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:layout_weight="1" />
 
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/themTopic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="2dp"
@@ -112,11 +109,11 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewTopic"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="50dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
                 android:nestedScrollingEnabled="false" />
 
         </LinearLayout>
-    </ScrollView>
 
 </FrameLayout>

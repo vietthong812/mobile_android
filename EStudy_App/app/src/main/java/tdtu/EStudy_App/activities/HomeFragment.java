@@ -101,11 +101,11 @@ public class HomeFragment extends Fragment {
                                         String id = document.getId();
                                         String name = document.getString("name");
                                         Timestamp createTime = document.getTimestamp("createTime");
-                                        int numWord = document.getLong("numWord").intValue();
+                                        long numWord = document.getLong("numWord");
                                         String status = document.getString("status");
 
                                         // Thêm Topic vào danh sách tạm
-                                        Topic topic = new Topic(id, name, status, userId, createTime, numWord);
+                                        Topic topic = new Topic(id, name, status, userId, createTime, (int)numWord);
                                         loadedTopics.add(topic);
                                     }
 

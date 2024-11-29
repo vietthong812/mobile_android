@@ -1,4 +1,4 @@
-package tdtu.EStudy_App.adapters;
+ package tdtu.EStudy_App.adapters;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
@@ -49,7 +49,6 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.WordViewHolder
             flipCard(holder);
         });
 
-        // Handling the save button (toggle mark status)
         holder.btnSave.setOnClickListener(v -> {
             boolean isMarked = word.isMarked();
             word.setMarked(!isMarked);  // Toggle the marked status
@@ -67,7 +66,6 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.WordViewHolder
             holder.btnSave.setBackgroundResource(R.drawable.star_icon);
         }
     }
-
 
     @Override
     public int getItemCount() {
@@ -91,43 +89,45 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.WordViewHolder
     }
 
     private void flipCard(WordViewHolder holder) {
+        CardView cardView = holder.cardView;
         View frontCard = holder.tvName;
         View backCard = holder.tvMeaning;
         View tvPhatAm = holder.tvPronunciation;
         View btnSound = holder.btnSound;
 
-        float cameraDistance = 10000 * holder.itemView.getResources().getDisplayMetrics().density;
-        frontCard.setCameraDistance(cameraDistance);
-        backCard.setCameraDistance(cameraDistance);
+        //Chỗ này phóng ra xa ra để thấy card flip không bị cawts
+        float cameraDistance = 15000 * holder.itemView.getResources().getDisplayMetrics().density;
+        cardView.setCameraDistance(cameraDistance);
 
-        ObjectAnimator flipFront = ObjectAnimator.ofFloat(frontCard, "rotationY", 0f, 90f);
-        ObjectAnimator flipBack = ObjectAnimator.ofFloat(backCard, "rotationY", -90f, 0f);
+        boolean isFrontVisible = frontCard.getVisibility() == View.VISIBLE;
 
-        flipFront.setDuration(300);
-        flipBack.setDuration(300);
+        ObjectAnimator flipOut = ObjectAnimator.ofFloat(cardView, "rotationY", 0f, 90f);
+        ObjectAnimator flipIn = ObjectAnimator.ofFloat(cardView, "rotationY", -90f, 0f);
 
-        flipFront.start();
-        flipBack.start();
+        flipOut.setDuration(150);
+        flipIn.setDuration(150);
 
-        // Toggle visibility after the flip animation ends
-        flipBack.addListener(new android.animation.AnimatorListenerAdapter() {
+        flipOut.addListener(new android.animation.AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(android.animation.Animator animation) {
-                if (frontCard.getVisibility() == View.VISIBLE) {
-                    // Lật mặt sau
+                if (isFrontVisible) {
+                    // Hiện mặt sau
                     frontCard.setVisibility(View.GONE);
                     backCard.setVisibility(View.VISIBLE);
-                    tvPhatAm.setVisibility(View.GONE);
+                    tvPhatAm.setVisibility(View.INVISIBLE);
                     btnSound.setVisibility(View.INVISIBLE);
                 } else {
-                    //Trở lại mặt trước
+                    // Hiện mặt trước
                     frontCard.setVisibility(View.VISIBLE);
                     backCard.setVisibility(View.GONE);
                     tvPhatAm.setVisibility(View.VISIBLE);
                     btnSound.setVisibility(View.VISIBLE);
                 }
+                flipIn.start(); // Bắt đầu hiệu ứng lật vào
             }
         });
+
+        flipOut.start(); // Bắt đầu hiệu ứng lật ra
     }
 
 }

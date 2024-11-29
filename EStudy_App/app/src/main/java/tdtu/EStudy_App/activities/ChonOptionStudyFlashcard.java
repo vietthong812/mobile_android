@@ -31,6 +31,7 @@ public class ChonOptionStudyFlashcard extends AppCompatActivity {
         btnBatDauHocFC.setOnClickListener(v -> {
             Intent intent = new Intent(ChonOptionStudyFlashcard.this, HocFlashCard.class);
             intent.putExtra("topicID", getIntent().getStringExtra("topicID"));
+            intent.putExtra("topicName", getIntent().getStringExtra("topicName"));
             startActivity(intent);
             finish();
         });

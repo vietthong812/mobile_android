@@ -65,6 +65,11 @@ public class UserFragment extends Fragment {
             startActivity(intent);
         });
 
+        cardEditPassword.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), EditPassword.class);
+            startActivity(intent);
+        });
+
 
         return view;
     }
@@ -82,6 +87,7 @@ public class UserFragment extends Fragment {
         progressLoadAnh = view.findViewById(R.id.progressLoadAnh);
         tvEmail = view.findViewById(R.id.tvEmail);
         tvBirth = view.findViewById(R.id.tvBirth);
+
     }
 
     private void showLogoutConfirmationDialog() {

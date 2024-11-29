@@ -33,6 +33,7 @@ public class ChonOptionStudy extends AppCompatActivity {
             btnBatDauHoc.setOnClickListener(v -> {
                 Intent intent1 = new Intent(ChonOptionStudy.this, HocGoTu.class);
                 intent1.putExtra("topicID", getIntent().getStringExtra("topicID"));
+                intent1.putExtra("topicName", getIntent().getStringExtra("topicName"));
                 startActivity(intent1);
                 finish();
             });}
@@ -40,6 +41,7 @@ public class ChonOptionStudy extends AppCompatActivity {
             btnBatDauHoc.setOnClickListener(v -> {
                 Intent intent1 = new Intent(ChonOptionStudy.this, HocTracNghiem.class);
                 intent1.putExtra("topicID", getIntent().getStringExtra("topicID"));
+                intent1.putExtra("topicName", getIntent().getStringExtra("topicName"));
                 startActivity(intent1);
                 finish();
             });
