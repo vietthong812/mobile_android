@@ -1,66 +1,49 @@
+// QuizViewModel.java
 package tdtu.EStudy_App.viewmodels;
 
 import android.util.Log;
 
-import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.List;
 
-import tdtu.EStudy_App.activities.MainActivity;
-import tdtu.EStudy_App.activities.Register;
 import tdtu.EStudy_App.models.Word;
-import tdtu.EStudy_App.utils.ToastUtils;
 
-public class QuizViewModel {
+public class QuizViewModel extends ViewModel {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    public ArrayList<Word> getWordList(String topicID) {
-        ArrayList<Word> words = new ArrayList<>();
-        db.collection("topics").document(topicID)
+    public interface WordListCallback {
+        void onWordListLoaded(List<Word> words);
+        void onError(Exception e);
+    }
+
+    public void loadWordList(String topicID, WordListCallback callback) {
+        db.collection("topics").document(topicID).collection("words")
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            Map<String, Object> wordsMap = (Map<String, Object>) document.get("words");
-                            if (wordsMap != null) {
-                                for (Map.Entry<String, Object> entry : wordsMap.entrySet()) {
-                                    Word word = new Word();
-                                    word.setName(entry.getKey());
-
-                                    Map<String, String> wordInfo = (Map<String, String>) entry.getValue();
-                                    for(Map.Entry<String, String> info : wordInfo.entrySet()) {
-                                        switch (info.getKey()) {
-                                            case "meaning":
-                                                word.setMeaning(info.getValue());
-                                                break;
-                                            case "pronunciation":
-                                                word.setPronunciation(info.getValue());
-                                                break;
-                                            case "state":
-                                                word.setState(info.getValue());
-                                                break;
-                                            case "marked":
-                                                word.setMarked(Boolean.parseBoolean(info.getValue()));
-                                                break;
-                                        }
-                                    }
-                                }
-                            }
+                        List<Word> words = new ArrayList<>();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Word word = new Word();
+                            word.setName(document.getString("name"));
+                            word.setMeaning(document.getString("meaning"));
+                            word.setPronunciation(document.getString("pronunciation"));
+                            word.setState(document.getString("state"));
+                            word.setMarked(document.getBoolean("marked"));
+                            words.add(word);
                         }
+                        callback.onWordListLoaded(words);
                     } else {
                         Exception exception = task.getException();
                         if (exception != null) {
-                            String errorMessage = exception.getMessage();
-                            Log.e("getDataFlashCardError", errorMessage);
+                            Log.e("getDataFlashCardError", exception.getMessage());
+                            callback.onError(exception);
                         }
                     }
                 });
-        return words;
     }
 }

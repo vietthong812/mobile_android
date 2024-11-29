@@ -35,6 +35,17 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="left"
+            android:background="@drawable/luutopic_icon"
+            android:textColor="@color/white"
+            android:layout_marginRight="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnLuuTopic"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="left"
             android:background="@drawable/edit_icon"
             android:backgroundTint="@color/deepblue"
             android:textColor="@color/white"

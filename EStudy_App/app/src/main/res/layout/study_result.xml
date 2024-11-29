@@ -15,7 +15,7 @@
         android:padding="10dp">
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnCancel"
+            android:id="@+id/btnCancleResult"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="left"
@@ -73,7 +73,7 @@
                     app:cardCornerRadius="50dp">
 
                     <TextView
-                        android:id="@+id/folder_all_title"
+                        android:id="@+id/tvDung"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Các câu trả lời đúng"
