@@ -4,6 +4,7 @@ package tdtu.EStudy_App.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.ArraySet;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -14,7 +15,10 @@ import androidx.cardview.widget.CardView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import tdtu.EStudy_App.R;
 import tdtu.EStudy_App.adapters.CardAdapter;
@@ -31,6 +35,7 @@ public class HocFlashCard extends AppCompatActivity {
     private List<Word> wordList;
     private TextView titleFC;
     private CardView cardViewNopBaiFC;
+    private Set<Word> learnedWords = new HashSet<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +62,6 @@ public class HocFlashCard extends AppCompatActivity {
         countNumFC.setText("1/" + wordList.size());
 
 
-
-
         btnNextFC.setOnClickListener(v -> {
             int currentItem = viewPagerCardFC.getCurrentItem();
             if (currentItem < wordList.size() - 1) {
@@ -77,17 +80,42 @@ public class HocFlashCard extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
+                learnedWords.add(wordList.get(position));
                 countNumFC.setText((position + 1) + "/" + wordList.size());
             }
         });
 
         cardViewNopBaiFC.setOnClickListener(v -> {
+
             Intent intent1 = new Intent(HocFlashCard.this, KetQuaHocTap.class);
             intent1.putExtra("topicID", topicID);
             intent1.putExtra("topicName", topicName);
+            intent1.putParcelableArrayListExtra("learnedWords", new ArrayList<Word>(learnedWords));
+            intent1.putParcelableArrayListExtra("topicWords", new ArrayList<Word>(wordList));
+            intent1.putExtra("learningType", "flashcard");
             startActivity(intent1);
             finish();
         });
+    }
+
+    private List<Word> suffleWordList(List<Word> wordList) {
+        for (int i = 0; i < wordList.size(); i++) {
+            int randomIndex = (int) (Math.random() * wordList.size());
+            Word temp = wordList.get(i);
+            wordList.set(i, wordList.get(randomIndex));
+            wordList.set(randomIndex, temp);
+        }
+        return wordList;
+    }
+
+    private List<Word> getMarkedWords(List<Word> wordList) {
+        List<Word> markedWords = new ArrayList<>();
+        for (Word word : wordList) {
+            if (word.isMarked()) {
+                markedWords.add(word);
+            }
+        }
+        return markedWords;
     }
 
     protected void init() {
