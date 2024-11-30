@@ -53,35 +53,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Hiển thị đáp án -->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardHienDapAnFC"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                app:cardCornerRadius="10dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground"
-                app:cardElevation="5dp">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <CheckBox
-                        android:id="@+id/checkHienDapAnFC"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="18sp"
-                        android:textColor="@color/deepblue"
-                        android:layout_marginLeft="10dp"
-                        android:buttonTint="@color/deepblue"
-                        android:text="Hiển thị đáp án ngay sau khi trả lời"/>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
             <!-- Tự động phát âm -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardPhatAmFC"

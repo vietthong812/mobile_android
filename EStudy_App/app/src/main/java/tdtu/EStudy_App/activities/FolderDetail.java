@@ -35,6 +35,8 @@ import tdtu.EStudy_App.viewmodels.TopicViewModel;
 
 public class FolderDetail extends AppCompatActivity implements OnTopicDeleteClickListener {
     private static final int REQUEST_CODE = 1; // Define REQUEST_CODE as a constant
+    private static final int REQUEST_CODE_EDIT_NAME = 2; // Define REQUEST_CODE as a constant
+
     Button btnDeleteFolder;
     TextView nameFolder, addTopicToFolder;
     RecyclerView recyclerViewTatCaCacTopic;
@@ -60,7 +62,7 @@ public class FolderDetail extends AppCompatActivity implements OnTopicDeleteClic
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
                 String name = document.getString("name");
-                nameFolder.setText(getString(R.string.tenfolder, name));
+                nameFolder.setText(name);
             }
         });
         topicViewModel.loadTopicsByFolderId(folderId);
@@ -96,10 +98,12 @@ public class FolderDetail extends AppCompatActivity implements OnTopicDeleteClic
             Intent intent1 = new Intent(FolderDetail.this, ThemTopicVaoFolder.class);
             startActivity(intent1);
         });
+
         btnEditFolder.setOnClickListener(view -> {
             Intent intent1 = new Intent(FolderDetail.this, EditFolder.class);
             intent1.putExtra("folderId", folderId);
-            startActivity(intent1);
+            intent1.putExtra("nameFolder", nameFolder.getText().toString());
+            startActivityForResult(intent1, REQUEST_CODE_EDIT_NAME);
         });
     }
     private void init(){
@@ -168,5 +172,14 @@ public class FolderDetail extends AppCompatActivity implements OnTopicDeleteClic
                 topic_folderAdapter.removeTopicById(topicId);
             }
         }
+
+        if (requestCode == REQUEST_CODE_EDIT_NAME && resultCode == RESULT_OK) {
+            String updatedName = data.getStringExtra("updatedName");
+            if (updatedName != null) {
+                nameFolder.setText(updatedName);
+            }
+        }
+
+
     }
 }

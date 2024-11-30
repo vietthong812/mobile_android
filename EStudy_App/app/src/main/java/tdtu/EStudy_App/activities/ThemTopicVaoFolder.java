@@ -26,7 +26,6 @@ import tdtu.EStudy_App.models.Topic;
 public class ThemTopicVaoFolder extends AppCompatActivity {
 
     AppCompatButton btnCancleThemTopicFolder, btnDoneThemTopicFolder;
-    CardView themTopicMoiFolder;
     RecyclerView recyclerViewChonTopic;
     FirebaseFirestore db;
     List<Topic> topicList, selectedTopicList;
@@ -42,10 +41,7 @@ public class ThemTopicVaoFolder extends AppCompatActivity {
         init();
         btnCancleThemTopicFolder.setOnClickListener(view -> finish());
 
-        themTopicMoiFolder.setOnClickListener(view -> {
-            Intent intent = new Intent(ThemTopicVaoFolder.this, AddTopic.class);
-            startActivity(intent);
-        });
+
 
 
 
@@ -55,7 +51,6 @@ public class ThemTopicVaoFolder extends AppCompatActivity {
     protected void init(){
         btnCancleThemTopicFolder = findViewById(R.id.btnCancelThemTopicFolder);
         btnDoneThemTopicFolder = findViewById(R.id.btnDoneThemTopicFolder);
-        themTopicMoiFolder = findViewById(R.id.themTopicMoiFolder);
         recyclerViewChonTopic = findViewById(R.id.recyclerViewChonTopic);
 
         db = FirebaseFirestore.getInstance();
