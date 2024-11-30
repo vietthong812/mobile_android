@@ -66,7 +66,7 @@
                     android:layout_gravity="center"
                     android:layout_marginRight="2dp"
                     android:gravity="center"
-                    android:text="Nộp bài"
+                    android:text="Hoàn thành"
                     android:textStyle="bold"
                     android:textColor="@color/green"
                     android:textSize="15sp" />

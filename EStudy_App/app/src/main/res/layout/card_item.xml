@@ -16,7 +16,7 @@
         android:padding="40dp"
         android:orientation="vertical"
         android:gravity="center"
-        android:background="@drawable/word_correct_many_time"
+
         >
 
         <TextView
