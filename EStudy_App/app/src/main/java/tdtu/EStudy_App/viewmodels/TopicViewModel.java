@@ -42,6 +42,26 @@ public class TopicViewModel extends ViewModel {
                     }
                 });
     }
+    public void loadAllTopics() {
+        topics.setValue(new ArrayList<>()); // Clear the current data
+        db.collection("topics")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        List<Topic> topicList = new ArrayList<>();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            String name = document.getString("name");
+                            String status = document.getString("status");
+                            String id = document.getId();
+                            int numWord = document.getLong("numWord").intValue();
+                            String userId = ((DocumentReference) document.get("userCreate")).getId();
+                            Topic topic = new Topic(id, name, status, userId, document.getTimestamp("createTime"), numWord);
+                            topicList.add(topic);
+                        }
+                        topics.setValue(topicList);
+                    }
+                });
+    }
     public void loadTopicsByFolderId(String folderId) {
         topics.setValue(new ArrayList<>()); // Clear the current data
         db.collection("folders").document(folderId).get().addOnCompleteListener(task -> {

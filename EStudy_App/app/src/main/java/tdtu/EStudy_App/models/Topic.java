@@ -14,7 +14,7 @@ public class Topic {
     private String userid;
     private Timestamp createTime;
     private int numWord;
-
+    private boolean isSelectedForFolder;
     public int getNumWord() {
         return numWord;
     }
@@ -30,6 +30,14 @@ public class Topic {
         this.userid = userid;
         this.createTime = createTime;
         this.numWord = numWord;
+    }
+
+    public boolean isSelectedForFolder() {
+        return isSelectedForFolder;
+    }
+
+    public void setSelectedForFolder(boolean selectedForFolder) {
+        isSelectedForFolder = selectedForFolder;
     }
 
     public String getId() {

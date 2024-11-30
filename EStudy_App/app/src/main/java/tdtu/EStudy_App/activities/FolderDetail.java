@@ -90,11 +90,13 @@ public class FolderDetail extends AppCompatActivity implements OnTopicDeleteClic
 
         themTopicVaoFolder.setOnClickListener(view -> {
             Intent intent1 = new Intent(FolderDetail.this, ThemTopicVaoFolder.class);
+            intent1.putExtra("folderId", folderId);
             startActivity(intent1);
         });
 
         addTopicToFolder.setOnClickListener(view -> {
             Intent intent1 = new Intent(FolderDetail.this, ThemTopicVaoFolder.class);
+            intent1.putExtra("folderId", folderId);
             startActivity(intent1);
         });
         btnEditFolder.setOnClickListener(view -> {

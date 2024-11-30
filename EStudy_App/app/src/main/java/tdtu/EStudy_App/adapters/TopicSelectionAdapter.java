@@ -24,10 +24,19 @@ public class TopicSelectionAdapter extends RecyclerView.Adapter<TopicSelectionAd
         this.context = context;
         this.topicList = topicList;
     }
+    public void updateTopics(List<Topic> newTopics) {
+        this.topicList.clear();
+        this.topicList.addAll(newTopics);
+        notifyDataSetChanged();
+    }
+    public List<Topic> getTopicList() {
+        return topicList;
+    }
+
     @NonNull
     @Override
     public TopicViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.topic_item_mini, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.topic_item_mini_selection, parent, false);
         return new TopicViewHolder(view);
     }
 
@@ -37,7 +46,10 @@ public class TopicSelectionAdapter extends RecyclerView.Adapter<TopicSelectionAd
         holder.tvNameTopicSelect.setText(topic.getName());
         holder.tvNumWordSelect.setText("Số từ: " + topic.getNumWord());
         holder.tvDateAddSelect.setText("Ngày tạo: " + topic.convertTimestampToString(topic.getCreateTime()));
-        holder.itemView.setTag(topic);
+        holder.checkBoxSelectTopic.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            topic.setSelectedForFolder(holder.checkBoxSelectTopic.isChecked());
+        });
+
     }
 
     @Override
@@ -57,7 +69,6 @@ public class TopicSelectionAdapter extends RecyclerView.Adapter<TopicSelectionAd
             tvNumWordSelect = itemView.findViewById(R.id.tvNumWordAddSelect);
             tvDateAddSelect = itemView.findViewById(R.id.tvDateAddSelect);
             checkBoxSelectTopic = itemView.findViewById(R.id.checkBoxSelectTopic);
-
         }
 
     }

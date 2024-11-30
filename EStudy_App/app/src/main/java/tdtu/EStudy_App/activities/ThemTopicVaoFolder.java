@@ -12,8 +12,12 @@ import androidx.cardview.widget.CardView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -22,15 +26,14 @@ import java.util.List;
 import tdtu.EStudy_App.R;
 import tdtu.EStudy_App.adapters.TopicSelectionAdapter;
 import tdtu.EStudy_App.models.Topic;
+import tdtu.EStudy_App.viewmodels.TopicViewModel;
 
 public class ThemTopicVaoFolder extends AppCompatActivity {
 
     AppCompatButton btnCancleThemTopicFolder, btnDoneThemTopicFolder;
-    CardView themTopicMoiFolder;
     RecyclerView recyclerViewChonTopic;
     FirebaseFirestore db;
-    List<Topic> topicList, selectedTopicList;
-
+    TopicViewModel topicViewModel;
     TopicSelectionAdapter topicSelectionAdapter;
 
     @Override
@@ -41,37 +44,43 @@ public class ThemTopicVaoFolder extends AppCompatActivity {
 
         init();
         btnCancleThemTopicFolder.setOnClickListener(view -> finish());
-
-        themTopicMoiFolder.setOnClickListener(view -> {
-            Intent intent = new Intent(ThemTopicVaoFolder.this, AddTopic.class);
-            startActivity(intent);
+        Intent intent = getIntent();
+        String folderId = intent.getStringExtra("folderId");
+        topicViewModel.loadAllTopics();
+        topicViewModel.getTopics().observe(this, topics -> {
+            topicSelectionAdapter.updateTopics(topics);
         });
-
-
-
-
+        btnDoneThemTopicFolder.setOnClickListener(view -> {
+            // Save selectedTopicList to Firebase
+            List<Topic> selectedTopics = new ArrayList<>();
+            List<Topic> topicList = topicSelectionAdapter.getTopicList();
+            for (Topic topic : topicList) {
+                if (topic.isSelectedForFolder()) {
+                    selectedTopics.add(topic);
+                }
+            }
+            saveSelectedTopicsToFolder(folderId, selectedTopics);
+            finish();
+        });
     }
-
+    private void saveSelectedTopicsToFolder(String folderId, List<Topic> selectedTopics) {
+        DocumentReference folderRef = db.collection("folders").document(folderId);
+        for (Topic topic : selectedTopics) {
+            folderRef.update("topics", FieldValue.arrayUnion(db.collection("topics").document(topic.getId())));
+        }
+    }
     protected void init(){
         btnCancleThemTopicFolder = findViewById(R.id.btnCancelThemTopicFolder);
         btnDoneThemTopicFolder = findViewById(R.id.btnDoneThemTopicFolder);
-        themTopicMoiFolder = findViewById(R.id.themTopicMoiFolder);
         recyclerViewChonTopic = findViewById(R.id.recyclerViewChonTopic);
+        recyclerViewChonTopic.setLayoutManager(new LinearLayoutManager(this));
 
         db = FirebaseFirestore.getInstance();
-        topicList = new ArrayList<>();
 
-        topicSelectionAdapter = new TopicSelectionAdapter(ThemTopicVaoFolder.this, topicList);
+        topicSelectionAdapter = new TopicSelectionAdapter(ThemTopicVaoFolder.this, new ArrayList<>());
         recyclerViewChonTopic.setAdapter(topicSelectionAdapter);
-
+        topicViewModel = new ViewModelProvider(this).get(TopicViewModel.class);
 
     }
 
-    protected void getTopicList(){
-        //Truy cấn lấy danh sách Topic từ Firebase và cập nhật vào topicList
-    }
-
-    protected void saveTopicList(ArrayList<Topic> topicList){
-        //Cập nhật danh sách Topic vào adapter
-    }
 }
