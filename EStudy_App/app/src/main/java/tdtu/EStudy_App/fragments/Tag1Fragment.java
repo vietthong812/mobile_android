@@ -1,4 +1,4 @@
-package tdtu.EStudy_App;
+package tdtu.EStudy_App.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import java.util.ArrayList;
 
+import tdtu.EStudy_App.R;
 import tdtu.EStudy_App.activities.AddFolder;
 import tdtu.EStudy_App.adapters.FolderListAdapter;
 import tdtu.EStudy_App.viewmodels.FolderViewModel;

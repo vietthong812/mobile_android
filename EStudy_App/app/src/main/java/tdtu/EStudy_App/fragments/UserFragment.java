@@ -1,6 +1,5 @@
-package tdtu.EStudy_App.activities;
+package tdtu.EStudy_App.fragments;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
@@ -11,7 +10,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +28,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import tdtu.EStudy_App.R;
+import tdtu.EStudy_App.activities.EditPassword;
+import tdtu.EStudy_App.activities.EditProfile;
+import tdtu.EStudy_App.activities.SignIn;
 import tdtu.EStudy_App.models.User;
 
 public class UserFragment extends Fragment {

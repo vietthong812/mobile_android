@@ -1,4 +1,4 @@
-package tdtu.EStudy_App.activities;
+package tdtu.EStudy_App.fragments;
 
 import android.os.Bundle;
 

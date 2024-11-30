@@ -5,12 +5,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import tdtu.EStudy_App.Tag1Fragment;
-import tdtu.EStudy_App.Tag2Fragment;
-import tdtu.EStudy_App.Tag3Fragment;
-import tdtu.EStudy_App.share1Fragment;
-import tdtu.EStudy_App.share2Fragment;
-import tdtu.EStudy_App.share3Fragment;
+import tdtu.EStudy_App.fragments.share1Fragment;
+import tdtu.EStudy_App.fragments.share2Fragment;
+import tdtu.EStudy_App.fragments.share3Fragment;
 
 public class TagTopicSharedAdapter extends FragmentStatePagerAdapter {
     public TagTopicSharedAdapter(@NonNull FragmentManager fm) {

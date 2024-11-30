@@ -6,19 +6,21 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 
 public class Word implements Parcelable {
-    private int id;
+    private String id;
     private String name;
     private String meaning;
     private String pronunciation;
     private boolean isMarked;
     private String topic;
     private String state;
+    private String soundURL;
+
     public Word() {
     }
 
 
     protected Word(Parcel in) {
-        id = in.readInt();
+        id = in.readString();
         name = in.readString();
         meaning = in.readString();
         pronunciation = in.readString();
@@ -39,10 +41,17 @@ public class Word implements Parcelable {
         }
     };
 
-    public int getId() {
+    public String getSoundURL() {
+        return soundURL;
+    }
+    public void setSoundURL(String soundURL) {
+        this.soundURL = soundURL;
+    }
+
+    public String getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -101,7 +110,7 @@ public class Word implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel parcel, int i) {
-        parcel.writeInt(id);
+        parcel.writeString(id);
         parcel.writeString(name);
         parcel.writeString(meaning);
         parcel.writeString(pronunciation);

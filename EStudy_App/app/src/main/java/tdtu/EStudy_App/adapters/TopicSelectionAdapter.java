@@ -24,20 +24,6 @@ public class TopicSelectionAdapter extends RecyclerView.Adapter<TopicSelectionAd
         this.context = context;
         this.topicList = topicList;
     }
-    public void removeTopicById(String topicId) {
-        for (int i = 0; i < topicList.size(); i++) {
-            if (topicList.get(i).getId().equals(topicId)) {
-                topicList.remove(i);
-                notifyItemRemoved(i);
-                break;
-            }
-        }
-    }
-    public void updateTopics(List<Topic> newTopics) {
-        this.topicList.clear();
-        this.topicList.addAll(newTopics);
-        notifyDataSetChanged();
-    }
     @NonNull
     @Override
     public TopicViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
