@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tdtu.EStudy_App.R;
+import tdtu.EStudy_App.adapters.CardAdapter;
 import tdtu.EStudy_App.adapters.CardGoTuAdapter;
 import tdtu.EStudy_App.adapters.CardTracNghiemAdapter;
 import tdtu.EStudy_App.models.Word;
@@ -48,7 +49,15 @@ public class HocTracNghiem extends AppCompatActivity {
         String topicName = intent.getStringExtra("topicName");
         titleTN.setText("Trắc nghiệm - " + topicName);
 
-        loadWords(topicID);
+        wordList = intent.getParcelableArrayListExtra("wordList");
+        if (wordList == null || wordList.isEmpty()) {
+            ToastUtils.showShortToast(this, "No words available!");
+            return;
+        }
+
+        cardTracNghiemAdapter = new CardTracNghiemAdapter(this, wordList);
+        viewPagerCardTN.setAdapter(cardTracNghiemAdapter);
+        countNumTN.setText("1/" + wordList.size());
 
         btnNextTN.setOnClickListener(v -> {
             int currentItem = viewPagerCardTN.getCurrentItem();
@@ -93,26 +102,5 @@ public class HocTracNghiem extends AppCompatActivity {
         cardViewNopBaiTN = findViewById(R.id.cardViewNopBaiTN);
     }
 
-    private void loadWords(String topicID) {
-        QuizViewModel quizViewModel = new QuizViewModel();
-        quizViewModel.loadWordList(topicID, new QuizViewModel.WordListCallback() {
-            @Override
-            public void onWordListLoaded(List<Word> words) {
-                if (words == null || words.isEmpty()) {
-                    ToastUtils.showShortToast(HocTracNghiem.this, "No words available!");
-                    return;
-                }
-                wordList = new ArrayList<>(words); // Khởi tạo wordList
-                cardTracNghiemAdapter = new CardTracNghiemAdapter(HocTracNghiem.this, wordList);
-                viewPagerCardTN.setAdapter(cardTracNghiemAdapter);
-                countNumTN.setText("1/" + wordList.size());
-            }
-
-            @Override
-            public void onError(Exception e) {
-                ToastUtils.showShortToast(HocTracNghiem.this, "Error: " + e.getMessage());
-            }
-        });
-    }
 
 }

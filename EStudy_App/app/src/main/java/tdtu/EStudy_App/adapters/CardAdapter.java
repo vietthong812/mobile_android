@@ -1,6 +1,7 @@
  package tdtu.EStudy_App.adapters;
 
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,9 +46,12 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.WordViewHolder
             // Play pronunciation or do some action when clicked
         });
 
+        holder.cardView.setBackgroundResource(R.drawable.mattruoc);
         holder.cardView.setOnClickListener(v -> {
             flipCard(holder);
         });
+
+
 
         holder.btnSave.setOnClickListener(v -> {
             boolean isMarked = word.isMarked();
@@ -108,6 +112,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.WordViewHolder
         flipIn.setDuration(150);
 
         flipOut.addListener(new android.animation.AnimatorListenerAdapter() {
+            @SuppressLint("ResourceAsColor")
             @Override
             public void onAnimationEnd(android.animation.Animator animation) {
                 if (isFrontVisible) {
@@ -116,18 +121,20 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.WordViewHolder
                     backCard.setVisibility(View.VISIBLE);
                     tvPhatAm.setVisibility(View.INVISIBLE);
                     btnSound.setVisibility(View.INVISIBLE);
+                    cardView.setBackgroundResource(R.drawable.matsau);
                 } else {
                     // Hiện mặt trước
                     frontCard.setVisibility(View.VISIBLE);
                     backCard.setVisibility(View.GONE);
                     tvPhatAm.setVisibility(View.VISIBLE);
                     btnSound.setVisibility(View.VISIBLE);
+                    cardView.setBackgroundResource(R.drawable.mattruoc);
                 }
-                flipIn.start(); // Bắt đầu hiệu ứng lật vào
+                flipIn.start();
             }
         });
 
-        flipOut.start(); // Bắt đầu hiệu ứng lật ra
+        flipOut.start();
     }
 
 }

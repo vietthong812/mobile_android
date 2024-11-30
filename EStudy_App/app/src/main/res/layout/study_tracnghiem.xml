@@ -79,6 +79,42 @@
         android:layout_gravity="center_vertical"
         android:gravity="center"
         android:orientation="vertical">
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="2dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <ImageButton
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/score_icon"
+                    android:contentDescription="Add Folder" />
+
+                <TextView
+                    android:id="@+id/scoreTN"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="2dp"
+                    android:gravity="center"
+                    android:text="0/20"
+                    android:textStyle="bold"
+                    android:textColor="@color/orange"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPagerCardTN"
             android:layout_width="match_parent"

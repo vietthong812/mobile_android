@@ -3,6 +3,7 @@ package tdtu.EStudy_App.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -12,6 +13,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.cardview.widget.CardView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import tdtu.EStudy_App.R;
@@ -44,7 +46,16 @@ public class HocFlashCard extends AppCompatActivity {
         String topicName = intent.getStringExtra("topicName");
         titleFC.setText("Flashcard - " + topicName);
 
-        loadWords(topicID);
+        wordList = intent.getParcelableArrayListExtra("wordList");
+        if (wordList == null || wordList.isEmpty()) {
+            ToastUtils.showShortToast(this, "No words available!");
+            return;
+        }
+
+        cardAdapter = new CardAdapter(this, wordList);
+        viewPagerCardFC.setAdapter(cardAdapter);
+        countNumFC.setText("1/" + wordList.size());
+
 
 
 
@@ -89,26 +100,6 @@ public class HocFlashCard extends AppCompatActivity {
         cardViewNopBaiFC = findViewById(R.id.cardViewNopBaiFC);
     }
 
-    private void loadWords(String topicID) {
-        QuizViewModel quizViewModel = new QuizViewModel();
-        quizViewModel.loadWordList(topicID, new QuizViewModel.WordListCallback() {
-            @Override
-            public void onWordListLoaded(List<Word> words) {
-                if (words == null || words.isEmpty()) {
-                    ToastUtils.showShortToast(HocFlashCard.this, "No words available!");
-                    return;
-                }
-                wordList = words;
-                cardAdapter = new CardAdapter(HocFlashCard.this, wordList);
-                viewPagerCardFC.setAdapter(cardAdapter);
-                countNumFC.setText("1/" + wordList.size());
-            }
 
-            @Override
-            public void onError(Exception e) {
-                ToastUtils.showShortToast(HocFlashCard.this, "Error: " + e.getMessage());
-            }
-        });
-    }
 
 }

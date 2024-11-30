@@ -44,7 +44,15 @@ public class HocGoTu extends AppCompatActivity {
         String topicName = intent.getStringExtra("topicName");
         titleGoTu.setText("Gõ từ - " + topicName);
 
-        loadWords(topicID);
+        wordList = intent.getParcelableArrayListExtra("wordList");
+        if (wordList == null || wordList.isEmpty()) {
+            ToastUtils.showShortToast(this, "No words available!");
+            return;
+        }
+
+        cardGoTuAdapter = new CardGoTuAdapter(this, wordList);
+        viewPagerCardGoTu.setAdapter(cardGoTuAdapter);
+        countNumGoTu.setText("1/" + wordList.size());
 
         btnNextGoTu.setOnClickListener(v -> {
             int currentItem = viewPagerCardGoTu.getCurrentItem();
@@ -91,27 +99,7 @@ public class HocGoTu extends AppCompatActivity {
 
 
     }
-    private void loadWords(String topicID) {
-        QuizViewModel quizViewModel = new QuizViewModel();
-        quizViewModel.loadWordList(topicID, new QuizViewModel.WordListCallback() {
-            @Override
-            public void onWordListLoaded(List<Word> words) {
-                if (words == null || words.isEmpty()) {
-                    ToastUtils.showShortToast(HocGoTu.this, "No words available!");
-                    return;
-                }
-                wordList = words;
-                cardGoTuAdapter = new CardGoTuAdapter(HocGoTu.this, wordList);
-                viewPagerCardGoTu.setAdapter(cardGoTuAdapter);
-                countNumGoTu.setText("1/" + wordList.size());
-            }
 
-            @Override
-            public void onError(Exception e) {
-                ToastUtils.showShortToast(HocGoTu.this, "Error: " + e.getMessage());
-            }
-        });
-    }
 
 
 }

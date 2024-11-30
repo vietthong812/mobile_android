@@ -60,6 +60,7 @@ public class TopicDetail extends AppCompatActivity {
             intent.putExtra("topicID", getIntent().getStringExtra("topicID"));
             intent.putExtra("type", "flashcard");
             intent.putExtra("topicName", nameTopic.getText().toString());
+            intent.putExtra("wordList", (ArrayList<Word>) wordList);
             startActivity(intent);
         });
 
@@ -72,6 +73,7 @@ public class TopicDetail extends AppCompatActivity {
             intent.putExtra("topicID", getIntent().getStringExtra("topicID"));
             intent.putExtra("type", "tracnghiem");
             intent.putExtra("topicName", nameTopic.getText().toString());
+            intent.putExtra("wordList", (ArrayList<Word>) wordList);
             startActivity(intent);
         });
 
@@ -84,6 +86,7 @@ public class TopicDetail extends AppCompatActivity {
             intent.putExtra("topicID", getIntent().getStringExtra("topicID"));
             intent.putExtra("type", "gotu");
             intent.putExtra("topicName", nameTopic.getText().toString());
+            intent.putParcelableArrayListExtra("wordList", new ArrayList<>(wordList));
             startActivity(intent);
         });
 
@@ -125,7 +128,7 @@ public class TopicDetail extends AppCompatActivity {
         quizViewModel.loadWordList(id, new QuizViewModel.WordListCallback() {
             @Override
             public void onWordListLoaded(List<Word> words) {
-
+                wordList = words;
                 wordListAdapter = new WordListAdapter(TopicDetail.this, words);
                 recyclerViewTatCaCacThe.setAdapter(wordListAdapter);
                 numWord.setText(getString(R.string.num_words, String.format(Locale.getDefault(), "%d", words.size())));
