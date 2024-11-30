@@ -33,7 +33,7 @@ import tdtu.EStudy_App.utils.ToastUtils;
 import tdtu.EStudy_App.viewmodels.QuizViewModel;
 
 public class TopicDetail extends AppCompatActivity {
-    TextView nameTopic, numWord, author, date;
+    TextView nameTopic, numWord, author, date, status;
     RecyclerView recyclerViewTatCaCacThe;
     List<Word> wordList;
     WordListAdapter wordListAdapter;
@@ -107,6 +107,8 @@ public class TopicDetail extends AppCompatActivity {
                 long numWords = task.getResult().getLong("numWord");
                 count = (int) numWords;
                 numWord.setText(getString(R.string.num_words, String.format(Locale.getDefault(), "%d", numWords)));
+                String statusTopic = task.getResult().getString("status");
+                status.setText("Trạng thái: " + statusTopic);
                 Timestamp createTime = task.getResult().getTimestamp("createTime");
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
                 String formattedDate = sdf.format(createTime.toDate());
@@ -186,6 +188,7 @@ public class TopicDetail extends AppCompatActivity {
         numWord = findViewById(R.id.numWord);
         author = findViewById(R.id.author);
         date = findViewById(R.id.date);
+        status = findViewById(R.id.status);
         btnCancel = findViewById(R.id.btnCancel);
         btnCancel.setOnClickListener(view -> finish());
         btnEdit = findViewById(R.id.btnEdit);
