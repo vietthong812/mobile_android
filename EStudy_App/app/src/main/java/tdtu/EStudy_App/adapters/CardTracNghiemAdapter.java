@@ -114,6 +114,14 @@ public class CardTracNghiemAdapter extends RecyclerView.Adapter<CardTracNghiemAd
             }
         }
 
+        // Nếu các phần nghĩa bị trùng lấp thì bổ sung phần nghĩa mặc định
+        // Lưu ý kiểm tra dữ liệu meaning nhập vào nha
+        int defaultIndex = 1;
+        while (meanings.size() < 4) {
+            meanings.add("Default " + defaultIndex);
+            defaultIndex++;
+        }
+
         Collections.shuffle(meanings);
         return meanings;
     }

@@ -9,23 +9,17 @@
     android:background="@drawable/bg_main_cat">
 
 
-    <TextView
-        android:id="@+id/tvAppName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:gravity="center"
-        android:fontFamily="@font/lobster"
-        android:text="EStudy"
-        android:textSize="50sp"
-        android:textColor="@color/white"/>
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="150dp"
+        android:src="@drawable/logo_ic"
+        android:layout_gravity="center" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardLogin"
         android:layout_width="match_parent"
         android:layout_height="290dp"
-        android:layout_margin="25dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="20dp"
         app:cardCornerRadius="20dp"
         app:cardElevation="25dp">
 
@@ -115,12 +109,13 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.appcompat.widget.AppCompatButton
+
         android:id="@+id/btnRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="20dp"
         android:gravity="center"
         android:background="@drawable/button_black"
         android:fontFamily="@font/poppins_medium"
