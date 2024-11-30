@@ -14,14 +14,12 @@ import androidx.appcompat.widget.AppCompatButton;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import tdtu.EStudy_App.R;
-import tdtu.EStudy_App.utils.FirebaseUserSingleton;
 import tdtu.EStudy_App.utils.ToastUtils;
 
 public class EditPassword extends AppCompatActivity {

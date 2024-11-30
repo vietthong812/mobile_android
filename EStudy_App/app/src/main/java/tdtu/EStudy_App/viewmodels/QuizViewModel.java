@@ -29,6 +29,7 @@ public class QuizViewModel extends ViewModel {
                         List<Word> words = new ArrayList<>();
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             Word word = new Word();
+                            word.setId(document.getId());
                             word.setName(document.getString("name"));
                             word.setMeaning(document.getString("meaning"));
                             word.setPronunciation(document.getString("pronunciation"));
