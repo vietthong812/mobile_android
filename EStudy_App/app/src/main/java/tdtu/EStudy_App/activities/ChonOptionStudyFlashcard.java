@@ -17,8 +17,8 @@ public class ChonOptionStudyFlashcard extends AppCompatActivity {
 
 
     private AppCompatButton btnCancleOptionFC, btnBatDauHocFC;
-    private CheckBox checkHienDapAn, checkTuDongPhatAm, checkDaoThuTu, checkHocDanhDau, checkTuDong;
-    private androidx.cardview.widget.CardView cardViewHienDapAn, cardViewTuDongPhatAm, cardViewDaoThuTu, cardViewHocDanhDau, cardViewTuDong;
+    private CheckBox checkTuDongPhatAm, checkDaoThuTu, checkHocDanhDau, checkTuDong;
+    private androidx.cardview.widget.CardView  cardViewTuDongPhatAm, cardViewDaoThuTu, cardViewHocDanhDau, cardViewTuDong;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +33,6 @@ public class ChonOptionStudyFlashcard extends AppCompatActivity {
             finish();
         });
 
-        cardViewHienDapAn.setOnClickListener(v -> onClickToCheckBox(checkHienDapAn));
         cardViewTuDongPhatAm.setOnClickListener(v -> onClickToCheckBox(checkTuDongPhatAm));
         cardViewDaoThuTu.setOnClickListener(v -> onClickToCheckBox(checkDaoThuTu));
         cardViewHocDanhDau.setOnClickListener(v -> onClickToCheckBox(checkHocDanhDau));
@@ -55,13 +54,11 @@ public class ChonOptionStudyFlashcard extends AppCompatActivity {
             btnCancleOptionFC = findViewById(R.id.btnCancelOptionFC);
             btnBatDauHocFC = findViewById(R.id.btnBatDauHocFC);
 
-            checkHienDapAn = findViewById(R.id.checkHienDapAnFC);
             checkTuDongPhatAm = findViewById(R.id.checkTuDongPhatAmFC);
             checkDaoThuTu = findViewById(R.id.checkDaoThuTuFC);
             checkHocDanhDau = findViewById(R.id.checkHocDanhDauFC);
             checkTuDong = findViewById(R.id.checkTuDongFC);
 
-            cardViewHienDapAn = findViewById(R.id.cardHienDapAnFC);
             cardViewTuDongPhatAm = findViewById(R.id.cardPhatAmFC);
             cardViewDaoThuTu = findViewById(R.id.cardDaoThuTuFC);
             cardViewHocDanhDau = findViewById(R.id.cardHocDanhDauFC);
