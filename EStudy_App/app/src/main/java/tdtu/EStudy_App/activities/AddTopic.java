@@ -3,6 +3,7 @@ package tdtu.EStudy_App.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -41,7 +42,7 @@ public class AddTopic extends AppCompatActivity {
     EditText editTopicName;
     CardView themTuMoi;
     RecyclerView recyclerViewThemTu;
-    List<Word> wordList;
+    ArrayList<Word> wordList;
     WordAddAdapter wordAddAdapter;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,7 +90,7 @@ public class AddTopic extends AppCompatActivity {
                         Map<String, Object> wordMap = new HashMap<>();
                         wordMap.put("marked", false);
                         wordMap.put("name", word.getName());
-                        if (word.getMeaning().isEmpty()) {
+                        if (word.getMeaning().isEmpty()||word.getMeaning()==null) {
                             wordMap.put("meaning", "Chưa có nghĩa");
                         } else{
                             wordMap.put("meaning", word.getMeaning());
