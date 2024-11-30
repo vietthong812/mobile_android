@@ -20,6 +20,9 @@
         android:theme="@style/Theme.EStudy_App"
         tools:targetApi="31">
         <activity
+            android:name=".activities.AddFolder"
+            android:exported="false" />
+        <activity
             android:name=".activities.KetQuaHocTap"
             android:exported="false" />
         <activity
