@@ -20,6 +20,12 @@
         android:theme="@style/Theme.EStudy_App"
         tools:targetApi="31">
         <activity
+            android:name=".activities.EditFolder"
+            android:exported="false" />
+        <activity
+            android:name=".activities.ThemTopicVaoFolder"
+            android:exported="false" />
+        <activity
             android:name=".activities.AddFolder"
             android:exported="false" />
         <activity

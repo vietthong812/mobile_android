@@ -51,6 +51,8 @@ public class Topic_folderAdapter extends RecyclerView.Adapter<Topic_folderAdapte
         Topic topic = topicList.get(position);
         holder.tvNameTopic.setText(topic.getName());
         holder.tvNumWord.setText("Số từ: " + topic.getNumWord());
+        holder.tvDate.setText("Ngày tạo: " + topic.convertTimestampToString(topic.getCreateTime()));
+
 
         holder.itemView.setTag(topic);
         holder.itemView.setOnClickListener(v -> listener.onTopicClick(topic));
@@ -63,12 +65,14 @@ public class Topic_folderAdapter extends RecyclerView.Adapter<Topic_folderAdapte
     public static class Topic_folderViewHolder extends RecyclerView.ViewHolder {
         TextView tvNameTopic;
         TextView tvNumWord;
+        TextView tvDate;
         ImageButton btnDeleteTopic;
         public Topic_folderViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvNameTopic = itemView.findViewById(R.id.tvNameTopic);
-            tvNumWord = itemView.findViewById(R.id.tvNumWord);
-            btnDeleteTopic = itemView.findViewById(R.id.btnDeleteTopic);
+            tvNameTopic = itemView.findViewById(R.id.tvNameTopicDel);
+            tvNumWord = itemView.findViewById(R.id.tvNumWordDel);
+            tvDate = itemView.findViewById(R.id.tvDateAddDel);
+            btnDeleteTopic = itemView.findViewById(R.id.btnDeleteTopicDel);
         }
 
     }

@@ -3,7 +3,9 @@ package tdtu.EStudy_App.models;
 
 import com.google.firebase.Timestamp;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public class Topic {
     private String id;
@@ -40,6 +42,12 @@ public class Topic {
 
     public Timestamp getCreateTime() {
         return createTime;
+    }
+
+    public String convertTimestampToString(Timestamp timestamp) {
+        Date date = timestamp.toDate();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        return sdf.format(date);
     }
 
     public void setCreateTime(Timestamp createTime) {

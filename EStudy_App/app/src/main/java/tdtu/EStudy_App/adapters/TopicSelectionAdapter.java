@@ -1,12 +1,11 @@
 package tdtu.EStudy_App.adapters;
-import androidx.fragment.app.Fragment;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,18 +14,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import tdtu.EStudy_App.R;
-import tdtu.EStudy_App.activities.TopicDetail;
 import tdtu.EStudy_App.models.Topic;
 
-public class TopicListAdapter extends RecyclerView.Adapter<TopicListAdapter.TopicViewHolder> {
+public class TopicSelectionAdapter extends RecyclerView.Adapter<TopicSelectionAdapter.TopicViewHolder> {
     private Context context;
     private List<Topic> topicList;
-    private OnTopicClickListener listener;
 
-    public TopicListAdapter(Context context, List<Topic> topicList, OnTopicClickListener listener) {
+    public TopicSelectionAdapter(Context context, List<Topic> topicList) {
         this.context = context;
         this.topicList = topicList;
-        this.listener = listener;
     }
     public void removeTopicById(String topicId) {
         for (int i = 0; i < topicList.size(); i++) {
@@ -52,12 +48,10 @@ public class TopicListAdapter extends RecyclerView.Adapter<TopicListAdapter.Topi
     @Override
     public void onBindViewHolder(@NonNull TopicViewHolder holder, int position) {
         Topic topic = topicList.get(position);
-        holder.tvNameTopic.setText(topic.getName());
-        holder.tvNumWord.setText("Số từ: " + topic.getNumWord());
-        holder.tvDate.setText("Ngày tạo: " + topic.convertTimestampToString(topic.getCreateTime()));
-
+        holder.tvNameTopicSelect.setText(topic.getName());
+        holder.tvNumWordSelect.setText("Số từ: " + topic.getNumWord());
+        holder.tvDateAddSelect.setText("Ngày tạo: " + topic.convertTimestampToString(topic.getCreateTime()));
         holder.itemView.setTag(topic);
-        holder.itemView.setOnClickListener(v -> listener.onTopicClick(topic));
     }
 
     @Override
@@ -66,15 +60,18 @@ public class TopicListAdapter extends RecyclerView.Adapter<TopicListAdapter.Topi
     }
 
     public static class TopicViewHolder extends RecyclerView.ViewHolder  {
-        TextView tvNameTopic;
-        TextView tvNumWord;
-        TextView tvDate;
+        TextView tvNameTopicSelect;
+        TextView tvNumWordSelect;
+        TextView tvDateAddSelect;
+        CheckBox checkBoxSelectTopic;
 
         public TopicViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvNameTopic = itemView.findViewById(R.id.tvNameTopic);
-            tvNumWord = itemView.findViewById(R.id.tvNumWord);
-            tvDate = itemView.findViewById(R.id.tvDate);
+            tvNameTopicSelect = itemView.findViewById(R.id.tvNameTopicSelect);
+            tvNumWordSelect = itemView.findViewById(R.id.tvNumWordAddSelect);
+            tvDateAddSelect = itemView.findViewById(R.id.tvDateAddSelect);
+            checkBoxSelectTopic = itemView.findViewById(R.id.checkBoxSelectTopic);
+
         }
 
     }

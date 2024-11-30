@@ -15,7 +15,7 @@
         android:padding="10dp">
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnCancel"
+            android:id="@+id/btnCancelThemTopicFolder"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="left"
@@ -25,22 +25,23 @@
             android:clickable="true"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground" />
+
         <TextView
             android:id="@+id/titleThem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Thêm Topic vào Folder"
             android:layout_gravity="center"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            android:gravity="center"
+            android:text="Thêm Topic vào Folder"
             android:textColor="@color/black"
-            android:gravity="center"/>
+            android:textSize="18sp"
+            android:textStyle="bold" />
         <Space
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnDone"
+            android:id="@+id/btnDoneThemTopicFolder"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="left"
@@ -62,7 +63,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <androidx.cardview.widget.CardView
-                android:id="@+id/themTopicMoi"
+                android:id="@+id/themTopicMoiFolder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"

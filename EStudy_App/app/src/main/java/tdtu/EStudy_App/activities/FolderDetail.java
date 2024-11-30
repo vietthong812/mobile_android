@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+import androidx.cardview.widget.CardView;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,11 +36,12 @@ import tdtu.EStudy_App.viewmodels.TopicViewModel;
 public class FolderDetail extends AppCompatActivity implements OnTopicDeleteClickListener {
     private static final int REQUEST_CODE = 1; // Define REQUEST_CODE as a constant
     Button btnDeleteFolder;
-    TextView nameFolder;
+    TextView nameFolder, addTopicToFolder;
     RecyclerView recyclerViewTatCaCacTopic;
     Topic_folderAdapter topic_folderAdapter;
     TopicViewModel topicViewModel;
-    AppCompatButton btnCancel;
+    CardView themTopicVaoFolder;
+    AppCompatButton btnCancel, btnEditFolder;
     FirebaseFirestore db;
     FirebaseAuth mAuth;
     FirebaseUser user;
@@ -84,6 +86,21 @@ public class FolderDetail extends AppCompatActivity implements OnTopicDeleteClic
             AlertDialog dialog = builder.create();
             dialog.show();
         });
+
+        themTopicVaoFolder.setOnClickListener(view -> {
+            Intent intent1 = new Intent(FolderDetail.this, ThemTopicVaoFolder.class);
+            startActivity(intent1);
+        });
+
+        addTopicToFolder.setOnClickListener(view -> {
+            Intent intent1 = new Intent(FolderDetail.this, ThemTopicVaoFolder.class);
+            startActivity(intent1);
+        });
+        btnEditFolder.setOnClickListener(view -> {
+            Intent intent1 = new Intent(FolderDetail.this, EditFolder.class);
+            intent1.putExtra("folderId", folderId);
+            startActivity(intent1);
+        });
     }
     private void init(){
         // Initialize views
@@ -91,6 +108,10 @@ public class FolderDetail extends AppCompatActivity implements OnTopicDeleteClic
         btnDeleteFolder = findViewById(R.id.btnDeleteFolder);
         btnCancel = findViewById(R.id.btnCancel);
         btnCancel.setOnClickListener(view -> finish());
+        btnEditFolder = findViewById(R.id.btnEditFolder);
+        themTopicVaoFolder = findViewById(R.id.themTopicVaoFolder);
+        addTopicToFolder = findViewById(R.id.tvAddTopicToFolder);
+
 
         // Initialize Firebase
         db = FirebaseFirestore.getInstance();

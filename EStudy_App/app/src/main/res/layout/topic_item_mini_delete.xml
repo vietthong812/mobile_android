@@ -40,7 +40,7 @@
                 android:textStyle="bold"
                 android:textSize="18dp"
                 android:layout_gravity="start"
-                android:id="@+id/tvNameTopic" />
+                android:id="@+id/tvNameTopicDel" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
                 android:gravity="left"
                 android:text="Số lượng từ vựng"
                 android:textSize="15sp"
-                android:id="@+id/tvNumWord" />
+                android:id="@+id/tvNumWordDel" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -56,13 +56,13 @@
                 android:gravity="left"
                 android:text="Ngày tạo:"
                 android:textSize="15sp"
-                android:id="@+id/tvDateAdd" />
+                android:id="@+id/tvDateAddDel" />
 
 
         </LinearLayout>
 
         <ImageButton
-            android:id="@+id/btnDeleteTopic"
+            android:id="@+id/btnDeleteTopicDel"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="center"

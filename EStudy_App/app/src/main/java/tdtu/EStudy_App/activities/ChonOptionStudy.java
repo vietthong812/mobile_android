@@ -18,8 +18,8 @@ import tdtu.EStudy_App.R;
 public class ChonOptionStudy extends AppCompatActivity {
 
     private AppCompatButton btnCancleOption, btnBatDauHoc;
-    private CardView cardViewHienDapAn, cardViewTuDongPhatAm, cardViewDaoThuTu, cardViewHocDanhDau;
-    private CheckBox checkHienDapAn, checkTuDongPhatAm, checkDaoThuTu, checkHocDanhDau;
+    private CardView cardViewHienDapAn, cardViewTuDongPhatAm, cardViewDaoThuTu, cardViewHocDanhDau, cardDaoNgonNgu;
+    private CheckBox checkHienDapAn, checkTuDongPhatAm, checkDaoThuTu, checkHocDanhDau, checkDaoNgonNgu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +33,7 @@ public class ChonOptionStudy extends AppCompatActivity {
         cardViewTuDongPhatAm.setOnClickListener(v -> onClickToCheckBox(checkTuDongPhatAm));
         cardViewDaoThuTu.setOnClickListener(v -> onClickToCheckBox(checkDaoThuTu));
         cardViewHocDanhDau.setOnClickListener(v -> onClickToCheckBox(checkHocDanhDau));
+        cardDaoNgonNgu.setOnClickListener(v -> onClickToCheckBox(checkDaoNgonNgu));
 
         btnCancleOption.setOnClickListener(v -> {
             finish();
@@ -78,10 +79,12 @@ public class ChonOptionStudy extends AppCompatActivity {
         cardViewTuDongPhatAm = findViewById(R.id.cardPhatAm);
         cardViewDaoThuTu = findViewById(R.id.cardDaoThuTu);
         cardViewHocDanhDau = findViewById(R.id.cardDanhDau);
+        cardDaoNgonNgu = findViewById(R.id.cadDaoNgonNgu);
         checkHienDapAn = findViewById(R.id.checkHienDapAn);
         checkTuDongPhatAm = findViewById(R.id.checkTuDongPhatAm);
         checkDaoThuTu = findViewById(R.id.checkDaoThuTu);
         checkHocDanhDau = findViewById(R.id.checkHocDanhDau);
+        checkDaoNgonNgu = findViewById(R.id.checkDaoNgonNgu);
 
     }
 
