@@ -81,10 +81,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="3dp"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:id="@+id/btnAddTopic">
 
                         <ImageButton
-                            android:id="@+id/btnAddTopic"
+
                             android:layout_width="35dp"
                             android:layout_height="35dp"
                             android:background="@drawable/add_icon"

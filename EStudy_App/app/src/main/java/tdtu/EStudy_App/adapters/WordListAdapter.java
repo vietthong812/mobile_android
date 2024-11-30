@@ -44,7 +44,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
     }
 
     public static class WordViewHolder extends RecyclerView.ViewHolder {
-        EditText edtWordName, edtWordMean;
+        TextView edtWordName, edtWordMean;
 
         public WordViewHolder(@NonNull View itemView) {
             super(itemView);

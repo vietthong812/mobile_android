@@ -25,25 +25,42 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical">
-            <EditText
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:layout_weight="1"
                 android:gravity="left"
                 android:text="Name"
+                android:textColor="@color/black"
                 android:textStyle="bold"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 android:layout_gravity="center"
-                android:id="@+id/edtWordName" />
-            <EditText
+                android:id="@+id/edtWordName"
+                />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/black"
+                />
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_marginHorizontal="5dp"
+                android:layout_marginTop="10dp"
                 android:gravity="left"
                 android:text="Name"
                 android:textSize="18dp"
+                android:textColor="@color/black"
                 android:layout_gravity="center"
-                android:id="@+id/edtWordMean" />
+                android:id="@+id/edtWordMean"
+                />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/black"
+                />
         </LinearLayout>
 
         <ImageButton

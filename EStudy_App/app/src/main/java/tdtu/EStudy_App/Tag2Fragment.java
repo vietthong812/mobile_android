@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.firebase.Timestamp;
@@ -25,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+import tdtu.EStudy_App.activities.AddTopic;
 import tdtu.EStudy_App.activities.TopicDetail;
 import tdtu.EStudy_App.adapters.OnTopicClickListener;
 import tdtu.EStudy_App.adapters.TopicListAdapter;
@@ -34,8 +37,10 @@ import tdtu.EStudy_App.viewmodels.TopicViewModel;
 
 
 public class Tag2Fragment extends Fragment implements OnTopicClickListener {
-    private static final int REQUEST_CODE = 1; // Define REQUEST_CODE as a constant
+    private static final int REQUEST_CODE_REMOVE= 1;// Define REQUEST_CODE_REMOVE as a constant
+    private static final int REQUEST_CODE_ADD= 2;// Define REQUEST_CODE_REMOVE as a constant
 
+    LinearLayout btnAddTopic;
     RecyclerView recyclerViewTopic;
     TopicListAdapter topicListAdapter;
     TopicViewModel topicViewModel;
@@ -55,34 +60,39 @@ public class Tag2Fragment extends Fragment implements OnTopicClickListener {
         topicViewModel.getTopics().observe(getViewLifecycleOwner(), topics -> {
             topicListAdapter.updateTopics(topics);
         });
+        btnAddTopic.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), AddTopic.class);
+            startActivityForResult(intent, REQUEST_CODE_ADD);
+        });
         return view;
     }
     @Override
     public void onTopicClick(Topic topic) {
         Intent intent = new Intent(getContext(), TopicDetail.class);
         intent.putExtra("topicID", topic.getId());
-        startActivityForResult(intent, REQUEST_CODE);
+        startActivityForResult(intent, REQUEST_CODE_REMOVE);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            String topicId = data.getStringExtra("topicID");
-            if (topicId != null) {
-                topicListAdapter.removeTopicById(topicId);
+        if (requestCode == REQUEST_CODE_REMOVE && resultCode == Activity.RESULT_OK) {
+            if (user != null) {
+                String userId = user.getUid();
+                topicViewModel.loadTopics(userId);
+            }
+        }
+        if (requestCode == REQUEST_CODE_ADD && resultCode == Activity.RESULT_OK) {
+            if (user != null) {
+                String userId = user.getUid();
+                topicViewModel.loadTopics(userId);
             }
         }
     }
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (user != null) {
-            String userId = user.getUid();
-            topicViewModel.loadTopics(userId);
-        }
-    }
+
     private void init(View view) {
+        // Initialize View
+        btnAddTopic = view.findViewById(R.id.btnAddTopic);
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
