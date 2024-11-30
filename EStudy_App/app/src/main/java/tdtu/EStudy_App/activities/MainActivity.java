@@ -96,14 +96,14 @@ public class MainActivity extends AppCompatActivity {
         createTopic.setOnClickListener(v -> {
             bottomSheetDialog.dismiss();
             // Handle "Create Topic"
-            Intent intent = new Intent(this, MainActivity.class); //Nữa thay activity add Topic
+            Intent intent = new Intent(this, AddTopic.class);
             startActivity(intent);
         });
 
         createFolder.setOnClickListener(v -> {
             bottomSheetDialog.dismiss();
             // Handle "Create Folder"
-            Intent intent = new Intent(this, MainActivity.class); //Nữa thay activity add Topic
+            Intent intent = new Intent(this, AddFolder.class);
             startActivity(intent);
         });
 

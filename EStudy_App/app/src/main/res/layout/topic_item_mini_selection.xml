@@ -69,6 +69,7 @@
             android:backgroundTint="@color/deepblue"
             android:textColor="@color/white"
             android:layout_marginRight="10dp"
+            android:buttonTint="@color/deepblue"
             />
 
 
