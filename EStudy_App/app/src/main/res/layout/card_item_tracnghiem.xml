@@ -7,7 +7,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/currentCardTN"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:layout_marginHorizontal="8dp"
         android:layout_marginVertical="4dp"
         app:cardCornerRadius="8dp"
@@ -21,7 +21,6 @@
             android:padding="40dp"
             android:orientation="vertical"
             android:gravity="center"
-            android:background="@drawable/word_correct_many_time"
             >
 
             <TextView
@@ -73,7 +72,8 @@
             android:id="@+id/btnSaveTN"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:layout_margin="10dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="20dp"
             android:layout_gravity="right"
             android:background="@drawable/star_icon"
             android:contentDescription="Save the word" />

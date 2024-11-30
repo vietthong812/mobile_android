@@ -41,7 +41,7 @@ public class CardGoTuAdapter extends RecyclerView.Adapter<CardGoTuAdapter.WordVi
         holder.tvName.setText(word.getName());
         holder.tvMeaning.setText(word.getMeaning());
         holder.tvPronunciation.setText(word.getPronunciation());
-
+        holder.cardView.setBackgroundResource(R.drawable.mattruoc);
         holder.btnSound.setOnClickListener(v -> {
             // Play pronunciation or do some action when clicked
         });

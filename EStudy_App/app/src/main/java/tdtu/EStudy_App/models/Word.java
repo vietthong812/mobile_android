@@ -1,6 +1,11 @@
 package tdtu.EStudy_App.models;
 
-public class Word {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
+public class Word implements Parcelable {
     private int id;
     private String name;
     private String meaning;
@@ -11,6 +16,28 @@ public class Word {
     public Word() {
     }
 
+
+    protected Word(Parcel in) {
+        id = in.readInt();
+        name = in.readString();
+        meaning = in.readString();
+        pronunciation = in.readString();
+        isMarked = in.readByte() != 0;
+        topic = in.readString();
+        state = in.readString();
+    }
+
+    public static final Creator<Word> CREATOR = new Creator<Word>() {
+        @Override
+        public Word createFromParcel(Parcel in) {
+            return new Word(in);
+        }
+
+        @Override
+        public Word[] newArray(int size) {
+            return new Word[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -65,5 +92,21 @@ public class Word {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeString(name);
+        parcel.writeString(meaning);
+        parcel.writeString(pronunciation);
+        parcel.writeByte((byte) (isMarked ? 1 : 0));
+        parcel.writeString(topic);
+        parcel.writeString(state);
     }
 }

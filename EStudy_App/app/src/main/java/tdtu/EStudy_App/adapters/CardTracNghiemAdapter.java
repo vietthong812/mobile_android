@@ -50,7 +50,7 @@ public class CardTracNghiemAdapter extends RecyclerView.Adapter<CardTracNghiemAd
         holder.btnSound.setOnClickListener(v -> {
             // Play pronunciation or do some action when clicked
         });
-
+        holder.currentCardTN.setBackgroundResource(R.drawable.mattruoc);
         holder.btnSave.setOnClickListener(v -> {
             boolean isMarked = word.isMarked();
             word.setMarked(!isMarked);
@@ -121,7 +121,7 @@ public class CardTracNghiemAdapter extends RecyclerView.Adapter<CardTracNghiemAd
     public static class WordViewHolder extends RecyclerView.ViewHolder {
         TextView tvName, tvPronunciation, daA, daB, daC, daD;
         ImageButton btnSound, btnSave;
-        CardView cardA, cardB, cardC, cardD;
+        CardView cardA, cardB, cardC, cardD, currentCardTN;
 
         public WordViewHolder(View itemView) {
             super(itemView);
@@ -137,6 +137,7 @@ public class CardTracNghiemAdapter extends RecyclerView.Adapter<CardTracNghiemAd
             cardB = itemView.findViewById(R.id.cardB);
             cardC = itemView.findViewById(R.id.cardC);
             cardD = itemView.findViewById(R.id.cardD);
+            currentCardTN = itemView.findViewById(R.id.currentCardTN);
         }
     }
 }

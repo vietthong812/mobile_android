@@ -134,7 +134,33 @@
                         android:text="Đảo thứ tự từ"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardDanhDau"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="10dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardElevation="5dp">
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:id="@+id/checkHocDanhDau"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:buttonTint="@color/deepblue"
+                        android:textColor="@color/deepblue"
+                        android:layout_marginLeft="10dp"
+                        android:text="Chỉ học các từ đánh dấu sao"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnBatDauHoc"
                 android:layout_width="wrap_content"

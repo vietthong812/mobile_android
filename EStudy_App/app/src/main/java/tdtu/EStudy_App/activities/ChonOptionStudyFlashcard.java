@@ -2,6 +2,7 @@ package tdtu.EStudy_App.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.CheckBox;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,25 +17,62 @@ public class ChonOptionStudyFlashcard extends AppCompatActivity {
 
 
     private AppCompatButton btnCancleOptionFC, btnBatDauHocFC;
+    private CheckBox checkHienDapAn, checkTuDongPhatAm, checkDaoThuTu, checkHocDanhDau;
+    private androidx.cardview.widget.CardView cardViewHienDapAn, cardViewTuDongPhatAm, cardViewDaoThuTu, cardViewHocDanhDau;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.option_study_flashcard);
 
-        btnCancleOptionFC = findViewById(R.id.btnCancelOptionFC);
+        init();
+
+
         btnCancleOptionFC.setOnClickListener(v -> {
             finish();
         });
+
+        cardViewHienDapAn.setOnClickListener(v -> onClickToCheckBox(checkHienDapAn));
+        cardViewTuDongPhatAm.setOnClickListener(v -> onClickToCheckBox(checkTuDongPhatAm));
+        cardViewDaoThuTu.setOnClickListener(v -> onClickToCheckBox(checkDaoThuTu));
+        cardViewHocDanhDau.setOnClickListener(v -> onClickToCheckBox(checkHocDanhDau));
 
         btnBatDauHocFC = findViewById(R.id.btnBatDauHocFC);
         btnBatDauHocFC.setOnClickListener(v -> {
             Intent intent = new Intent(ChonOptionStudyFlashcard.this, HocFlashCard.class);
             intent.putExtra("topicID", getIntent().getStringExtra("topicID"));
             intent.putExtra("topicName", getIntent().getStringExtra("topicName"));
+            intent.putParcelableArrayListExtra("wordList", getIntent().getParcelableArrayListExtra("wordList"));
             startActivity(intent);
             finish();
         });
         }
 
+        protected void init(){
+            btnCancleOptionFC = findViewById(R.id.btnCancelOptionFC);
+            btnBatDauHocFC = findViewById(R.id.btnBatDauHocFC);
+
+            checkHienDapAn = findViewById(R.id.checkHienDapAnFC);
+            checkTuDongPhatAm = findViewById(R.id.checkTuDongPhatAmFC);
+            checkDaoThuTu = findViewById(R.id.checkDaoThuTuFC);
+            checkHocDanhDau = findViewById(R.id.checkHocDanhDauFC);
+
+            cardViewHienDapAn = findViewById(R.id.cardHienDapAnFC);
+            cardViewTuDongPhatAm = findViewById(R.id.cardPhatAmFC);
+            cardViewDaoThuTu = findViewById(R.id.cardDaoThuTuFC);
+            cardViewHocDanhDau = findViewById(R.id.cardHocDanhDauFC);
+
+
+        }
+    protected void onClickToCheckBox(CheckBox checkBox) {
+        if (checkBox.isChecked()) {
+            checkBox.setChecked(false);
+        } else {
+            checkBox.setChecked(true);
+        }
+
     }
+
+    }
+
