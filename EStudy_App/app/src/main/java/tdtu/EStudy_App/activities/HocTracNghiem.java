@@ -11,7 +11,9 @@ import androidx.cardview.widget.CardView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import tdtu.EStudy_App.R;
 import tdtu.EStudy_App.adapters.CardAdapter;
@@ -29,8 +31,7 @@ public class HocTracNghiem extends AppCompatActivity {
     private CardTracNghiemAdapter cardTracNghiemAdapter;
     private List<Word> wordList;
     private CardView cardViewNopBaiTN;
-
-
+    private Set<Word> learnedWords = new HashSet<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +101,16 @@ public class HocTracNghiem extends AppCompatActivity {
         titleTN = findViewById(R.id.titleTN);
         viewPagerCardTN = findViewById(R.id.viewPagerCardTN);
         cardViewNopBaiTN = findViewById(R.id.cardViewNopBaiTN);
+    }
+
+    private List<Word> suffleWordList(List<Word> wordList) {
+        for (int i = 0; i < wordList.size(); i++) {
+            int randomIndex = (int) (Math.random() * wordList.size());
+            Word temp = wordList.get(i);
+            wordList.set(i, wordList.get(randomIndex));
+            wordList.set(randomIndex, temp);
+        }
+        return wordList;
     }
 
 

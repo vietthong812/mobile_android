@@ -5,16 +5,22 @@ import android.util.Log;
 
 import androidx.lifecycle.ViewModel;
 
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import tdtu.EStudy_App.models.Word;
+import tdtu.EStudy_App.utils.FirebaseUserUtils;
 
 public class QuizViewModel extends ViewModel {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final FirebaseUser user = FirebaseUserUtils.getInstance();
 
     public interface WordListCallback {
         void onWordListLoaded(List<Word> words);
@@ -47,4 +53,80 @@ public class QuizViewModel extends ViewModel {
                     }
                 });
     }
-}
+
+    public void saveLearningResult(String topicID, List<Word> learnedWords, List<Word> topicWords) {
+        db.collection("topics").document(topicID).collection("progress").document(user.getUid())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        if (!task.getResult().exists()) {
+                            // Document does not exist, create it with initial maps
+                            Map<String, Integer> learningWordsMap = new HashMap<>();
+                            Map<String, Integer> unlearnWordsMap = new HashMap<>();
+                            Map<String, Integer> learnedWordsMap = new HashMap<>();
+
+                            for (Word word : learnedWords) {
+                                learningWordsMap.put(word.getId(), 1);
+                            }
+
+                            for (Word word : topicWords) {
+                                if (!learningWordsMap.containsKey(word.getId())) {
+                                    unlearnWordsMap.put(word.getId(), 0);
+                                }
+                            }
+
+                            Map<String, Object> initialData = new HashMap<>();
+                            initialData.put("learnedWords", learnedWordsMap);
+                            initialData.put("learningWords", learningWordsMap);
+                            initialData.put("unlearnWords", unlearnWordsMap);
+
+                            db.collection("topics").document(topicID).collection("progress").document(user.getUid())
+                                    .set(initialData)
+                                    .addOnSuccessListener(aVoid -> {
+                                        Log.d("saveLearningResult", "Document successfully created!");
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Log.w("saveLearningResult", "Error creating document", e);
+                                    });
+                        } else {
+                            // Document exists, update the maps
+                            DocumentSnapshot document = task.getResult();
+                            Map<String, Long> learnedWordsMap = (Map<String, Long>) document.get("learnedWords");
+                            Map<String, Long> learningWordsMap = (Map<String, Long>) document.get("learningWords");
+                            Map<String, Long> unlearnWordsMap = (Map<String, Long>) document.get("unlearnWords");
+
+                            for (Word word : learnedWords) {
+                                String wordId = word.getId();
+                                if (unlearnWordsMap.containsKey(wordId)) {
+                                    unlearnWordsMap.remove(wordId);
+                                    learningWordsMap.put(wordId, 1l);
+                                } else if (learningWordsMap.containsKey(wordId)) {
+                                    Long count = learningWordsMap.get(wordId) + 1l;
+                                    if (count > 5) {
+                                        learningWordsMap.remove(wordId);
+                                        learnedWordsMap.put(wordId, count);
+                                    } else {
+                                        learningWordsMap.put(wordId, count);
+                                    }
+                                }
+                            }
+
+                            Map<String, Object> updatedData = new HashMap<>();
+                            updatedData.put("learnedWords", learnedWordsMap);
+                            updatedData.put("learningWords", learningWordsMap);
+                            updatedData.put("unlearnWords", unlearnWordsMap);
+
+                            db.collection("topics").document(topicID).collection("progress").document(user.getUid())
+                                    .update(updatedData)
+                                    .addOnSuccessListener(aVoid -> {
+                                        Log.d("saveLearningResult", "Document successfully updated!");
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Log.w("saveLearningResult", "Error updating document", e);
+                                    });
+                        }
+                    } else {
+                        Log.w("saveLearningResult", "Error getting document", task.getException());
+                    }
+                });
+    }}

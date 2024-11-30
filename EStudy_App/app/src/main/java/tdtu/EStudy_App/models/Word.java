@@ -13,6 +13,8 @@ public class Word implements Parcelable {
     private boolean isMarked;
     private String topic;
     private String state;
+    private String soundURL;
+
     public Word() {
     }
 
@@ -38,6 +40,13 @@ public class Word implements Parcelable {
             return new Word[size];
         }
     };
+
+    public String getSoundURL() {
+        return soundURL;
+    }
+    public void setSoundURL(String soundURL) {
+        this.soundURL = soundURL;
+    }
 
     public String getId() {
         return id;

@@ -91,13 +91,31 @@ public class HocFlashCard extends AppCompatActivity {
             intent1.putExtra("topicID", topicID);
             intent1.putExtra("topicName", topicName);
             intent1.putParcelableArrayListExtra("learnedWords", new ArrayList<Word>(learnedWords));
+            intent1.putParcelableArrayListExtra("topicWords", new ArrayList<Word>(wordList));
             intent1.putExtra("learningType", "flashcard");
             startActivity(intent1);
             finish();
         });
+    }
 
+    private List<Word> suffleWordList(List<Word> wordList) {
+        for (int i = 0; i < wordList.size(); i++) {
+            int randomIndex = (int) (Math.random() * wordList.size());
+            Word temp = wordList.get(i);
+            wordList.set(i, wordList.get(randomIndex));
+            wordList.set(randomIndex, temp);
+        }
+        return wordList;
+    }
 
-
+    private List<Word> getMarkedWords(List<Word> wordList) {
+        List<Word> markedWords = new ArrayList<>();
+        for (Word word : wordList) {
+            if (word.isMarked()) {
+                markedWords.add(word);
+            }
+        }
+        return markedWords;
     }
 
     protected void init() {

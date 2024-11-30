@@ -15,20 +15,31 @@ import java.util.ArrayList;
 
 import tdtu.EStudy_App.R;
 import tdtu.EStudy_App.models.Word;
+import tdtu.EStudy_App.viewmodels.QuizViewModel;
 
 public class KetQuaHocTap extends AppCompatActivity {
 
 
     private AppCompatButton btnCancleResult;
     private TextView soLuongDung, soLuongSai;
+    private Intent intent;
+
+    private String topicID;
+    private String topicName;
+    private ArrayList<Word> learnedWords;
+    private ArrayList<Word> topicWords;
+    private QuizViewModel quizViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.study_result);
+
+        //Initialization
+        init();
         btnCancleResult.setOnClickListener(v -> finish());
 
-        Intent intent = getIntent();
         String learningType = intent.getStringExtra("learningType");
         switch (learningType){
             case "flashcard":
@@ -43,9 +54,8 @@ public class KetQuaHocTap extends AppCompatActivity {
             default:
                 break;
         }
+        quizViewModel.saveLearningResult(topicID, learnedWords, topicWords);
 
-        init();
-        btnCancleResult.setOnClickListener(v -> finish());
 
     }
 
@@ -59,12 +69,14 @@ public class KetQuaHocTap extends AppCompatActivity {
         btnCancleResult = findViewById(R.id.btnCancleResult);
         soLuongDung = findViewById(R.id.soLuongDung);
         soLuongSai = findViewById(R.id.soLuongSai);
-
+        quizViewModel = new QuizViewModel();
+        intent = getIntent();
     }
 
     private void getResultFlashCard(){
-        String topicID = intent.getStringExtra("topicID");
-        String topicName = intent.getStringExtra("topicName");
-        ArrayList<Word> learnedWords = intent.getParcelableArrayListExtra("learnedWords");
+        topicID = intent.getStringExtra("topicID");
+        topicName = intent.getStringExtra("topicName");
+        learnedWords = intent.getParcelableArrayListExtra("learnedWords");
+        topicWords = intent.getParcelableArrayListExtra("topicWords");
     }
 }
