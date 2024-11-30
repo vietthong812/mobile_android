@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +18,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import tdtu.EStudy_App.R;
 import tdtu.EStudy_App.databinding.ActivityMainBinding;
+import tdtu.EStudy_App.fragments.BrowseFragment;
+import tdtu.EStudy_App.fragments.HomeFragment;
+import tdtu.EStudy_App.fragments.TopicFragment;
+import tdtu.EStudy_App.fragments.UserFragment;
 
 public class MainActivity extends AppCompatActivity {
 

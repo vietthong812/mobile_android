@@ -46,6 +46,7 @@ public class FolderDetail extends AppCompatActivity implements OnTopicDeleteClic
     FirebaseAuth mAuth;
     FirebaseUser user;
     String folderId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

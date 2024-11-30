@@ -5,9 +5,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import tdtu.EStudy_App.Tag1Fragment;
-import tdtu.EStudy_App.Tag2Fragment;
-import tdtu.EStudy_App.Tag3Fragment;
+import tdtu.EStudy_App.fragments.Tag1Fragment;
+import tdtu.EStudy_App.fragments.Tag2Fragment;
+import tdtu.EStudy_App.fragments.Tag3Fragment;
 
 public class TagTopicAdapter extends FragmentStatePagerAdapter {
     public TagTopicAdapter(@NonNull FragmentManager fm) {

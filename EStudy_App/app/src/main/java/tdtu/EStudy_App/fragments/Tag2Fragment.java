@@ -1,4 +1,4 @@
-package tdtu.EStudy_App;
+package tdtu.EStudy_App.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,30 +9,23 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
+import tdtu.EStudy_App.R;
 import tdtu.EStudy_App.activities.AddTopic;
 import tdtu.EStudy_App.activities.TopicDetail;
 import tdtu.EStudy_App.adapters.OnTopicClickListener;
 import tdtu.EStudy_App.adapters.TopicListAdapter;
 import tdtu.EStudy_App.models.Topic;
-import tdtu.EStudy_App.utils.ToastUtils;
 import tdtu.EStudy_App.viewmodels.TopicViewModel;
 
 
