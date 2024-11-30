@@ -16,7 +16,7 @@ public class KetQuaHocTap extends AppCompatActivity {
 
 
     private AppCompatButton btnCancleResult;
-    private TextView soLuongDung, soLuongSai;
+    private TextView soLuongDung, soLuongSai, viewTraLoiDung, viewTraLoiSai;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +32,9 @@ public class KetQuaHocTap extends AppCompatActivity {
         btnCancleResult = findViewById(R.id.btnCancleResult);
         soLuongDung = findViewById(R.id.soLuongDung);
         soLuongSai = findViewById(R.id.soLuongSai);
+        viewTraLoiDung = findViewById(R.id.ViewTraLoiDung);
+        viewTraLoiSai = findViewById(R.id.ViewTraLoiSai);
+
 
     }
 }

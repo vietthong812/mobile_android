@@ -53,6 +53,7 @@ public class Topic_folderAdapter extends RecyclerView.Adapter<Topic_folderAdapte
         holder.tvNumWord.setText("Số từ: " + topic.getNumWord());
         holder.tvDate.setText("Ngày tạo: " + topic.convertTimestampToString(topic.getCreateTime()));
 
+
         holder.itemView.setTag(topic);
         holder.itemView.setOnClickListener(v -> listener.onTopicClick(topic));
         holder.btnDeleteTopic.setOnClickListener(v -> listener.onDeleteTopicClick(topic));

@@ -2,6 +2,7 @@ package tdtu.EStudy_App.activities;
 
 import android.os.Bundle;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,7 +38,12 @@ public class EditFolder extends AppCompatActivity {
     }
 
     private void saveNameFolder(){
-        //Lưu tên moiws
+        String nameFolder = editEF.getText().toString();
+        if(nameFolder.isEmpty()){
+            Toast.makeText(this, "Vui lòng nhập tên folder", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
     }
 
 
