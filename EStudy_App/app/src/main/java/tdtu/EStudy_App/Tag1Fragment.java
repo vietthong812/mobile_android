@@ -1,5 +1,6 @@
 package tdtu.EStudy_App;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,10 +11,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import java.util.ArrayList;
+
+import tdtu.EStudy_App.activities.AddFolder;
 import tdtu.EStudy_App.adapters.FolderListAdapter;
 import tdtu.EStudy_App.viewmodels.FolderViewModel;
 
@@ -24,6 +28,7 @@ public class Tag1Fragment extends Fragment {
     FolderViewModel folderViewModel;
     FirebaseUser user;
     FirebaseAuth mAuth;
+    LinearLayout btnAdd;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -33,6 +38,12 @@ public class Tag1Fragment extends Fragment {
 
         folderViewModel.getFolders().observe(getViewLifecycleOwner(), folders -> {
             folderListAdapter.updateFolders(folders);
+        });
+
+        btnAdd.setOnClickListener(v -> {
+            // Open AddFolderActivity
+            Intent intent = new Intent(getContext(), AddFolder.class);
+            startActivity(intent);
         });
         return view;
     }
@@ -49,7 +60,8 @@ public class Tag1Fragment extends Fragment {
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
-
+        // Initialize View
+        btnAdd = view.findViewById(R.id.btnAdd);
         // Initialize RecyclerView
         recyclerViewFolder = view.findViewById(R.id.recyclerViewFolder);
         recyclerViewFolder.setLayoutManager(new LinearLayoutManager(getContext()));

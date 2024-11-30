@@ -78,10 +78,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:padding="3dp">
+                        android:padding="3dp"
+                        android:id="@+id/btnAdd">
 
                         <ImageButton
-                            android:id="@+id/btnAdd"
                             android:layout_width="35dp"
                             android:layout_height="35dp"
                             android:background="@drawable/add_icon"
