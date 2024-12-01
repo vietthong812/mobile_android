@@ -50,7 +50,7 @@ public class HocGoTu extends AppCompatActivity {
             return;
         }
 
-        cardGoTuAdapter = new CardGoTuAdapter(this, wordList);
+        cardGoTuAdapter = new CardGoTuAdapter(this, wordList, false); //Chỗ na
         viewPagerCardGoTu.setAdapter(cardGoTuAdapter);
         countNumGoTu.setText("1/" + wordList.size());
 

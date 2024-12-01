@@ -141,7 +141,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardTuDongFC"
+                android:id="@+id/cardDaoNgonNguFC"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -157,14 +157,14 @@
                     android:orientation="horizontal">
 
                     <CheckBox
-                        android:id="@+id/checkTuDongFC"
+                        android:id="@+id/checkDaoNgonNguFC"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="18sp"
                         android:textColor="@color/deepblue"
                         android:layout_marginLeft="10dp"
                         android:buttonTint="@color/deepblue"
-                        android:text="Tự động chuyển thẻ sau vài giây"/>
+                        android:text="Đảo ngôn ngữ Tiếng Anh --> Tiếng Việt"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 

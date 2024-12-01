@@ -26,10 +26,12 @@ public class CardGoTuAdapter extends RecyclerView.Adapter<CardGoTuAdapter.WordVi
     private Context context;
     private List<Word> wordList;
     private TextToSpeech textToSpeech;
+    private boolean isEnglishFront; //CHỗ này
 
-    public CardGoTuAdapter(Context context, List<Word> wordList) {
+    public CardGoTuAdapter(Context context, List<Word> wordList, boolean isEnglishFront) {
         this.context = context;
         this.wordList = wordList;
+        this.isEnglishFront = isEnglishFront;
 
         textToSpeech = new TextToSpeech(context, status -> {
             if (status != TextToSpeech.ERROR) {
@@ -51,10 +53,20 @@ public class CardGoTuAdapter extends RecyclerView.Adapter<CardGoTuAdapter.WordVi
     public void onBindViewHolder(@NonNull WordViewHolder holder, int position) {
         Word word = wordList.get(position);
 
-        holder.tvName.setText(word.getName());
-        holder.tvMeaning.setText(word.getMeaning());
-        holder.tvPronunciation.setText(word.getPronunciation());
-        holder.cardView.setBackgroundResource(R.drawable.mattruoc);
+
+        if (isEnglishFront) {
+            holder.tvName.setText(word.getName());
+            holder.tvMeaning.setText(word.getMeaning());
+            holder.tvPronunciation.setVisibility(View.VISIBLE);
+            holder.btnSound.setVisibility(View.VISIBLE);
+            holder.cardView.setBackgroundResource(R.drawable.mattruoc);
+        } else {
+            holder.tvName.setText(word.getMeaning());
+            holder.tvMeaning.setText(word.getName());
+            holder.tvPronunciation.setVisibility(View.GONE);
+            holder.btnSound.setVisibility(View.GONE);
+            holder.cardView.setBackgroundResource(R.drawable.matsau);
+        }
 
         holder.btnSound.setOnClickListener(v -> {
             holder.btnSound.setBackgroundResource(R.drawable.sound_icon_selected); // Thay đổi icon khi bắt đầu phát âm

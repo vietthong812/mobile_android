@@ -56,7 +56,7 @@ public class HocTracNghiem extends AppCompatActivity {
             return;
         }
 
-        cardTracNghiemAdapter = new CardTracNghiemAdapter(this, wordList);
+        cardTracNghiemAdapter = new CardTracNghiemAdapter(this, wordList, false); //chỗ này
         viewPagerCardTN.setAdapter(cardTracNghiemAdapter);
         countNumTN.setText("1/" + wordList.size());
 

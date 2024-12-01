@@ -65,7 +65,8 @@ public class HocFlashCard extends AppCompatActivity {
             return;
         }
 
-        cardAdapter = new CardAdapter(this, wordList);
+
+        cardAdapter = new CardAdapter(this, wordList, false);
         viewPagerCardFC.setAdapter(cardAdapter);
         countNumFC.setText("1/" + wordList.size());
 

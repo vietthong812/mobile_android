@@ -26,10 +26,12 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.WordViewHolder
     private Context context;
     private List<Word> wordList;
     private TextToSpeech textToSpeech;
+    private boolean isEnglishFront; //CHỗ này
 
-    public CardAdapter(Context context, List<Word> wordList) {
+    public CardAdapter(Context context, List<Word> wordList, boolean isEnglishFront) {
         this.context = context;
         this.wordList = wordList;
+        this.isEnglishFront = isEnglishFront;
 
         textToSpeech = new TextToSpeech(context, status -> {
             if (status != TextToSpeech.ERROR) {
@@ -51,13 +53,23 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.WordViewHolder
     public void onBindViewHolder(@NonNull WordViewHolder holder, int position) {
         Word word = wordList.get(position);
 
-        holder.tvName.setText(word.getName());
-        holder.tvMeaning.setText(word.getMeaning());
-        holder.tvPronunciation.setText(word.getPronunciation());
+        if (isEnglishFront) {
+            holder.tvName.setText(word.getName());
+            holder.tvMeaning.setText(word.getMeaning());
+            holder.tvPronunciation.setVisibility(View.VISIBLE);
+            holder.btnSound.setVisibility(View.VISIBLE);
+            holder.cardView.setBackgroundResource(R.drawable.mattruoc);
+        } else {
+            holder.tvName.setText(word.getMeaning());
+            holder.tvMeaning.setText(word.getName());
+            holder.tvPronunciation.setVisibility(View.GONE);
+            holder.btnSound.setVisibility(View.GONE);
+            holder.cardView.setBackgroundResource(R.drawable.matsau);
+        }
 
         holder.btnSound.setOnClickListener(v -> {
-            holder.btnSound.setBackgroundResource(R.drawable.sound_icon_selected); // Thay đổi icon khi bắt đầu phát âm
-            String text = word.getName();
+            holder.btnSound.setBackgroundResource(R.drawable.sound_icon_selected);
+            String text = isEnglishFront ? word.getName() : word.getMeaning();
 
             String utteranceId = String.valueOf(System.currentTimeMillis());
             textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, utteranceId);
@@ -80,14 +92,9 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.WordViewHolder
             });
         });
 
-        holder.cardView.setBackgroundResource(R.drawable.mattruoc);
-        holder.cardView.setOnClickListener(v -> {
-            flipCard(holder);
-        });
-
         holder.btnSave.setOnClickListener(v -> {
             boolean isMarked = word.isMarked();
-            word.setMarked(!isMarked);  // Toggle the marked status
+            word.setMarked(!isMarked);
 
             if (word.isMarked()) {
                 holder.btnSave.setBackgroundResource(R.drawable.star_icon_selected);
@@ -98,11 +105,37 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.WordViewHolder
 
         if (word.isMarked()) {
             holder.btnSave.setBackgroundResource(R.drawable.star_icon_selected);
-
         } else {
             holder.btnSave.setBackgroundResource(R.drawable.star_icon);
         }
+
+        holder.cardView.setOnClickListener(v -> flipCard(holder));
     }
+
+    private void flipCard(WordViewHolder holder) {
+        CardView cardView = holder.cardView;
+        float cameraDistance = 15000 * holder.itemView.getResources().getDisplayMetrics().density;
+        cardView.setCameraDistance(cameraDistance);
+
+        ObjectAnimator flipOut = ObjectAnimator.ofFloat(cardView, "rotationY", 0f, 90f);
+        ObjectAnimator flipIn = ObjectAnimator.ofFloat(cardView, "rotationY", -90f, 0f);
+
+        flipOut.setDuration(150);
+        flipIn.setDuration(150);
+
+        flipOut.addListener(new android.animation.AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(android.animation.Animator animation) {
+                // Lật mặt
+                isEnglishFront = !isEnglishFront;
+                notifyDataSetChanged();
+                flipIn.start();
+            }
+        });
+
+        flipOut.start();
+    }
+
 
     @Override
     public int getItemCount() {
@@ -125,45 +158,4 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.WordViewHolder
         }
     }
 
-    private void flipCard(WordViewHolder holder) {
-        CardView cardView = holder.cardView;
-        View frontCard = holder.tvName;
-        View backCard = holder.tvMeaning;
-        View tvPhatAm = holder.tvPronunciation;
-        View btnSound = holder.btnSound;
-
-        float cameraDistance = 15000 * holder.itemView.getResources().getDisplayMetrics().density;
-        cardView.setCameraDistance(cameraDistance);
-
-        boolean isFrontVisible = frontCard.getVisibility() == View.VISIBLE;
-
-        ObjectAnimator flipOut = ObjectAnimator.ofFloat(cardView, "rotationY", 0f, 90f);
-        ObjectAnimator flipIn = ObjectAnimator.ofFloat(cardView, "rotationY", -90f, 0f);
-
-        flipOut.setDuration(150);
-        flipIn.setDuration(150);
-
-        flipOut.addListener(new android.animation.AnimatorListenerAdapter() {
-            @SuppressLint("ResourceAsColor")
-            @Override
-            public void onAnimationEnd(android.animation.Animator animation) {
-                if (isFrontVisible) {
-                    frontCard.setVisibility(View.GONE);
-                    backCard.setVisibility(View.VISIBLE);
-                    tvPhatAm.setVisibility(View.INVISIBLE);
-                    btnSound.setVisibility(View.INVISIBLE);
-                    cardView.setBackgroundResource(R.drawable.matsau);
-                } else {
-                    frontCard.setVisibility(View.VISIBLE);
-                    backCard.setVisibility(View.GONE);
-                    tvPhatAm.setVisibility(View.VISIBLE);
-                    btnSound.setVisibility(View.VISIBLE);
-                    cardView.setBackgroundResource(R.drawable.mattruoc);
-                }
-                flipIn.start();
-            }
-        });
-
-        flipOut.start();
-    }
 }

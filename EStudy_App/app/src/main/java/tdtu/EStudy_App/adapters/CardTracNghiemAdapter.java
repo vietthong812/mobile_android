@@ -32,10 +32,12 @@ public class CardTracNghiemAdapter extends RecyclerView.Adapter<CardTracNghiemAd
     private SparseArray<List<String>> randomizedAnswers = new SparseArray<>(); // Lưu câu trả lời đã được xáo trộn
     private Random random = new Random();
     private TextToSpeech textToSpeech;
+    private boolean isEnglishFront;
 
-    public CardTracNghiemAdapter(Context context, List<Word> wordList) {
+    public CardTracNghiemAdapter(Context context, List<Word> wordList, boolean isEnglishFront) {
         this.context = context;
         this.wordList = wordList;
+        this.isEnglishFront = isEnglishFront;
 
         textToSpeech = new TextToSpeech(context, status -> {
             if (status != TextToSpeech.ERROR) {
@@ -57,8 +59,18 @@ public class CardTracNghiemAdapter extends RecyclerView.Adapter<CardTracNghiemAd
     public void onBindViewHolder(@NonNull WordViewHolder holder, int position) {
         Word word = wordList.get(position);
 
-        holder.tvName.setText(word.getName());
-        holder.tvPronunciation.setText(word.getPronunciation());
+        if (isEnglishFront) {
+            holder.tvName.setText(word.getName());
+            holder.tvPronunciation.setText(word.getPronunciation());
+            holder.tvPronunciation.setVisibility(View.VISIBLE);
+            holder.btnSound.setVisibility(View.VISIBLE);
+            holder.currentCardTN.setBackgroundResource(R.drawable.mattruoc);
+        } else {
+            holder.tvName.setText(word.getMeaning());
+            holder.tvPronunciation.setVisibility(View.GONE);
+            holder.btnSound.setVisibility(View.GONE);
+            holder.currentCardTN.setBackgroundResource(R.drawable.matsau);
+        }
 
         holder.btnSound.setOnClickListener(v -> {
             holder.btnSound.setBackgroundResource(R.drawable.sound_icon_selected); // Thay đổi icon khi bắt đầu phát âm
@@ -85,30 +97,26 @@ public class CardTracNghiemAdapter extends RecyclerView.Adapter<CardTracNghiemAd
             });
         });
 
-        holder.currentCardTN.setBackgroundResource(R.drawable.mattruoc);
         holder.btnSave.setOnClickListener(v -> {
             boolean isMarked = word.isMarked();
             word.setMarked(!isMarked);
             holder.btnSave.setBackgroundResource(isMarked ? R.drawable.star_icon : R.drawable.star_icon_selected);
         });
 
-
-
         holder.btnSave.setBackgroundResource(word.isMarked() ? R.drawable.star_icon_selected : R.drawable.star_icon);
 
-        // Get or generate randomized meanings
-        List<String> meanings = randomizedAnswers.get(position);
-        if (meanings == null) {
-            meanings = getRandomMeanings(word.getMeaning());
-            randomizedAnswers.put(position, meanings);
+        // Get or generate randomized answers
+        List<String> answers = randomizedAnswers.get(position);
+        if (answers == null) {
+            answers = getRandomAnswers(word);
+            randomizedAnswers.put(position, answers);
         }
 
-        holder.daA.setText(meanings.get(0));
-        holder.daB.setText(meanings.get(1));
-        holder.daC.setText(meanings.get(2));
-        holder.daD.setText(meanings.get(3));
+        holder.daA.setText(answers.get(0));
+        holder.daB.setText(answers.get(1));
+        holder.daC.setText(answers.get(2));
+        holder.daD.setText(answers.get(3));
 
-        // Handle card selection logic
         holder.cardA.setOnClickListener(v -> selectCard(holder, position, 0));
         holder.cardB.setOnClickListener(v -> selectCard(holder, position, 1));
         holder.cardC.setOnClickListener(v -> selectCard(holder, position, 2));
@@ -140,27 +148,28 @@ public class CardTracNghiemAdapter extends RecyclerView.Adapter<CardTracNghiemAd
         }
     }
 
-    private List<String> getRandomMeanings(String correctMeaning) {
-        List<String> meanings = new ArrayList<>();
-        meanings.add(correctMeaning);
-
-        while (meanings.size() < 4) {
-            String randomMeaning = wordList.get(random.nextInt(wordList.size())).getMeaning();
-            if (!meanings.contains(randomMeaning)) {
-                meanings.add(randomMeaning);
+    private List<String> getRandomAnswers(Word word) {
+        List<String> answers = new ArrayList<>();
+        if (isEnglishFront) {
+            answers.add(word.getMeaning());
+            while (answers.size() < 4) {
+                String randomMeaning = wordList.get(random.nextInt(wordList.size())).getMeaning();
+                if (!answers.contains(randomMeaning)) {
+                    answers.add(randomMeaning);
+                }
+            }
+        } else {
+            answers.add(word.getName());
+            while (answers.size() < 4) {
+                String randomName = wordList.get(random.nextInt(wordList.size())).getName();
+                if (!answers.contains(randomName)) {
+                    answers.add(randomName);
+                }
             }
         }
 
-        // Nếu các phần nghĩa bị trùng lấp thì bổ sung phần nghĩa mặc định
-        // Lưu ý kiểm tra dữ liệu meaning nhập vào nha
-        int defaultIndex = 1;
-        while (meanings.size() < 4) {
-            meanings.add("Default " + defaultIndex);
-            defaultIndex++;
-        }
-
-        Collections.shuffle(meanings);
-        return meanings;
+        Collections.shuffle(answers);
+        return answers;
     }
 
     public static class WordViewHolder extends RecyclerView.ViewHolder {
