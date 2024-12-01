@@ -55,8 +55,6 @@ public class KetQuaHocTap extends AppCompatActivity {
                 break;
         }
         quizViewModel.saveLearningResult(topicID, learnedWords, topicWords);
-
-
     }
 
     private void getResultTranslate() {

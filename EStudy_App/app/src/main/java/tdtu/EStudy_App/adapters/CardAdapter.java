@@ -26,12 +26,12 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.WordViewHolder
     private Context context;
     private List<Word> wordList;
     private TextToSpeech textToSpeech;
-    private boolean isEnglishFront; //CHỗ này
+    private String option; //CHỗ này
 
-    public CardAdapter(Context context, List<Word> wordList, boolean isEnglishFront) {
+    public CardAdapter(Context context, List<Word> wordList, String option) {
         this.context = context;
         this.wordList = wordList;
-        this.isEnglishFront = isEnglishFront;
+        this.option = option;
 
         textToSpeech = new TextToSpeech(context, status -> {
             if (status != TextToSpeech.ERROR) {
@@ -49,17 +49,22 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.WordViewHolder
         return new WordViewHolder(view);
     }
 
+    private void playWordSound(String text) {
+        String utteranceId = String.valueOf(System.currentTimeMillis());
+        textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, utteranceId);
+    }
+
     @Override
     public void onBindViewHolder(@NonNull WordViewHolder holder, int position) {
         Word word = wordList.get(position);
 
-        if (isEnglishFront) {
+        if (option == null || option.equals("AutoPronunciation")) {
             holder.tvName.setText(word.getName());
             holder.tvMeaning.setText(word.getMeaning());
             holder.tvPronunciation.setVisibility(View.VISIBLE);
             holder.btnSound.setVisibility(View.VISIBLE);
             holder.cardView.setBackgroundResource(R.drawable.mattruoc);
-        } else {
+        } else if (option.equals("Reverse")) {
             holder.tvName.setText(word.getMeaning());
             holder.tvMeaning.setText(word.getName());
             holder.tvPronunciation.setVisibility(View.GONE);
@@ -69,7 +74,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.WordViewHolder
 
         holder.btnSound.setOnClickListener(v -> {
             holder.btnSound.setBackgroundResource(R.drawable.sound_icon_selected);
-            String text = isEnglishFront ? word.getName() : word.getMeaning();
+            String text = word.getName();
 
             String utteranceId = String.valueOf(System.currentTimeMillis());
             textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, utteranceId);
@@ -127,7 +132,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.WordViewHolder
             @Override
             public void onAnimationEnd(android.animation.Animator animation) {
                 // Lật mặt
-                isEnglishFront = !isEnglishFront;
+//                option.equals("Reverse");
                 notifyDataSetChanged();
                 flipIn.start();
             }

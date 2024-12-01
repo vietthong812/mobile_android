@@ -6,10 +6,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Parcelable;
+import android.speech.tts.TextToSpeech;
 import android.util.ArraySet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -23,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import tdtu.EStudy_App.R;
@@ -43,7 +46,8 @@ public class HocFlashCard extends AppCompatActivity {
     private Set<Word> learnedWords = new HashSet<>();
     private boolean isAutoPlaying = false;
     private Handler autoPlayHandler = new Handler(Looper.getMainLooper());
-
+    private TextToSpeech textToSpeech;
+    private String option;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +61,7 @@ public class HocFlashCard extends AppCompatActivity {
         Intent intent = getIntent();
         String topicID = intent.getStringExtra("topicID");
         String topicName = intent.getStringExtra("topicName");
+        option = intent.getStringExtra("Option");
         titleFC.setText("Flashcard - " + topicName);
 
         wordList = intent.getParcelableArrayListExtra("wordList");
@@ -66,10 +71,15 @@ public class HocFlashCard extends AppCompatActivity {
         }
 
 
-        cardAdapter = new CardAdapter(this, wordList, false);
+        cardAdapter = new CardAdapter(this, wordList, option);
         viewPagerCardFC.setAdapter(cardAdapter);
         countNumFC.setText("1/" + wordList.size());
 
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            if (option != null && option.equals("AutoPronunciation")) {
+                playWordSound(wordList.get(0).getName());
+            }
+        }, 500);
 
         btnNextFC.setOnClickListener(v -> {
             int currentItem = viewPagerCardFC.getCurrentItem();
@@ -91,6 +101,9 @@ public class HocFlashCard extends AppCompatActivity {
                 super.onPageSelected(position);
                 learnedWords.add(wordList.get(position));
                 countNumFC.setText((position + 1) + "/" + wordList.size());
+                if(option != null && option.equals("AutoPronunciation" )){
+                    playWordSound(wordList.get(position).getName());
+                }
             }
         });
 
@@ -138,6 +151,12 @@ public class HocFlashCard extends AppCompatActivity {
         titleFC = findViewById(R.id.titleFC);
         cardViewNopBaiFC = findViewById(R.id.cardViewNopBaiFC);
         btnAutoPlayFC = findViewById(R.id.btnAutoPlayFC);
+
+        textToSpeech = new TextToSpeech(this, status -> {
+            if (status != TextToSpeech.ERROR) {
+                textToSpeech.setLanguage(Locale.US);
+            }
+        });
     }
 
     private void toggleAutoPlay() {
@@ -165,6 +184,13 @@ public class HocFlashCard extends AppCompatActivity {
         }
     };
 
-
+    private void playWordSound(String text) {
+        if (textToSpeech != null) {
+            String utteranceId = String.valueOf(System.currentTimeMillis());
+            textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, utteranceId);
+        } else {
+            ToastUtils.showShortToast(this, "Text to speech is not available!");
+        }
+    }
 
 }

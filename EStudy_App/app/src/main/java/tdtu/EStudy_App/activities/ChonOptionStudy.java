@@ -13,7 +13,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.ArrayList;
+
 import tdtu.EStudy_App.R;
+import tdtu.EStudy_App.models.Word;
 
 public class ChonOptionStudy extends AppCompatActivity {
 
@@ -45,18 +48,40 @@ public class ChonOptionStudy extends AppCompatActivity {
         if (type.equals("gotu")) {
             btnBatDauHoc.setOnClickListener(v -> {
                 Intent intent1 = new Intent(ChonOptionStudy.this, HocGoTu.class);
+
+                if (checkDaoThuTu.isChecked()) {
+                    intent1.putParcelableArrayListExtra("wordList", shuffleWordList(getIntent().getParcelableArrayListExtra("wordList")));
+                }
+                else if(checkDaoNgonNgu.isChecked()){
+                    intent1.putExtra("isReverse", true);
+                }
+                else{
+                    intent1.putParcelableArrayListExtra("wordList", getIntent().getParcelableArrayListExtra("wordList"));
+                }
+
                 intent1.putExtra("topicID", getIntent().getStringExtra("topicID"));
                 intent1.putExtra("topicName", getIntent().getStringExtra("topicName"));
-                intent1.putParcelableArrayListExtra("wordList", getIntent().getParcelableArrayListExtra("wordList"));
                 startActivity(intent1);
                 finish();
             });}
         else if (type.equals("tracnghiem")) {
             btnBatDauHoc.setOnClickListener(v -> {
                 Intent intent1 = new Intent(ChonOptionStudy.this, HocTracNghiem.class);
+
+                if (checkDaoThuTu.isChecked()) {
+                    intent1.putParcelableArrayListExtra("wordList", shuffleWordList(getIntent().getParcelableArrayListExtra("wordList")));
+                }
+                else if(checkDaoNgonNgu.isChecked()){
+                    intent1.putExtra("isReverse", true);
+                }
+                else{
+                    intent1.putParcelableArrayListExtra("wordList", getIntent().getParcelableArrayListExtra("wordList"));
+                }
+
+
+
                 intent1.putExtra("topicID", getIntent().getStringExtra("topicID"));
                 intent1.putExtra("topicName", getIntent().getStringExtra("topicName"));
-                intent1.putParcelableArrayListExtra("wordList", getIntent().getParcelableArrayListExtra("wordList"));
                 startActivity(intent1);
                 finish();
             });
@@ -86,15 +111,56 @@ public class ChonOptionStudy extends AppCompatActivity {
         checkHocDanhDau = findViewById(R.id.checkHocDanhDau);
         checkDaoNgonNgu = findViewById(R.id.checkDaoNgonNgu);
 
+        checkTuDongPhatAm.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                checkDaoThuTu.setChecked(false);
+                checkHocDanhDau.setChecked(false);
+                checkDaoNgonNgu.setChecked(false);
+            }
+        });
+        checkDaoNgonNgu.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                checkDaoThuTu.setChecked(false);
+                checkHocDanhDau.setChecked(false);
+                checkTuDongPhatAm.setChecked(false);
+            }
+        });
+        checkDaoThuTu.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                checkTuDongPhatAm.setChecked(false);
+                checkHocDanhDau.setChecked(false);
+                checkDaoNgonNgu.setChecked(false);
+            }
+        });
+        checkHocDanhDau.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                checkTuDongPhatAm.setChecked(false);
+                checkDaoThuTu.setChecked(false);
+                checkDaoNgonNgu.setChecked(false);
+            }
+        });
+        checkHienDapAn.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                checkTuDongPhatAm.setChecked(false);
+                checkDaoThuTu.setChecked(false);
+                checkHocDanhDau.setChecked(false);
+                checkDaoNgonNgu.setChecked(false);
+            }
+        });
     }
 
     protected void onClickToCheckBox(CheckBox checkBox) {
-        if (checkBox.isChecked()) {
-            checkBox.setChecked(false);
-        } else {
-            checkBox.setChecked(true);
-        }
+        checkBox.setChecked(!checkBox.isChecked());
+    }
 
+    private ArrayList<Word> shuffleWordList(ArrayList<Word> wordList) {
+        for (int i = 0; i < wordList.size(); i++) {
+            int randomIndex = (int) (Math.random() * wordList.size());
+            Word temp = wordList.get(i);
+            wordList.set(i, wordList.get(randomIndex));
+            wordList.set(randomIndex, temp);
+        }
+        return wordList;
     }
 
 
