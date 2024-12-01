@@ -27,6 +27,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.WordViewHolder
     private List<Word> wordList;
     private TextToSpeech textToSpeech;
     private String option; //CHỗ này
+    private Boolean isEnglishFront;
 
     public CardAdapter(Context context, List<Word> wordList, String option) {
         this.context = context;
@@ -40,6 +41,12 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.WordViewHolder
                 Toast.makeText(context, "Xuất hiện lỗi trong quá trình khởi tạo TextToSpeech", Toast.LENGTH_SHORT).show();
             }
         });
+
+        if (option == null || option.equals("AutoPronunciation")) {
+            isEnglishFront = true;
+        } else if (option.equals("Reverse")) {
+            isEnglishFront = false;
+        }
     }
 
     @NonNull
@@ -58,19 +65,19 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.WordViewHolder
     public void onBindViewHolder(@NonNull WordViewHolder holder, int position) {
         Word word = wordList.get(position);
 
-        if (option == null || option.equals("AutoPronunciation")) {
+        if (isEnglishFront) {
             holder.tvName.setText(word.getName());
-            holder.tvMeaning.setText(word.getMeaning());
+            holder.tvPronunciation.setText(word.getPronunciation());
             holder.tvPronunciation.setVisibility(View.VISIBLE);
             holder.btnSound.setVisibility(View.VISIBLE);
             holder.cardView.setBackgroundResource(R.drawable.mattruoc);
-        } else if (option.equals("Reverse")) {
+        } else {
             holder.tvName.setText(word.getMeaning());
-            holder.tvMeaning.setText(word.getName());
             holder.tvPronunciation.setVisibility(View.GONE);
             holder.btnSound.setVisibility(View.GONE);
             holder.cardView.setBackgroundResource(R.drawable.matsau);
         }
+
 
         holder.btnSound.setOnClickListener(v -> {
             holder.btnSound.setBackgroundResource(R.drawable.sound_icon_selected);
@@ -128,11 +135,13 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.WordViewHolder
         flipOut.setDuration(150);
         flipIn.setDuration(150);
 
+
         flipOut.addListener(new android.animation.AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(android.animation.Animator animation) {
                 // Lật mặt
-//                option.equals("Reverse");
+
+                isEnglishFront = !isEnglishFront;
                 notifyDataSetChanged();
                 flipIn.start();
             }

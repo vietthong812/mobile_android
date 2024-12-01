@@ -42,7 +42,7 @@ public class TopicDetail extends AppCompatActivity {
     FirebaseFirestore db;
     AppCompatButton btnCancel;
     Button btnEdit, btnDelete, btnLuuTopic;
-    CardView cardFlashcard, cardTracNghiem, cardGoTu, cardRank;
+    CardView cardFlashcard, cardTracNghiem, cardGoTu, cardRank, cardXuatFile;
     QuizViewModel quizViewModel;
     int count = 0;
     String statusTopic;
@@ -188,6 +188,10 @@ public class TopicDetail extends AppCompatActivity {
 
         btnLuuTopic.setOnClickListener(view -> alertSaveTopic());
 
+        cardXuatFile.setOnClickListener(view -> {
+            //
+        });
+
 
     }
 
@@ -210,6 +214,7 @@ public class TopicDetail extends AppCompatActivity {
         wordList = new ArrayList<>();
         db = FirebaseFirestore.getInstance();
         btnLuuTopic = findViewById(R.id.btnLuuTopic);
+        cardXuatFile = findViewById(R.id.xuatFile);
     }
 
 
