@@ -7,7 +7,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/currentCardGT"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="240dp"
         android:layout_marginHorizontal="8dp"
         android:layout_marginVertical="4dp"
         app:cardCornerRadius="8dp"
@@ -62,9 +62,6 @@
                 android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:background="@drawable/mic_icon"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground"
                 android:contentDescription="Play sound" />
         </LinearLayout>
 

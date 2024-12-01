@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -44,6 +45,7 @@ public class AddTopic extends AppCompatActivity {
     RecyclerView recyclerViewThemTu;
     ArrayList<Word> wordList;
     WordAddAdapter wordAddAdapter;
+    CheckBox checkBox;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
@@ -75,7 +77,12 @@ public class AddTopic extends AppCompatActivity {
                 String userId = user.getUid();
                 String name = editTopicName.getText().toString();
                 long numWord=wordAddAdapter.getItemCount();
+
+                //Kiểm tra để add trạng thái topic
                 String status = "private";
+                if (checkBox.isChecked()) {
+                    status = "public";
+                }
                 Timestamp timestamp = Timestamp.now();
                 DocumentReference reference=db.collection("users").document(userId);
                 Map<String, Object> topic = new HashMap<>();
@@ -114,6 +121,7 @@ public class AddTopic extends AppCompatActivity {
         btnCancel = findViewById(R.id.btnCancel);
         editTopicName = findViewById(R.id.editTopicName);
         themTuMoi = findViewById(R.id.themTuMoi);
+        checkBox = findViewById(R.id.checkShareTopic);
         // Initialize RecyclerView
         recyclerViewThemTu = findViewById(R.id.recyclerViewThemTu);
         recyclerViewThemTu.setLayoutManager(new LinearLayoutManager(this));

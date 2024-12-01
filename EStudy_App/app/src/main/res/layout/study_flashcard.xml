@@ -129,6 +129,15 @@
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground" />
         </LinearLayout>
-</LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnAutoPlayFC"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center"
+            android:background="@drawable/auto_icon"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
 
 </LinearLayout>

@@ -56,9 +56,6 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:background="@drawable/mic_icon"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?attr/selectableItemBackground"
             android:contentDescription="Play sound" />
     </LinearLayout>
 

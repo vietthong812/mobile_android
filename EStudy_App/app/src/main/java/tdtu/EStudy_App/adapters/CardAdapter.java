@@ -1,19 +1,23 @@
- package tdtu.EStudy_App.adapters;
+package tdtu.EStudy_App.adapters;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.UtteranceProgressListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+import java.util.Locale;
 
 import tdtu.EStudy_App.models.Word;
 import tdtu.EStudy_App.R;
@@ -21,10 +25,19 @@ import tdtu.EStudy_App.R;
 public class CardAdapter extends RecyclerView.Adapter<CardAdapter.WordViewHolder> {
     private Context context;
     private List<Word> wordList;
+    private TextToSpeech textToSpeech;
 
     public CardAdapter(Context context, List<Word> wordList) {
         this.context = context;
         this.wordList = wordList;
+
+        textToSpeech = new TextToSpeech(context, status -> {
+            if (status != TextToSpeech.ERROR) {
+                textToSpeech.setLanguage(Locale.US);
+            } else {
+                Toast.makeText(context, "Xuất hiện lỗi trong quá trình khởi tạo TextToSpeech", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @NonNull
@@ -43,15 +56,34 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.WordViewHolder
         holder.tvPronunciation.setText(word.getPronunciation());
 
         holder.btnSound.setOnClickListener(v -> {
-            // Play pronunciation or do some action when clicked
+            holder.btnSound.setBackgroundResource(R.drawable.sound_icon_selected); // Thay đổi icon khi bắt đầu phát âm
+            String text = word.getName();
+
+            String utteranceId = String.valueOf(System.currentTimeMillis());
+            textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, utteranceId);
+
+            textToSpeech.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+                @Override
+                public void onStart(String utteranceId) {
+                }
+
+                @Override
+                public void onDone(String utteranceId) {
+                    holder.btnSound.post(() -> holder.btnSound.setBackgroundResource(R.drawable.mic_icon));
+                }
+
+                @Override
+                public void onError(String utteranceId) {
+                    holder.btnSound.post(() -> holder.btnSound.setBackgroundResource(R.drawable.mic_icon));
+                    Toast.makeText(context, "Lỗi phát âm", Toast.LENGTH_SHORT).show();
+                }
+            });
         });
 
         holder.cardView.setBackgroundResource(R.drawable.mattruoc);
         holder.cardView.setOnClickListener(v -> {
             flipCard(holder);
         });
-
-
 
         holder.btnSave.setOnClickListener(v -> {
             boolean isMarked = word.isMarked();
@@ -66,6 +98,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.WordViewHolder
 
         if (word.isMarked()) {
             holder.btnSave.setBackgroundResource(R.drawable.star_icon_selected);
+
         } else {
             holder.btnSave.setBackgroundResource(R.drawable.star_icon);
         }
@@ -99,7 +132,6 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.WordViewHolder
         View tvPhatAm = holder.tvPronunciation;
         View btnSound = holder.btnSound;
 
-        //Chỗ này phóng ra xa ra để thấy card flip không bị cawts
         float cameraDistance = 15000 * holder.itemView.getResources().getDisplayMetrics().density;
         cardView.setCameraDistance(cameraDistance);
 
@@ -116,14 +148,12 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.WordViewHolder
             @Override
             public void onAnimationEnd(android.animation.Animator animation) {
                 if (isFrontVisible) {
-                    // Hiện mặt sau
                     frontCard.setVisibility(View.GONE);
                     backCard.setVisibility(View.VISIBLE);
                     tvPhatAm.setVisibility(View.INVISIBLE);
                     btnSound.setVisibility(View.INVISIBLE);
                     cardView.setBackgroundResource(R.drawable.matsau);
                 } else {
-                    // Hiện mặt trước
                     frontCard.setVisibility(View.VISIBLE);
                     backCard.setVisibility(View.GONE);
                     tvPhatAm.setVisibility(View.VISIBLE);
@@ -136,5 +166,4 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.WordViewHolder
 
         flipOut.start();
     }
-
 }

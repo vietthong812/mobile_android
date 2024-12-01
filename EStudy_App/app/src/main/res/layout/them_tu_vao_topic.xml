@@ -180,6 +180,7 @@
             </LinearLayout>
 
             <CheckBox
+                android:id="@+id/checkShareTopic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/deepblue"

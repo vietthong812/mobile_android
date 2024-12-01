@@ -3,15 +3,20 @@ package tdtu.EStudy_App.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.Parcelable;
 import android.util.ArraySet;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import java.util.ArrayList;
@@ -28,7 +33,7 @@ import tdtu.EStudy_App.viewmodels.QuizViewModel;
 
 public class HocFlashCard extends AppCompatActivity {
 
-    private AppCompatButton btnCancelFC, btnNextFC, btnPreviousFC;
+    private AppCompatButton btnCancelFC, btnNextFC, btnPreviousFC, btnAutoPlayFC;
     private TextView countNumFC;
     private ViewPager2 viewPagerCardFC;
     private CardAdapter cardAdapter;
@@ -36,6 +41,8 @@ public class HocFlashCard extends AppCompatActivity {
     private TextView titleFC;
     private CardView cardViewNopBaiFC;
     private Set<Word> learnedWords = new HashSet<>();
+    private boolean isAutoPlaying = false;
+    private Handler autoPlayHandler = new Handler(Looper.getMainLooper());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +51,7 @@ public class HocFlashCard extends AppCompatActivity {
         setContentView(R.layout.study_flashcard);
 
         init();
+
         btnCancelFC.setOnClickListener(v -> finish());
 
         Intent intent = getIntent();
@@ -96,6 +104,8 @@ public class HocFlashCard extends AppCompatActivity {
             startActivity(intent1);
             finish();
         });
+
+        btnAutoPlayFC.setOnClickListener(v -> toggleAutoPlay());
     }
 
     private List<Word> suffleWordList(List<Word> wordList) {
@@ -126,7 +136,33 @@ public class HocFlashCard extends AppCompatActivity {
         viewPagerCardFC = findViewById(R.id.viewPagerCardFC);
         titleFC = findViewById(R.id.titleFC);
         cardViewNopBaiFC = findViewById(R.id.cardViewNopBaiFC);
+        btnAutoPlayFC = findViewById(R.id.btnAutoPlayFC);
     }
+
+    private void toggleAutoPlay() {
+        isAutoPlaying = !isAutoPlaying;
+        if (isAutoPlaying) {
+            btnAutoPlayFC.setBackgroundResource(R.drawable.pause_icon);
+            autoPlayHandler.postDelayed(autoPlayRunnable, 3000);
+        } else {
+            btnAutoPlayFC.setBackgroundResource(R.drawable.auto_icon);
+            autoPlayHandler.removeCallbacks(autoPlayRunnable);
+        }
+    }
+
+    private final Runnable autoPlayRunnable = new Runnable() {
+        @Override
+        public void run() {
+            int currentItem = viewPagerCardFC.getCurrentItem();
+            if (currentItem < wordList.size() - 1) {
+                viewPagerCardFC.setCurrentItem(currentItem + 1);
+                autoPlayHandler.postDelayed(this, 3000);
+            } else {
+                isAutoPlaying = false; // Dừng Auto Play khi đến trang cuối
+                btnAutoPlayFC.setBackgroundResource(R.drawable.auto_icon);
+            }
+        }
+    };
 
 
 

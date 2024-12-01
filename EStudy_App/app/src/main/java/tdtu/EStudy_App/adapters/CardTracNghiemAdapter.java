@@ -1,6 +1,8 @@
 package tdtu.EStudy_App.adapters;
 
 import android.content.Context;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.UtteranceProgressListener;
 import android.util.SparseArray;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
@@ -8,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -16,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 import tdtu.EStudy_App.R;
@@ -27,10 +31,19 @@ public class CardTracNghiemAdapter extends RecyclerView.Adapter<CardTracNghiemAd
     private SparseIntArray selectedPositions = new SparseIntArray(); // Lưu đáp án đã chọn
     private SparseArray<List<String>> randomizedAnswers = new SparseArray<>(); // Lưu câu trả lời đã được xáo trộn
     private Random random = new Random();
+    private TextToSpeech textToSpeech;
 
     public CardTracNghiemAdapter(Context context, List<Word> wordList) {
         this.context = context;
         this.wordList = wordList;
+
+        textToSpeech = new TextToSpeech(context, status -> {
+            if (status != TextToSpeech.ERROR) {
+                textToSpeech.setLanguage(Locale.US);
+            } else {
+                Toast.makeText(context, "Xuất hiện lỗi trong quá trình khởi tạo TextToSpeech", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @NonNull
@@ -48,14 +61,38 @@ public class CardTracNghiemAdapter extends RecyclerView.Adapter<CardTracNghiemAd
         holder.tvPronunciation.setText(word.getPronunciation());
 
         holder.btnSound.setOnClickListener(v -> {
-            // Play pronunciation or do some action when clicked
+            holder.btnSound.setBackgroundResource(R.drawable.sound_icon_selected); // Thay đổi icon khi bắt đầu phát âm
+            String text = word.getName();
+
+            String utteranceId = String.valueOf(System.currentTimeMillis());
+            textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, utteranceId);
+
+            textToSpeech.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+                @Override
+                public void onStart(String utteranceId) {
+                }
+
+                @Override
+                public void onDone(String utteranceId) {
+                    holder.btnSound.post(() -> holder.btnSound.setBackgroundResource(R.drawable.mic_icon));
+                }
+
+                @Override
+                public void onError(String utteranceId) {
+                    holder.btnSound.post(() -> holder.btnSound.setBackgroundResource(R.drawable.mic_icon));
+                    Toast.makeText(context, "Lỗi phát âm", Toast.LENGTH_SHORT).show();
+                }
+            });
         });
+
         holder.currentCardTN.setBackgroundResource(R.drawable.mattruoc);
         holder.btnSave.setOnClickListener(v -> {
             boolean isMarked = word.isMarked();
             word.setMarked(!isMarked);
             holder.btnSave.setBackgroundResource(isMarked ? R.drawable.star_icon : R.drawable.star_icon_selected);
         });
+
+
 
         holder.btnSave.setBackgroundResource(word.isMarked() ? R.drawable.star_icon_selected : R.drawable.star_icon);
 

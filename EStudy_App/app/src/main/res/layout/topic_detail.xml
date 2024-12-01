@@ -39,6 +39,8 @@
             android:textColor="@color/white"
             android:backgroundTint="@color/green"
             android:layout_marginRight="10dp"
+            android:visibility="gone"
+
             android:clickable="true"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground" />
@@ -51,6 +53,7 @@
             android:backgroundTint="@color/deepblue"
             android:textColor="@color/white"
             android:layout_marginRight="10dp"
+            android:visibility="gone"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground" />
@@ -61,6 +64,7 @@
             android:layout_gravity="left"
             android:background="@drawable/trash_icon"
             android:backgroundTint="@color/red"
+            android:visibility="gone"
             android:textColor="@color/white"
             android:clickable="true"
             android:focusable="true"

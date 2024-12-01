@@ -22,8 +22,6 @@ public class TagTopicAdapter extends FragmentStatePagerAdapter {
                 return new Tag1Fragment();
             case 1:
                 return new Tag2Fragment();
-            case 2:
-                return new Tag3Fragment();
             default:
                 return new Tag1Fragment();
         }
@@ -31,7 +29,7 @@ public class TagTopicAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return 2;
     }
 
     @NonNull
@@ -43,8 +41,6 @@ public class TagTopicAdapter extends FragmentStatePagerAdapter {
                 return "Folder";
             case 1:
                 return "Topic";
-            case 2:
-                return "Từ đã lưu";
             default:
                 return "Folder";
         }

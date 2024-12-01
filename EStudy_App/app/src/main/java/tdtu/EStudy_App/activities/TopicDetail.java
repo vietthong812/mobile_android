@@ -4,6 +4,8 @@ package tdtu.EStudy_App.activities;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -17,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -39,11 +42,11 @@ public class TopicDetail extends AppCompatActivity {
     WordListAdapter wordListAdapter;
     FirebaseFirestore db;
     AppCompatButton btnCancel;
-    Button btnEdit, btnDelete;
+    Button btnEdit, btnDelete, btnLuuTopic;
     CardView cardFlashcard, cardTracNghiem, cardGoTu, cardRank;
     QuizViewModel quizViewModel;
     int count = 0;
-
+    String statusTopic;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,7 +110,7 @@ public class TopicDetail extends AppCompatActivity {
                 long numWords = task.getResult().getLong("numWord");
                 count = (int) numWords;
                 numWord.setText(getString(R.string.num_words, String.format(Locale.getDefault(), "%d", numWords)));
-                String statusTopic = task.getResult().getString("status");
+                statusTopic = task.getResult().getString("status");
                 status.setText("Trạng thái: " + statusTopic);
                 Timestamp createTime = task.getResult().getTimestamp("createTime");
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
@@ -122,6 +125,8 @@ public class TopicDetail extends AppCompatActivity {
                         }
                     });
                 }
+
+                showCaseButton();
             }
         });
 
@@ -181,6 +186,8 @@ public class TopicDetail extends AppCompatActivity {
             AlertDialog dialog = builder.create();
             dialog.show();
         });
+
+
     }
 
     private void init() {
@@ -201,5 +208,39 @@ public class TopicDetail extends AppCompatActivity {
         recyclerViewTatCaCacThe.setLayoutManager(new LinearLayoutManager(this));
         wordList = new ArrayList<>();
         db = FirebaseFirestore.getInstance();
+        btnLuuTopic = findViewById(R.id.btnLuuTopic);
+    }
+
+    private void showCaseButton() {
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        db.collection("topics").document(getIntent().getStringExtra("topicID")).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                String statusTopic = task.getResult().getString("status");
+                DocumentReference userCreateRef = task.getResult().getDocumentReference("userCreate");
+                if (userCreateRef != null) {
+                    userCreateRef.get().addOnCompleteListener(userTask -> {
+                        if (userTask.isSuccessful()) {
+                            String creatorId = userTask.getResult().getId();
+                            if ("public".equals(statusTopic) && userId.equals(creatorId)) {
+                                btnEdit.setVisibility(View.VISIBLE);
+                                btnDelete.setVisibility(View.VISIBLE);
+                                btnLuuTopic.setVisibility(View.GONE);
+                                cardRank.setVisibility(View.VISIBLE);
+                            } else if ("public".equals(statusTopic)) {
+                                btnEdit.setVisibility(View.GONE);
+                                btnDelete.setVisibility(View.GONE);
+                                btnLuuTopic.setVisibility(View.VISIBLE);
+                                cardRank.setVisibility(View.VISIBLE);
+                            } else {
+                                btnEdit.setVisibility(View.VISIBLE);
+                                btnDelete.setVisibility(View.VISIBLE);
+                                btnLuuTopic.setVisibility(View.GONE);
+                                cardRank.setVisibility(View.GONE);
+                            }
+                        }
+                    });
+                }
+            }
+        });
     }
 }
