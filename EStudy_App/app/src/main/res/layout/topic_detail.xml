@@ -35,9 +35,8 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="left"
-            android:background="@drawable/save_button"
+            android:background="@drawable/save_public_topic"
             android:textColor="@color/white"
-            android:backgroundTint="@color/green"
             android:layout_marginRight="10dp"
             android:visibility="gone"
 

@@ -1,10 +1,8 @@
 // TopicDetail.java
 package tdtu.EStudy_App.activities;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -21,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -187,6 +186,8 @@ public class TopicDetail extends AppCompatActivity {
             dialog.show();
         });
 
+        btnLuuTopic.setOnClickListener(view -> alertSaveTopic());
+
 
     }
 
@@ -211,9 +212,12 @@ public class TopicDetail extends AppCompatActivity {
         btnLuuTopic = findViewById(R.id.btnLuuTopic);
     }
 
+
+    //Chỗ nầy để kiểm tra hiển thị c nút tương ứng
     private void showCaseButton() {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        db.collection("topics").document(getIntent().getStringExtra("topicID")).get().addOnCompleteListener(task -> {
+        String topicId = getIntent().getStringExtra("topicID");
+        db.collection("topics").document(topicId).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 String statusTopic = task.getResult().getString("status");
                 DocumentReference userCreateRef = task.getResult().getDocumentReference("userCreate");
@@ -229,8 +233,20 @@ public class TopicDetail extends AppCompatActivity {
                             } else if ("public".equals(statusTopic)) {
                                 btnEdit.setVisibility(View.GONE);
                                 btnDelete.setVisibility(View.GONE);
-                                btnLuuTopic.setVisibility(View.VISIBLE);
                                 cardRank.setVisibility(View.VISIBLE);
+                                db.collection("users").document(userId).get().addOnCompleteListener(userDocTask -> {
+                                    if (userDocTask.isSuccessful()) {
+                                        List<DocumentReference> savedTopics = (List<DocumentReference>) userDocTask.getResult().get("saveTopic");
+                                        if (savedTopics != null && savedTopics.contains(db.collection("topics").document(topicId))) {
+                                            btnLuuTopic.setBackgroundResource(R.drawable.unsave_public_topic);
+                                            btnLuuTopic.setOnClickListener(view -> alertUnsaveTopic());
+                                        } else {
+                                            btnLuuTopic.setBackgroundResource(R.drawable.save_public_topic);
+                                            btnLuuTopic.setOnClickListener(view -> alertSaveTopic());
+                                        }
+                                        btnLuuTopic.setVisibility(View.VISIBLE);
+                                    }
+                                });
                             } else {
                                 btnEdit.setVisibility(View.VISIBLE);
                                 btnDelete.setVisibility(View.VISIBLE);
@@ -242,5 +258,68 @@ public class TopicDetail extends AppCompatActivity {
                 }
             }
         });
+    }
+
+
+    private void alertSaveTopic(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Lưu Topic");
+        builder.setMessage("Bạn có chắc chắn muốn lưu Topic này không?");
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            saveTopicToUser();
+            dialog.dismiss();
+        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void saveTopicToUser() {
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String topicId = getIntent().getStringExtra("topicID");
+        DocumentReference topicRef = db.collection("topics").document(topicId);
+        DocumentReference userRef = db.collection("users").document(userId);
+
+        userRef.update("saveTopic", FieldValue.arrayUnion(topicRef))
+                .addOnSuccessListener(aVoid -> {
+                    ToastUtils.showShortToast(TopicDetail.this, "Lưu Topic thành công");
+                    btnLuuTopic.setBackgroundResource(R.drawable.unsave_public_topic);
+                    btnLuuTopic.setOnClickListener(view -> alertUnsaveTopic());
+                })
+                .addOnFailureListener(e -> ToastUtils.showShortToast(TopicDetail.this, "Lỗi lưu topic: " + e.getMessage()));
+    }
+
+    private void unsaveTopicFromUser() {
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String topicId = getIntent().getStringExtra("topicID");
+        DocumentReference topicRef = db.collection("topics").document(topicId);
+        DocumentReference userRef = db.collection("users").document(userId);
+
+        userRef.update("saveTopic", FieldValue.arrayRemove(topicRef))
+                .addOnSuccessListener(aVoid -> {
+                    ToastUtils.showShortToast(TopicDetail.this, "Hủy lưu Topic thành công");
+                    btnLuuTopic.setBackgroundResource(R.drawable.save_public_topic);
+                    btnLuuTopic.setOnClickListener(view -> alertSaveTopic());
+
+                    // Trả kết quả để cập nhật lại danh sách topic đã lưu
+                    Intent resultIntent = new Intent();
+                    setResult(RESULT_OK, resultIntent);
+                })
+                .addOnFailureListener(e -> ToastUtils.showShortToast(TopicDetail.this, "Lỗi hủy lưu topic: " + e.getMessage()));
+    }
+
+    private void alertUnsaveTopic() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Hủy lưu Topic");
+        builder.setMessage("Bạn có chắc chắn muốn hủy lưu Topic này không?");
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            unsaveTopicFromUser();
+            dialog.dismiss();
+        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
