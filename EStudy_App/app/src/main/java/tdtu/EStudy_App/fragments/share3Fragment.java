@@ -76,8 +76,10 @@ public class share3Fragment extends Fragment implements TopicBrowseAdapter.OnTop
                                             Timestamp createTime = document1.getTimestamp("createTime");
                                             long numWord = document1.getLong("numWord");
                                             String status = document1.getString("status");
+                                            DocumentReference userCreateRef = document1.getDocumentReference("userCreate");
+                                            String userIdOfTopic = userCreateRef != null ? userCreateRef.getId() : null;
 
-                                            Topic topic = new Topic(id, name, status, userId, createTime, (int) numWord);
+                                            Topic topic = new Topic(id, name, status, userIdOfTopic, createTime, (int) numWord);
                                             loadedTopics.add(topic);
                                         }
                                         topicBrowseAdapter.updateTopics(loadedTopics);
