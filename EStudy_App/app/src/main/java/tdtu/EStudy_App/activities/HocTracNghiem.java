@@ -75,7 +75,7 @@ public class HocTracNghiem extends AppCompatActivity implements OnWordMarkedList
             finish();
         }
 
-        cardTracNghiemAdapter = new CardTracNghiemAdapter(this, wordList, option, HocTracNghiem.this); //chỗ này
+        cardTracNghiemAdapter = new CardTracNghiemAdapter(this, wordList, option, HocTracNghiem.this, viewPagerCardTN); //chỗ này
         viewPagerCardTN.setAdapter(cardTracNghiemAdapter);
         countNumTN.setText("1/" + wordList.size());
 
@@ -146,16 +146,6 @@ public class HocTracNghiem extends AppCompatActivity implements OnWordMarkedList
                 textToSpeech.setLanguage(Locale.US);
             }
         });
-    }
-
-    private List<Word> suffleWordList(List<Word> wordList) {
-        for (int i = 0; i < wordList.size(); i++) {
-            int randomIndex = (int) (Math.random() * wordList.size());
-            Word temp = wordList.get(i);
-            wordList.set(i, wordList.get(randomIndex));
-            wordList.set(randomIndex, temp);
-        }
-        return wordList;
     }
 
     @Override

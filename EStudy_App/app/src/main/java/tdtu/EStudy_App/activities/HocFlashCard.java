@@ -5,20 +5,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Parcelable;
 import android.speech.tts.TextToSpeech;
-import android.util.ArraySet;
-import android.util.Log;
-import android.view.MotionEvent;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,7 +32,6 @@ import tdtu.EStudy_App.adapters.CardAdapter;
 import tdtu.EStudy_App.adapters.OnWordMarkedListener;
 import tdtu.EStudy_App.models.Word;
 import tdtu.EStudy_App.utils.ToastUtils;
-import tdtu.EStudy_App.viewmodels.QuizViewModel;
 
 public class HocFlashCard extends AppCompatActivity implements OnWordMarkedListener {
 
