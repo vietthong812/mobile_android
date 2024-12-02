@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.WordViewHolder
     private String option; //CHỗ này
     private Boolean isEnglishFront;
     private OnWordMarkedListener onWordMarkedListener;
+    private SparseArray<WordViewHolder> viewHolderCache = new SparseArray<>();
 
     public CardAdapter(Context context, List<Word> wordList, String option, OnWordMarkedListener onWordMarkedListener) {
         this.context = context;
@@ -68,6 +70,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.WordViewHolder
     @Override
     public void onBindViewHolder(@NonNull WordViewHolder holder, int position) {
         Word word = wordList.get(position);
+        viewHolderCache.put(position, holder);
 
         if (isEnglishFront) {
             holder.tvName.setText(word.getName());
@@ -123,7 +126,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.WordViewHolder
         holder.cardView.setOnClickListener(v -> flipCard(holder));
     }
 
-    private void flipCard(WordViewHolder holder) {
+    public void flipCard(WordViewHolder holder) {
         CardView cardView = holder.cardView;
         float cameraDistance = 15000 * holder.itemView.getResources().getDisplayMetrics().density;
         cardView.setCameraDistance(cameraDistance);
@@ -169,6 +172,21 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.WordViewHolder
             btnSave = itemView.findViewById(R.id.btnSave);
             cardView = itemView.findViewById(R.id.currentCard);
         }
+
+
     }
+    public void flipCardAtPosition(int position) {
+        WordViewHolder holder = (WordViewHolder) viewHolderCache.get(position);
+        if (holder != null) {
+            flipCard(holder);
+        }
+
+    }
+
+    public void setEnglishFront(boolean isEnglishFront) {
+        this.isEnglishFront = isEnglishFront;
+        notifyDataSetChanged();
+    }
+
 
 }

@@ -118,4 +118,5 @@ public class Word implements Parcelable {
         parcel.writeString(topic);
         parcel.writeString(state);
     }
+
 }
