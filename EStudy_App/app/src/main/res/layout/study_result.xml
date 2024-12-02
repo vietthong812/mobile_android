@@ -58,11 +58,13 @@
                 android:text="Xuất Sắc"
                 android:textSize="50sp"
                 android:textColor="@color/lightgreen"/>
+
             <LinearLayout
+                android:id="@+id/correctAnswer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@color/lightgrey">
+                android:background="@color/lightgrey"
+                android:orientation="horizontal">
 
                 <!-- CardView chứa "Tất cả Folder" nằm bên trái -->
                 <androidx.cardview.widget.CardView
@@ -76,13 +78,13 @@
                         android:id="@+id/tvDung"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:paddingLeft="20dp"
+                        android:paddingTop="5dp"
+                        android:paddingRight="20dp"
                         android:text="Các câu trả lời đúng"
                         android:textColor="@color/white"
-                        android:paddingLeft="20dp"
-                        android:paddingRight="20dp"
-                        android:paddingTop="5dp"
-                        android:textSize="15sp"
-                        android:layout_marginBottom="8dp" />
+                        android:textSize="15sp" />
                 </androidx.cardview.widget.CardView>
 
                 <View
@@ -95,24 +97,26 @@
                     android:id="@+id/soLuongDung"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
                     android:text="20/20"
-                    android:textStyle="bold"
                     android:textColor="@color/green"
 
-                    android:paddingTop="5dp"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/ViewTraLoiDung"/>
+
             <LinearLayout
+                android:id="@+id/wrongAnswer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginTop="10dp"
-                android:background="@color/lightgrey">
+                android:background="@color/lightgrey"
+                android:orientation="horizontal">
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="wrap_content"
@@ -124,13 +128,13 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:paddingLeft="20dp"
+                        android:paddingTop="5dp"
+                        android:paddingRight="20dp"
                         android:text="Các câu trả lời sai"
                         android:textColor="@color/white"
-                        android:paddingLeft="20dp"
-                        android:paddingRight="20dp"
-                        android:paddingTop="5dp"
-                        android:textSize="15sp"
-                        android:layout_marginBottom="8dp" />
+                        android:textSize="15sp" />
                 </androidx.cardview.widget.CardView>
 
                 <View
@@ -143,12 +147,12 @@
                     android:id="@+id/soLuongSai"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
                     android:text="0/20"
-                    android:textStyle="bold"
                     android:textColor="@color/red"
 
-                    android:paddingTop="5dp"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
             <TextView
