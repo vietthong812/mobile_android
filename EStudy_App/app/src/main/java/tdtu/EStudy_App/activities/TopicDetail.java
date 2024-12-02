@@ -61,6 +61,13 @@ public class TopicDetail extends AppCompatActivity  implements OnWordMarkedListe
     private String statusTopic;
     TopicViewModel topicViewModel;
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        fetchWordList();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -145,44 +152,9 @@ public class TopicDetail extends AppCompatActivity  implements OnWordMarkedListe
         });
 
         wordList = new ArrayList<>();
-        quizViewModel = new ViewModelProvider(this).get(QuizViewModel.class);
-//        quizViewModel.loadWordList(id, new QuizViewModel.WordListCallback() {
-//            @Override
-//            public void onWordListLoaded(List<Word> words) {
-//                wordList = words;
-//                wordListAdapter = new WordListAdapter(TopicDetail.this, words);
-//                recyclerViewTatCaCacThe.setAdapter(wordListAdapter);
-//                numWord.setText(getString(R.string.num_words, String.format(Locale.getDefault(), "%d", words.size())));
-//            }
-//
-//            @Override
-//            public void onError(Exception e) {
-//                ToastUtils.showShortToast(TopicDetail.this, "Error: " + e.getMessage());
-//            }
-//        });
+        fetchWordList();
 
-        quizViewModel.loadWordsAndMarkedWords(topicId, userId, new QuizViewModel.WordListCallback() {
-            @Override
-            public void onWordListLoaded(List<Word> words) {
-                wordList = words;
-                wordListAdapter = new WordListAdapter(TopicDetail.this, words, TopicDetail.this);
 
-                topicViewModel = new ViewModelProvider(TopicDetail.this).get(TopicViewModel.class);
-
-                topicViewModel.getTopicProgress(topicId, userId, (learnedWordsMap, learningWordsMap, unlearnWordsMap) -> {
-                    wordListAdapter.setProgressMaps(learnedWordsMap, learningWordsMap, unlearnWordsMap);
-                    wordListAdapter.notifyDataSetChanged();
-                });
-
-                recyclerViewTatCaCacThe.setAdapter(wordListAdapter);
-                numWord.setText(getString(R.string.num_words, String.format(Locale.getDefault(), "%d", words.size())));
-            }
-
-            @Override
-            public void onError(Exception e) {
-                Toast.makeText(TopicDetail.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
 
         btnDelete.setOnClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -435,5 +407,33 @@ public class TopicDetail extends AppCompatActivity  implements OnWordMarkedListe
         } catch (IOException e) {
             ToastUtils.showLongToast(this, "Xuất file thất bại");
         }
+    }
+
+
+    private void fetchWordList() {
+
+        quizViewModel = new ViewModelProvider(this).get(QuizViewModel.class);
+        quizViewModel.loadWordsAndMarkedWords(topicId, userId, new QuizViewModel.WordListCallback() {
+            @Override
+            public void onWordListLoaded(List<Word> words) {
+                wordList = words;
+                wordListAdapter = new WordListAdapter(TopicDetail.this, words, TopicDetail.this);
+
+                topicViewModel = new ViewModelProvider(TopicDetail.this).get(TopicViewModel.class);
+
+                topicViewModel.getTopicProgress(topicId, userId, (learnedWordsMap, learningWordsMap, unlearnWordsMap) -> {
+                    wordListAdapter.setProgressMaps(learnedWordsMap, learningWordsMap, unlearnWordsMap);
+                    wordListAdapter.notifyDataSetChanged();
+                });
+
+                recyclerViewTatCaCacThe.setAdapter(wordListAdapter);
+                numWord.setText(getString(R.string.num_words, String.format(Locale.getDefault(), "%d", words.size())));
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Toast.makeText(TopicDetail.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
