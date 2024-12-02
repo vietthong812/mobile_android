@@ -33,6 +33,7 @@ import java.util.Map;
 import tdtu.EStudy_App.R;
 import tdtu.EStudy_App.models.User;
 import tdtu.EStudy_App.network.ConfigCloudinary;
+import tdtu.EStudy_App.utils.ToastUtils;
 
 public class EditProfile extends AppCompatActivity {
 
@@ -171,13 +172,13 @@ public class EditProfile extends AppCompatActivity {
                 .set(updatedUser)
                 .addOnSuccessListener(aVoid -> {
                     progressUpdateUP.setVisibility(View.GONE);
-                    Toast.makeText(EditProfile.this, "Profile updated successfully!", Toast.LENGTH_SHORT).show();
+                    ToastUtils.showShortToast(EditProfile.this, "Cập nhật hồ sơ thành công");
                     finish();  // Go back to the previous screen
                 })
                 .addOnFailureListener(e -> {
                     progressUpdateUP.setVisibility(View.GONE);
                     btnSaveProfile.setVisibility(View.VISIBLE);
-                    Toast.makeText(EditProfile.this, "Failed to update profile: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    ToastUtils.showShortToast(EditProfile.this, "Cập nhật hồ sơ thất bại");
                 });
     }
 
@@ -188,7 +189,7 @@ public class EditProfile extends AppCompatActivity {
         ConfigCloudinary.uploadImage(this, selectedImageUri, new UploadCallback() {
             @Override
             public void onStart(String requestId) {
-                Toast.makeText(EditProfile.this, "Đang phân giải hình ảnh...", Toast.LENGTH_SHORT).show();
+                ToastUtils.showShortToast(EditProfile.this, "Đang tải ảnh lên...");
             }
 
             @Override

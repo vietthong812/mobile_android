@@ -65,11 +65,13 @@ public class HocFlashCard extends AppCompatActivity implements OnWordMarkedListe
         option = intent.getStringExtra("Option");
         titleFC.setText("Flashcard - " + topicName);
 
+
+
+
         wordList = intent.getParcelableArrayListExtra("wordList");
         if (wordList == null || wordList.isEmpty()) {
-            ToastUtils.showShortToast(this, "No words available!");
-
-            return;
+            ToastUtils.showShortToast(this, "Không có từ vựng nào được lưu trữ");
+            finish();
         }
 
 
@@ -102,6 +104,7 @@ public class HocFlashCard extends AppCompatActivity implements OnWordMarkedListe
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 learnedWords.add(wordList.get(position));
+                cardAdapter.setEnglishFront(true);
                 countNumFC.setText((position + 1) + "/" + wordList.size());
                 if(option != null && option.equals("AutoPronunciation" )){
                     playWordSound(wordList.get(position).getName());
@@ -159,17 +162,27 @@ public class HocFlashCard extends AppCompatActivity implements OnWordMarkedListe
     private final Runnable autoPlayRunnable = new Runnable() {
         @Override
         public void run() {
+            if (!isAutoPlaying) {
+                return;
+            }
+
             int currentItem = viewPagerCardFC.getCurrentItem();
-            if (currentItem < wordList.size() - 1) {
-                viewPagerCardFC.setCurrentItem(currentItem + 1);
-                autoPlayHandler.postDelayed(this, 3000);
-            } else {
-                isAutoPlaying = false; // Dừng Auto Play khi đến trang cuối
-                btnAutoPlayFC.setBackgroundResource(R.drawable.auto_icon);
+            if (currentItem < wordList.size()) {
+                cardAdapter.flipCardAtPosition(currentItem);
+
+
+                autoPlayHandler.postDelayed(() -> {
+                    if (currentItem < wordList.size() - 1) {
+                        viewPagerCardFC.setCurrentItem(currentItem + 1);
+                        autoPlayHandler.postDelayed(autoPlayRunnable, 3000);
+                    } else {
+                        isAutoPlaying = false;
+                        btnAutoPlayFC.setBackgroundResource(R.drawable.auto_icon);
+                    }
+                }, 3000);
             }
         }
     };
-
     private void playWordSound(String text) {
         if (textToSpeech != null) {
             String utteranceId = String.valueOf(System.currentTimeMillis());
@@ -202,5 +215,6 @@ public class HocFlashCard extends AppCompatActivity implements OnWordMarkedListe
                     .update("wordIds", FieldValue.arrayRemove(word.getId()));
         }
     }
+
 
 }

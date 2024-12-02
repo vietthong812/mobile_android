@@ -75,7 +75,7 @@ public class Register extends AppCompatActivity {
                             user.put("email", email);
                             user.put("avatar", null);
                             documentReference.set(user);
-                            ToastUtils.showShortToast(Register.this, "User created");
+                            ToastUtils.showShortToast(Register.this, "Đăng ký tài khoản thành công");
                             progressRegister.setVisibility(View.GONE);
                             btnRegister.setVisibility(View.VISIBLE);
                             finish();
@@ -90,7 +90,7 @@ public class Register extends AppCompatActivity {
                         }
                     });
                 } else {
-                    ToastUtils.showShortToast(Register.this, "Password does not match");
+                    ToastUtils.showShortToast(Register.this, "Mật khẩu không khớp");
                     progressRegister.setVisibility(View.GONE);
                     btnRegister.setVisibility(View.VISIBLE);
                 }
