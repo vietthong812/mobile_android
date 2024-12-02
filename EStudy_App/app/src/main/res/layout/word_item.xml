@@ -61,6 +61,19 @@
                 android:layout_height="1dp"
                 android:background="@color/black"
                 />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="5dp"
+                android:layout_marginTop="10dp"
+                android:gravity="end"
+                android:text="Status"
+                android:textSize="18dp"
+                android:textColor="@color/black"
+                android:layout_gravity="center"
+                android:id="@+id/statusWord"
+                />
         </LinearLayout>
 
         <LinearLayout

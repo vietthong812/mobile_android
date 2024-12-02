@@ -95,7 +95,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
     }
 
     public static class WordViewHolder extends RecyclerView.ViewHolder {
-        TextView edtWordName, edtWordMean;
+        TextView edtWordName, edtWordMean, statusWord;
         ImageButton btnSound, btnSave;
 
         public WordViewHolder(@NonNull View itemView) {
@@ -104,6 +104,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
             edtWordMean = itemView.findViewById(R.id.edtWordMean);
             btnSound = itemView.findViewById(R.id.btnSoundWordList);
             btnSave = itemView.findViewById(R.id.btnSaveWordList);
+            statusWord = itemView.findViewById(R.id.statusWord);
         }
     }
 }
