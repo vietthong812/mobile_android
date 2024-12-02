@@ -58,7 +58,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        setUserData();  // Reload user data when fragment resumes
+        setUserData();
     }
 
     @Override

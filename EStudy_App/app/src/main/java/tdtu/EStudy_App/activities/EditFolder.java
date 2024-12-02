@@ -16,6 +16,7 @@ import androidx.exifinterface.media.ExifInterface;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import tdtu.EStudy_App.R;
+import tdtu.EStudy_App.utils.ToastUtils;
 
 public class EditFolder extends AppCompatActivity {
 
@@ -52,7 +53,7 @@ public class EditFolder extends AppCompatActivity {
     private void saveNameFolder() {
         String nameFolder = editEF.getText().toString();
         if (nameFolder.isEmpty()) {
-            Toast.makeText(this, "Vui lòng nhập tên folder", Toast.LENGTH_SHORT).show();
+            ToastUtils.showShortToast(this, "Vui lòng nhập tên thư mục");
             return;
         }
 
@@ -61,10 +62,10 @@ public class EditFolder extends AppCompatActivity {
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("updatedName", nameFolder);
                 setResult(RESULT_OK, resultIntent);
-                Toast.makeText(this, "Cập nhật thư mục thành công", Toast.LENGTH_SHORT).show();
+                ToastUtils.showShortToast(this, "Cập nhật thư mục thành công");
                 finish();
             } else {
-                Toast.makeText(this, "Cập nhật thư mục thất bại", Toast.LENGTH_SHORT).show();
+                ToastUtils.showShortToast(this, "Cập nhật thư mục thất bại");
             }
         });
     }

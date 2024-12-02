@@ -2,7 +2,9 @@
 package tdtu.EStudy_App.activities;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -20,18 +22,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
+import android.Manifest;
 import tdtu.EStudy_App.R;
 import tdtu.EStudy_App.adapters.OnWordMarkedListener;
 import tdtu.EStudy_App.adapters.WordListAdapter;
@@ -211,7 +216,7 @@ public class TopicDetail extends AppCompatActivity  implements OnWordMarkedListe
         btnLuuTopic.setOnClickListener(view -> alertSaveTopic());
 
         cardXuatFile.setOnClickListener(view -> {
-            //
+            alertExportFile();
         });
 
 
@@ -375,6 +380,49 @@ public class TopicDetail extends AppCompatActivity  implements OnWordMarkedListe
             db.collection("topics").document(topicId)
                     .collection("markedList").document(userId)
                     .update("wordIds", FieldValue.arrayRemove(word.getId()));
+        }
+    }
+
+
+    private void alertExportFile(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Xuất file CSV");
+        builder.setMessage("Xuất danh sách từ vựng ra file CSV?");
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            String csvContent = generateCSVContent(wordList);
+            saveCSVToFile(csvContent);
+            dialog.dismiss();
+        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+    private String generateCSVContent(List<Word> wordList) {
+        StringBuilder csvContent = new StringBuilder();
+        csvContent.append("[Word],[Meaning]\n");
+        for (Word word : wordList) {
+            csvContent.append(word.getName()).append(",").append(word.getMeaning()).append("\n");
+        }
+        return csvContent.toString();
+    }
+    private void saveCSVToFile(String csvContent) {
+        if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+            return;
+        }
+
+        String currentDate = new SimpleDateFormat("dd_MM_yyyy_HHmmss", Locale.getDefault()).format(new Date());
+        String fileName = "word_list_ex_" + currentDate + ".csv";
+
+        File downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        File csvFile = new File(downloadDir, fileName);
+
+        try (FileWriter writer = new FileWriter(csvFile)) {
+            writer.write(csvContent);
+            ToastUtils.showLongToast(this, "Xuất file thành công:\n " + csvFile.getAbsolutePath());
+        } catch (IOException e) {
+            ToastUtils.showLongToast(this, "Xuất file thất bại");
         }
     }
 }

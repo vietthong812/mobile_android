@@ -14,6 +14,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+import tdtu.EStudy_App.utils.ToastUtils;
+
 public class ConfigCloudinary {
 
     private static boolean isInitialized = false;
@@ -39,7 +41,7 @@ public class ConfigCloudinary {
                     .callback(new UploadCallback() {
                         @Override
                         public void onStart(String requestId) {
-                            Toast.makeText(context, "Đang tải ảnh...", Toast.LENGTH_SHORT).show();
+                            ToastUtils.showShortToast(context, "Đang tải ảnh lên...");
                         }
 
                         @Override

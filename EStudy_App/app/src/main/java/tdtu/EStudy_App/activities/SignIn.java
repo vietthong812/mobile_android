@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import tdtu.EStudy_App.R;
+import tdtu.EStudy_App.utils.ToastUtils;
 
 public class SignIn extends AppCompatActivity {
     Button btnRegister,btnSignIn;
@@ -49,7 +50,7 @@ public class SignIn extends AppCompatActivity {
         initialize();
         btnSignIn.setOnClickListener(v -> {
             if (edtEmail.getText().toString().isEmpty() || edtPassword.getText().toString().isEmpty()) {
-                Toast.makeText(SignIn.this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+                ToastUtils.showShortToast(SignIn.this, "Vui lòng nhập đầy đủ thông tin");
                 return;
             }
             progressLogin.setVisibility(View.VISIBLE);
@@ -67,13 +68,13 @@ public class SignIn extends AppCompatActivity {
                     editor.apply();
 
 
-                    Toast.makeText(SignIn.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                    ToastUtils.showShortToast(SignIn.this, "Đăng nhập thành công");
                     Intent intent = new Intent(SignIn.this, MainActivity.class);
                     progressLogin.setVisibility(View.GONE);
                     btnSignIn.setVisibility(View.VISIBLE);
                     startActivity(intent);
                 } else {
-                    Toast.makeText(SignIn.this, "Email hoặc Mật khẩu không chính xác", Toast.LENGTH_SHORT).show();
+                    ToastUtils.showShortToast(SignIn.this, "Email hoặc mật khẩu không chính xác");
                     progressLogin.setVisibility(View.GONE);
                     btnSignIn.setVisibility(View.VISIBLE);
                 }

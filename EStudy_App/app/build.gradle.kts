@@ -57,6 +57,7 @@ dependencies {
     implementation (libs.glide)
     annotationProcessor (libs.compiler)
     implementation (libs.cloudinary.android)
+    implementation(libs.opencsv)
 
 
 

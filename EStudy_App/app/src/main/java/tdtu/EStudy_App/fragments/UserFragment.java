@@ -32,6 +32,7 @@ import tdtu.EStudy_App.activities.EditPassword;
 import tdtu.EStudy_App.activities.EditProfile;
 import tdtu.EStudy_App.activities.SignIn;
 import tdtu.EStudy_App.models.User;
+import tdtu.EStudy_App.utils.ToastUtils;
 
 public class UserFragment extends Fragment {
 
@@ -136,15 +137,15 @@ public class UserFragment extends Fragment {
                             tvEmail.setText(email != null ? "Email: " +email : "Chưa có email");
                             tvTenDayDu.setText(fullName != null ? fullName : "Chưa có tên đầy đủ");
                         } else {
-                            Toast.makeText(getContext(), "Không tìm thấy thông tin người dùng", Toast.LENGTH_SHORT).show();
+                            ToastUtils.showLongToast(getContext(), "Không tìm thấy dữ liệu người dùng");
                             progressLoadAnh.setVisibility(View.GONE);
                         }
                     })
                     .addOnFailureListener(e -> {
-                        Toast.makeText(getContext(), "Lỗi khi lấy dữ liệu: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        ToastUtils.showLongToast(getContext(), "Lỗi khi lấy dữ liệu: " + e.getMessage());
                     });
         } else {
-            Toast.makeText(getContext(), "Người dùng chưa đăng nhập", Toast.LENGTH_SHORT).show();
+            ToastUtils.showLongToast(getContext(), "Không tìm thấy người dùng hiện tại");
         }
     }
 

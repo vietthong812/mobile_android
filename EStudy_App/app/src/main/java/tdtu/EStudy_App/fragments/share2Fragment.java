@@ -29,6 +29,7 @@ import tdtu.EStudy_App.activities.TopicDetail;
 import tdtu.EStudy_App.adapters.TopicBrowseAdapter;
 import tdtu.EStudy_App.adapters.TopicHomeAdapter;
 import tdtu.EStudy_App.models.Topic;
+import tdtu.EStudy_App.utils.ToastUtils;
 
 public class share2Fragment extends Fragment implements TopicBrowseAdapter.OnTopicClickListener {
 
@@ -90,7 +91,7 @@ public class share2Fragment extends Fragment implements TopicBrowseAdapter.OnTop
                         Toast.makeText(getContext(), "Failed to load topics: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     });
         } else {
-            Toast.makeText(getContext(), "User not logged in", Toast.LENGTH_SHORT).show();
+            ToastUtils.showLongToast(getContext(), "User is not logged in");
         }
     }
 
