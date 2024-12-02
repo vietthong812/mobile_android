@@ -81,6 +81,8 @@ public class KetQuaHocTap extends AppCompatActivity {
 
         soLuongDung.setText(learnedWords.size() + "/" + topicWords.size());
         soLuongSai.setText(wrongWordsList.size() + "/" + topicWords.size());
+
+
     }
 
     protected void init(){

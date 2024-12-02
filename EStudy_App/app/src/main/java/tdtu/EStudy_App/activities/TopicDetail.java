@@ -43,6 +43,7 @@ import tdtu.EStudy_App.adapters.WordListAdapter;
 import tdtu.EStudy_App.models.Word;
 import tdtu.EStudy_App.utils.ToastUtils;
 import tdtu.EStudy_App.viewmodels.QuizViewModel;
+import tdtu.EStudy_App.viewmodels.TopicViewModel;
 
 public class TopicDetail extends AppCompatActivity  implements OnWordMarkedListener {
     TextView nameTopic, numWord, author, date, status;
@@ -58,6 +59,8 @@ public class TopicDetail extends AppCompatActivity  implements OnWordMarkedListe
     private String topicId;
     private String userId;
     private String statusTopic;
+    TopicViewModel topicViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -163,6 +166,14 @@ public class TopicDetail extends AppCompatActivity  implements OnWordMarkedListe
             public void onWordListLoaded(List<Word> words) {
                 wordList = words;
                 wordListAdapter = new WordListAdapter(TopicDetail.this, words, TopicDetail.this);
+
+                topicViewModel = new ViewModelProvider(TopicDetail.this).get(TopicViewModel.class);
+
+                topicViewModel.getTopicProgress(topicId, userId, (learnedWordsMap, learningWordsMap, unlearnWordsMap) -> {
+                    wordListAdapter.setProgressMaps(learnedWordsMap, learningWordsMap, unlearnWordsMap);
+                    wordListAdapter.notifyDataSetChanged();
+                });
+
                 recyclerViewTatCaCacThe.setAdapter(wordListAdapter);
                 numWord.setText(getString(R.string.num_words, String.format(Locale.getDefault(), "%d", words.size())));
             }

@@ -1,5 +1,7 @@
 package tdtu.EStudy_App.viewmodels;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -10,7 +12,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import tdtu.EStudy_App.models.Topic;
 
@@ -89,5 +93,60 @@ public class TopicViewModel extends ViewModel {
                 }
             }
         });
+    }
+
+    public void getTopicProgress(String topicId, String userId, OnProgressLoadedListener callback) {
+        db.collection("topics").document(topicId).collection("progress").document(userId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null && task.getResult().exists()) {
+                        DocumentSnapshot document = task.getResult();
+                        Map<String, Integer> learnedWordsMap = (Map<String, Integer>) document.get("learnedWords");
+                        Map<String, Integer> learningWordsMap = (Map<String, Integer>) document.get("learningWords");
+                        Map<String, Integer> unlearnWordsMap = (Map<String, Integer>) document.get("unlearnWords");
+
+                        callback.onProgressLoaded(learnedWordsMap, learningWordsMap, unlearnWordsMap);
+                    } else {
+                        initializeProgress(topicId, userId, callback);
+                    }
+                });
+    }
+
+    private void initializeProgress(String topicId, String userId, OnProgressLoadedListener callback) {
+        db.collection("topics").document(topicId).collection("words")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Map<String, Integer> learnedWordsMap = new HashMap<>();
+                        Map<String, Integer> learningWordsMap = new HashMap<>();
+                        Map<String, Integer> unlearnWordsMap = new HashMap<>();
+
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            String wordId = document.getId();
+                            unlearnWordsMap.put(wordId, 0);
+                        }
+
+                        Map<String, Object> initialData = new HashMap<>();
+                        initialData.put("learnedWords", learnedWordsMap);
+                        initialData.put("learningWords", learningWordsMap);
+                        initialData.put("unlearnWords", unlearnWordsMap);
+
+                        db.collection("topics").document(topicId)
+                                .collection("progress").document(userId)
+                                .set(initialData)
+                                .addOnSuccessListener(aVoid -> {
+                                    callback.onProgressLoaded(learnedWordsMap, learningWordsMap, unlearnWordsMap);
+                                })
+                                .addOnFailureListener(e -> {
+                                    Log.w("initializeProgress", "Error creating progress document", e);
+                                });
+                    } else {
+                        Log.w("initializeProgress", "Error getting words", task.getException());
+                    }
+                });
+    }
+
+    public interface OnProgressLoadedListener {
+        void onProgressLoaded(Map<String, Integer> learnedWordsMap, Map<String, Integer> learningWordsMap, Map<String, Integer> unlearnWordsMap);
     }
 }
