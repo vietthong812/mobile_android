@@ -16,6 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Set;
+import java.util.HashSet;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -32,14 +34,18 @@ public class CardTracNghiemAdapter extends RecyclerView.Adapter<CardTracNghiemAd
     private SparseArray<List<String>> randomizedAnswers = new SparseArray<>(); // Lưu câu trả lời đã được xáo trộn
     private Random random = new Random();
     private TextToSpeech textToSpeech;
+    private String option;
     private boolean isEnglishFront;
     private OnWordMarkedListener onWordMarkedListener;
 
-    public CardTracNghiemAdapter(Context context, List<Word> wordList, boolean isEnglishFront, OnWordMarkedListener onWordMarkedListener) {
+    private Set<Word> learnedWords = new HashSet<>();
+    private Set<Word> wrongWordsList = new HashSet<>();
+
+    public CardTracNghiemAdapter(Context context, List<Word> wordList, String option, OnWordMarkedListener onWordMarkedListener) {
         this.context = context;
         this.wordList = wordList;
-        this.isEnglishFront = isEnglishFront;
         this.onWordMarkedListener = onWordMarkedListener;
+        this.option = option;
 
         textToSpeech = new TextToSpeech(context, status -> {
             if (status != TextToSpeech.ERROR) {
@@ -48,6 +54,12 @@ public class CardTracNghiemAdapter extends RecyclerView.Adapter<CardTracNghiemAd
                 Toast.makeText(context, "Xuất hiện lỗi trong quá trình khởi tạo TextToSpeech", Toast.LENGTH_SHORT).show();
             }
         });
+
+        if (option == null || option.equals("AutoPronunciation") || option.equals("ShowAnswer")) {
+            isEnglishFront = true;
+        } else if (option.equals("Reverse")) {
+            isEnglishFront = false;
+        }
     }
 
     @NonNull
@@ -136,24 +148,72 @@ public class CardTracNghiemAdapter extends RecyclerView.Adapter<CardTracNghiemAd
         return wordList.size();
     }
 
-    private void selectCard(WordViewHolder holder, int position, int cardIndex) {
-        selectedPositions.put(position, cardIndex);
-        notifyItemChanged(position);
+    public Set<Word> getLearnedWords() {
+        return learnedWords;
     }
 
+    public Set<Word> getWrongWordsList() {
+        return wrongWordsList;
+    }
+
+    private void selectCard(WordViewHolder holder, int position, int cardIndex) {
+        if (option != null && option.equals("ShowAnswer") && selectedPositions.get(position, -1) != -1) {
+            return;
+        }
+
+        selectedPositions.put(position, cardIndex);
+        notifyItemChanged(position);
+
+        Word word = wordList.get(position);
+        List<String> answers = randomizedAnswers.get(position);
+        String selectedAnswer = answers.get(cardIndex);
+
+        if (isEnglishFront && selectedAnswer.equals(word.getMeaning()) || !isEnglishFront && selectedAnswer.equals(word.getName())) {
+            learnedWords.add(word);
+            wrongWordsList.remove(word);
+        } else {
+            wrongWordsList.add(word);
+            learnedWords.remove(word);
+        }
+    }
     private void updateCardBackground(WordViewHolder holder, int position) {
         int selectedCardIndex = selectedPositions.get(position, -1);
         CardView[] cardViews = {holder.cardA, holder.cardB, holder.cardC, holder.cardD};
         TextView[] answerTexts = {holder.daA, holder.daB, holder.daC, holder.daD};
 
         for (int i = 0; i < cardViews.length; i++) {
-            int backgroundColor = (selectedCardIndex == i) ? context.getResources().getColor(R.color.deepblue) : context.getResources().getColor(R.color.white);
-            int textColor = (selectedCardIndex == i) ? context.getResources().getColor(R.color.white) : context.getResources().getColor(R.color.black);
+            int backgroundColor = context.getResources().getColor(R.color.white);
+            int textColor = context.getResources().getColor(R.color.black);
+
+            if (selectedCardIndex == i) {
+                if (option != null && option.equals("ShowAnswer")) {
+                    Word word = wordList.get(position);
+                    List<String> answers = randomizedAnswers.get(position);
+                    String selectedAnswer = answers.get(i);
+
+                    if (isEnglishFront && selectedAnswer.equals(word.getMeaning()) || !isEnglishFront && selectedAnswer.equals(word.getName())) {
+                        backgroundColor = context.getResources().getColor(R.color.green); // Màu xanh cho đáp án đúng
+                    } else {
+                        backgroundColor = context.getResources().getColor(R.color.red); // Màu đỏ cho đáp án sai
+                    }
+                } else {
+                    backgroundColor = context.getResources().getColor(R.color.deepblue);
+                    textColor = context.getResources().getColor(R.color.white);
+                }
+            } else if (selectedCardIndex != -1 && option != null && option.equals("ShowAnswer")) {
+                Word word = wordList.get(position);
+                List<String> answers = randomizedAnswers.get(position);
+                String correctAnswer = isEnglishFront ? word.getMeaning() : word.getName();
+
+                if (answers.get(i).equals(correctAnswer)) {
+                    backgroundColor = context.getResources().getColor(R.color.green); // Màu xanh cho đáp án đúng
+                }
+            }
+
             cardViews[i].setCardBackgroundColor(backgroundColor);
             answerTexts[i].setTextColor(textColor);
         }
     }
-
     private List<String> getRandomAnswers(Word word) {
         List<String> answers = new ArrayList<>();
         if (isEnglishFront) {

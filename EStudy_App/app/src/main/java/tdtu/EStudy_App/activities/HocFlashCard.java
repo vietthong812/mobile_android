@@ -74,6 +74,7 @@ public class HocFlashCard extends AppCompatActivity implements OnWordMarkedListe
         wordList = intent.getParcelableArrayListExtra("wordList");
         if (wordList == null || wordList.isEmpty()) {
             ToastUtils.showShortToast(this, "No words available!");
+
             return;
         }
 
@@ -128,26 +129,6 @@ public class HocFlashCard extends AppCompatActivity implements OnWordMarkedListe
         });
 
         btnAutoPlayFC.setOnClickListener(v -> toggleAutoPlay());
-    }
-
-    private List<Word> suffleWordList(List<Word> wordList) {
-        for (int i = 0; i < wordList.size(); i++) {
-            int randomIndex = (int) (Math.random() * wordList.size());
-            Word temp = wordList.get(i);
-            wordList.set(i, wordList.get(randomIndex));
-            wordList.set(randomIndex, temp);
-        }
-        return wordList;
-    }
-
-    private List<Word> getMarkedWords(List<Word> wordList) {
-        List<Word> markedWords = new ArrayList<>();
-        for (Word word : wordList) {
-            if (word.isMarked()) {
-                markedWords.add(word);
-            }
-        }
-        return markedWords;
     }
 
     protected void init() {

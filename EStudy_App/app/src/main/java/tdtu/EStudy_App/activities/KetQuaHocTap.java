@@ -2,6 +2,7 @@ package tdtu.EStudy_App.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -21,14 +22,17 @@ public class KetQuaHocTap extends AppCompatActivity {
 
 
     private AppCompatButton btnCancleResult;
-    private TextView soLuongDung, soLuongSai;
+    private TextView soLuongDung, soLuongSai, tvDung;
     private Intent intent;
 
     private String topicID;
     private String topicName;
     private ArrayList<Word> learnedWords;
+    private ArrayList<Word> wrongWordsList;
     private ArrayList<Word> topicWords;
     private QuizViewModel quizViewModel;
+
+    private LinearLayout correctAnswer, wrongAnswer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,7 @@ public class KetQuaHocTap extends AppCompatActivity {
         switch (learningType){
             case "flashcard":
                 getResultFlashCard();
+
                 break;
             case "quiz":
                 getResultQuiz();
@@ -58,17 +63,36 @@ public class KetQuaHocTap extends AppCompatActivity {
     }
 
     private void getResultTranslate() {
+        topicID = intent.getStringExtra("topicID");
+        topicName = intent.getStringExtra("topicName");
+        learnedWords = intent.getParcelableArrayListExtra("learnedWords");
+        wrongWordsList = intent.getParcelableArrayListExtra("wrongWordsList");
+        topicWords = intent.getParcelableArrayListExtra("topicWords");
+
+        soLuongDung.setText(learnedWords.size() + "/" + topicWords.size());
+        soLuongSai.setText(wrongWordsList.size() + "/" + topicWords.size());
     }
 
     private void getResultQuiz() {
+        topicID = intent.getStringExtra("topicID");
+        topicName = intent.getStringExtra("topicName");
+        learnedWords = intent.getParcelableArrayListExtra("learnedWords");
+        wrongWordsList = intent.getParcelableArrayListExtra("wrongWordsList");
+        topicWords = intent.getParcelableArrayListExtra("topicWords");
+
+        soLuongDung.setText(learnedWords.size() + "/" + topicWords.size());
+        soLuongSai.setText(wrongWordsList.size() + "/" + topicWords.size());
     }
 
     protected void init(){
         btnCancleResult = findViewById(R.id.btnCancleResult);
         soLuongDung = findViewById(R.id.soLuongDung);
         soLuongSai = findViewById(R.id.soLuongSai);
+        correctAnswer = findViewById(R.id.correctAnswer);
+        wrongAnswer = findViewById(R.id.wrongAnswer);
         quizViewModel = new QuizViewModel();
         intent = getIntent();
+
     }
 
     private void getResultFlashCard(){
@@ -76,5 +100,10 @@ public class KetQuaHocTap extends AppCompatActivity {
         topicName = intent.getStringExtra("topicName");
         learnedWords = intent.getParcelableArrayListExtra("learnedWords");
         topicWords = intent.getParcelableArrayListExtra("topicWords");
+
+        wrongAnswer.setVisibility(LinearLayout.GONE);
+        tvDung = findViewById(R.id.tvDung);
+        tvDung.setText("Đã học");
+        soLuongDung.setText(learnedWords.size() + "/" + topicWords.size());
     }
 }

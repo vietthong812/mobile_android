@@ -53,12 +53,20 @@ public class ChonOptionStudy extends AppCompatActivity {
                     intent1.putParcelableArrayListExtra("wordList", shuffleWordList(getIntent().getParcelableArrayListExtra("wordList")));
                 }
                 else if(checkDaoNgonNgu.isChecked()){
-                    intent1.putExtra("isReverse", true);
+                    intent1.putExtra("Option", "Reverse");
+                    intent1.putParcelableArrayListExtra("wordList", getIntent().getParcelableArrayListExtra("wordList"));
+                }
+                else if(checkTuDongPhatAm.isChecked()){
+                    intent1.putExtra("Option", "AutoPronunciation");
+                    intent1.putParcelableArrayListExtra("wordList", getIntent().getParcelableArrayListExtra("wordList"));
+                }
+                else if(checkHienDapAn.isChecked()){
+                    intent1.putExtra("Option", "ShowAnswer");
+                    intent1.putParcelableArrayListExtra("wordList", getIntent().getParcelableArrayListExtra("wordList"));
                 }
                 else{
                     intent1.putParcelableArrayListExtra("wordList", getIntent().getParcelableArrayListExtra("wordList"));
                 }
-
                 intent1.putExtra("topicID", getIntent().getStringExtra("topicID"));
                 intent1.putExtra("topicName", getIntent().getStringExtra("topicName"));
                 startActivity(intent1);
@@ -72,13 +80,23 @@ public class ChonOptionStudy extends AppCompatActivity {
                     intent1.putParcelableArrayListExtra("wordList", shuffleWordList(getIntent().getParcelableArrayListExtra("wordList")));
                 }
                 else if(checkDaoNgonNgu.isChecked()){
-                    intent1.putExtra("isReverse", true);
+                    intent1.putExtra("Option", "Reverse");
+                    intent1.putParcelableArrayListExtra("wordList", getIntent().getParcelableArrayListExtra("wordList"));
+                }
+                else if(checkTuDongPhatAm.isChecked()){
+                    intent1.putExtra("Option", "AutoPronunciation");
+                    intent1.putParcelableArrayListExtra("wordList", getIntent().getParcelableArrayListExtra("wordList"));
+                }
+                else if(checkHienDapAn.isChecked()){
+                    intent1.putExtra("Option", "ShowAnswer");
+                    intent1.putParcelableArrayListExtra("wordList", getIntent().getParcelableArrayListExtra("wordList"));
+                }
+                else if(checkHocDanhDau.isChecked()){
+                    intent1.putParcelableArrayListExtra("wordList", getMarkedWords(getIntent().getParcelableArrayListExtra("wordList")));
                 }
                 else{
                     intent1.putParcelableArrayListExtra("wordList", getIntent().getParcelableArrayListExtra("wordList"));
                 }
-
-
 
                 intent1.putExtra("topicID", getIntent().getStringExtra("topicID"));
                 intent1.putExtra("topicName", getIntent().getStringExtra("topicName"));
@@ -86,16 +104,6 @@ public class ChonOptionStudy extends AppCompatActivity {
                 finish();
             });
         }
-
-        cardViewDaoThuTu.setOnClickListener(v -> {
-            if (checkDaoThuTu.isChecked()) {
-                checkDaoThuTu.setChecked(false);
-            } else {
-                checkDaoThuTu.setChecked(true);
-            }
-        });
-
-
     }
 
     protected void init(){
@@ -163,5 +171,13 @@ public class ChonOptionStudy extends AppCompatActivity {
         return wordList;
     }
 
-
+    private ArrayList<Word> getMarkedWords(ArrayList<Word> wordList) {
+        ArrayList<Word> markedWords = new ArrayList<>();
+        for (Word word : wordList) {
+            if (word.isMarked()) {
+                markedWords.add(word);
+            }
+        }
+        return markedWords;
+    }
 }
