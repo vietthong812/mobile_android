@@ -60,19 +60,6 @@
 
         </LinearLayout>
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnEditFolder"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/edit_icon"
-            android:backgroundTint="@color/deepblue"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?attr/selectableItemBackground"
-            android:textColor="@color/white" />
-
 
 
     </LinearLayout>
