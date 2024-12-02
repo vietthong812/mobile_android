@@ -95,6 +95,12 @@ public class QuizViewModel extends ViewModel {
                             Map<String, Long> learningWordsMap = (Map<String, Long>) document.get("learningWords");
                             Map<String, Long> unlearnWordsMap = (Map<String, Long>) document.get("unlearnWords");
 
+                            for (Word word : topicWords){
+                                if (!learningWordsMap.containsKey(word.getId()) && !learnedWordsMap.containsKey(word.getId())) {
+                                    unlearnWordsMap.put(word.getId(), 0l);
+                                }
+                            }
+
                             for (Word word : learnedWords) {
                                 String wordId = word.getId();
                                 if (unlearnWordsMap.containsKey(wordId)) {

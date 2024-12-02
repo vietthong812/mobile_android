@@ -13,8 +13,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import tdtu.EStudy_App.R;
 import tdtu.EStudy_App.models.Word;
@@ -24,6 +26,9 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
     private List<Word> wordList;
     private TextToSpeech textToSpeech;
     private OnWordMarkedListener onWordMarkedListener;
+    private Map<String, Integer> learnedWordsMap = new HashMap<>();
+    private Map<String, Integer> learningWordsMap = new HashMap<>();
+    private Map<String, Integer> unlearnWordsMap = new HashMap<>();
 
     public WordListAdapter(Context context, List<Word> wordList, OnWordMarkedListener onWordMarkedListener) {
         this.context = context;
@@ -51,6 +56,14 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
         Word word = wordList.get(position);
         holder.edtWordName.setText(word.getName());
         holder.edtWordMean.setText(word.getMeaning());
+
+        if (learnedWordsMap.containsKey(word.getId())) {
+            holder.statusWord.setText("Đã học");
+        } else if (learningWordsMap.containsKey(word.getId())) {
+            holder.statusWord.setText("Đang học");
+        } else if (unlearnWordsMap.containsKey(word.getId())) {
+            holder.statusWord.setText("Chưa học");
+        }
 
         holder.btnSound.setOnClickListener(v -> {
             holder.btnSound.setBackgroundResource(R.drawable.sound_icon_selected);
@@ -106,5 +119,11 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
             btnSave = itemView.findViewById(R.id.btnSaveWordList);
             statusWord = itemView.findViewById(R.id.statusWord);
         }
+    }
+
+    public void setProgressMaps(Map<String, Integer> learnedWordsMap, Map<String, Integer> learningWordsMap, Map<String, Integer> unlearnWordsMap) {
+        this.learnedWordsMap = learnedWordsMap != null ? learnedWordsMap : new HashMap<>();
+        this.learningWordsMap = learningWordsMap != null ? learningWordsMap : new HashMap<>();
+        this.unlearnWordsMap = unlearnWordsMap != null ? unlearnWordsMap : new HashMap<>();
     }
 }
