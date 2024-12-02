@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.speech.tts.TextToSpeech;
 
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,12 +20,14 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import tdtu.EStudy_App.R;
@@ -50,13 +53,19 @@ public class HocFlashCard extends AppCompatActivity implements OnWordMarkedListe
     private String topicId;
     private String userId;
     private FirebaseFirestore db;
+    private long startTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.study_flashcard);
 
+        startTime = System.currentTimeMillis();
+
         init();
+
+
 
         btnCancelFC.setOnClickListener(v -> finish());
 
@@ -120,6 +129,7 @@ public class HocFlashCard extends AppCompatActivity implements OnWordMarkedListe
             intent1.putParcelableArrayListExtra("learnedWords", new ArrayList<Word>(learnedWords));
             intent1.putParcelableArrayListExtra("topicWords", new ArrayList<Word>(wordList));
             intent1.putExtra("learningType", "flashcard");
+
             startActivity(intent1);
             finish();
         });

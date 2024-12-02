@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.speech.tts.TextToSpeech;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,12 +18,14 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import tdtu.EStudy_App.R;
@@ -49,12 +52,15 @@ public class HocTracNghiem extends AppCompatActivity implements OnWordMarkedList
     private FirebaseFirestore db;
     private String option;
     private TextToSpeech textToSpeech;
+    private long startTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.study_tracnghiem);
+
+        startTime = System.currentTimeMillis();
 
         init();
 
@@ -113,6 +119,7 @@ public class HocTracNghiem extends AppCompatActivity implements OnWordMarkedList
         cardViewNopBaiTN.setOnClickListener(v -> {
             learnedWords = cardTracNghiemAdapter.getLearnedWords();
             wrongWordsList = cardTracNghiemAdapter.getWrongWordsList();
+            long finishTime = System.currentTimeMillis() - startTime;
 
             Intent intent1 = new Intent(HocTracNghiem.this, KetQuaHocTap.class);
             intent1.putExtra("topicID", topicID);
@@ -121,6 +128,9 @@ public class HocTracNghiem extends AppCompatActivity implements OnWordMarkedList
             intent1.putParcelableArrayListExtra("wrongWordsList", new ArrayList<>(wrongWordsList));
             intent1.putExtra("learningType", "quiz");
             intent1.putParcelableArrayListExtra("topicWords", new ArrayList<Word>(wordList));
+
+            saveFinishTimeToFirestore(finishTime);
+            
             startActivity(intent1);
             finish();
         });
@@ -179,5 +189,33 @@ public class HocTracNghiem extends AppCompatActivity implements OnWordMarkedList
         } else {
             ToastUtils.showShortToast(this, "Text to speech is not available!");
         }
+    }
+
+    private void saveFinishTimeToFirestore(long finishTime) {
+        if ((option == null || !option.equals("Marked")) && (learnedWords.size() == wordList.size())) {
+            db.collection("topics").document(topicId).collection("progress").document(userId)
+                    .get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            Long currentFinishTime = documentSnapshot.getLong("FinishTime");
+                            if (currentFinishTime == null || finishTime < currentFinishTime) {
+                                updateFinishTime(finishTime);
+                            }
+                        } else {
+                            updateFinishTime(finishTime);
+                        }
+                    })
+                    .addOnFailureListener(e -> Log.w("saveFinishTime", "Error getting current finish time", e));
+        }
+    }
+
+    private void updateFinishTime(long finishTime) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("FinishTime", finishTime);
+
+        db.collection("topics").document(topicId).collection("progress").document(userId)
+                .set(data, SetOptions.merge())
+                .addOnSuccessListener(aVoid -> Log.d("saveFinishTime", "Finish time successfully saved!"))
+                .addOnFailureListener(e -> Log.w("saveFinishTime", "Error saving finish time", e));
     }
 }

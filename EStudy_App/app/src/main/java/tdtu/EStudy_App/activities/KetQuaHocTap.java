@@ -45,7 +45,7 @@ public class KetQuaHocTap extends AppCompatActivity {
         btnCancleResult.setOnClickListener(v -> finish());
 
         String learningType = intent.getStringExtra("learningType");
-        switch (learningType){
+        switch (learningType) {
             case "flashcard":
                 getResultFlashCard();
                 break;
