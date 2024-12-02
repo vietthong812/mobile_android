@@ -55,8 +55,8 @@ public class HocGoTu extends AppCompatActivity implements OnWordMarkedListener {
 
         wordList = intent.getParcelableArrayListExtra("wordList");
         if (wordList == null || wordList.isEmpty()) {
-            ToastUtils.showShortToast(this, "No words available!");
-            return;
+            ToastUtils.showShortToast(this, "Không có từ vựng nào được lưu trữ");
+            finish();
         }
 
         cardGoTuAdapter = new CardGoTuAdapter(this, wordList, false, HocGoTu.this); //Chỗ na

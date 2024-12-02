@@ -71,8 +71,8 @@ public class HocTracNghiem extends AppCompatActivity implements OnWordMarkedList
 
         wordList = intent.getParcelableArrayListExtra("wordList");
         if (wordList == null || wordList.isEmpty() || wordList.size() < 4) {
-            ToastUtils.showShortToast(this, "No words available!");
-            return;
+            ToastUtils.showShortToast(this, "Không có từ vựng nào được lưu trữ");
+            finish();
         }
 
         cardTracNghiemAdapter = new CardTracNghiemAdapter(this, wordList, option, HocTracNghiem.this); //chỗ này

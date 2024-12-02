@@ -71,11 +71,13 @@ public class HocFlashCard extends AppCompatActivity implements OnWordMarkedListe
         option = intent.getStringExtra("Option");
         titleFC.setText("Flashcard - " + topicName);
 
+
+
+
         wordList = intent.getParcelableArrayListExtra("wordList");
         if (wordList == null || wordList.isEmpty()) {
-            ToastUtils.showShortToast(this, "No words available!");
-
-            return;
+            ToastUtils.showShortToast(this, "Không có từ vựng nào được lưu trữ");
+            finish();
         }
 
 
@@ -219,5 +221,6 @@ public class HocFlashCard extends AppCompatActivity implements OnWordMarkedListe
                     .update("wordIds", FieldValue.arrayRemove(word.getId()));
         }
     }
+
 
 }
