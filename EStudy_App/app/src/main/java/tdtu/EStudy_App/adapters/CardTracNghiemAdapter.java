@@ -33,11 +33,13 @@ public class CardTracNghiemAdapter extends RecyclerView.Adapter<CardTracNghiemAd
     private Random random = new Random();
     private TextToSpeech textToSpeech;
     private boolean isEnglishFront;
+    private OnWordMarkedListener onWordMarkedListener;
 
-    public CardTracNghiemAdapter(Context context, List<Word> wordList, boolean isEnglishFront) {
+    public CardTracNghiemAdapter(Context context, List<Word> wordList, boolean isEnglishFront, OnWordMarkedListener onWordMarkedListener) {
         this.context = context;
         this.wordList = wordList;
         this.isEnglishFront = isEnglishFront;
+        this.onWordMarkedListener = onWordMarkedListener;
 
         textToSpeech = new TextToSpeech(context, status -> {
             if (status != TextToSpeech.ERROR) {
@@ -100,9 +102,13 @@ public class CardTracNghiemAdapter extends RecyclerView.Adapter<CardTracNghiemAd
         holder.btnSave.setOnClickListener(v -> {
             boolean isMarked = word.isMarked();
             word.setMarked(!isMarked);
-            holder.btnSave.setBackgroundResource(isMarked ? R.drawable.star_icon : R.drawable.star_icon_selected);
+            if (onWordMarkedListener != null) {
+                onWordMarkedListener.onWordMarked(word, word.isMarked());
+            }
+            holder.btnSave.setBackgroundResource(word.isMarked() ? R.drawable.star_icon_selected : R.drawable.star_icon);
         });
 
+        // Khởi taạo marked tương ứng band dầu
         holder.btnSave.setBackgroundResource(word.isMarked() ? R.drawable.star_icon_selected : R.drawable.star_icon);
 
         // Get or generate randomized answers

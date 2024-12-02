@@ -69,6 +69,7 @@ public class ChonOptionStudyFlashcard extends AppCompatActivity {
 
             intent.putExtra("topicID", getIntent().getStringExtra("topicID"));
             intent.putExtra("topicName", getIntent().getStringExtra("topicName"));
+
             startActivity(intent);
             finish();
         });

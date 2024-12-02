@@ -21,6 +21,10 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -30,11 +34,12 @@ import java.util.Set;
 
 import tdtu.EStudy_App.R;
 import tdtu.EStudy_App.adapters.CardAdapter;
+import tdtu.EStudy_App.adapters.OnWordMarkedListener;
 import tdtu.EStudy_App.models.Word;
 import tdtu.EStudy_App.utils.ToastUtils;
 import tdtu.EStudy_App.viewmodels.QuizViewModel;
 
-public class HocFlashCard extends AppCompatActivity {
+public class HocFlashCard extends AppCompatActivity implements OnWordMarkedListener {
 
     private AppCompatButton btnCancelFC, btnNextFC, btnPreviousFC, btnAutoPlayFC;
     private TextView countNumFC;
@@ -48,6 +53,9 @@ public class HocFlashCard extends AppCompatActivity {
     private Handler autoPlayHandler = new Handler(Looper.getMainLooper());
     private TextToSpeech textToSpeech;
     private String option;
+    private String topicId;
+    private String userId;
+    private FirebaseFirestore db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +67,6 @@ public class HocFlashCard extends AppCompatActivity {
         btnCancelFC.setOnClickListener(v -> finish());
 
         Intent intent = getIntent();
-        String topicID = intent.getStringExtra("topicID");
         String topicName = intent.getStringExtra("topicName");
         option = intent.getStringExtra("Option");
         titleFC.setText("Flashcard - " + topicName);
@@ -71,7 +78,7 @@ public class HocFlashCard extends AppCompatActivity {
         }
 
 
-        cardAdapter = new CardAdapter(this, wordList, option);
+        cardAdapter = new CardAdapter(this, wordList, option, HocFlashCard.this);
         viewPagerCardFC.setAdapter(cardAdapter);
         countNumFC.setText("1/" + wordList.size());
 
@@ -110,7 +117,7 @@ public class HocFlashCard extends AppCompatActivity {
         cardViewNopBaiFC.setOnClickListener(v -> {
 
             Intent intent1 = new Intent(HocFlashCard.this, KetQuaHocTap.class);
-            intent1.putExtra("topicID", topicID);
+            intent1.putExtra("topicID", topicId);
             intent1.putExtra("topicName", topicName);
             intent1.putParcelableArrayListExtra("learnedWords", new ArrayList<Word>(learnedWords));
             intent1.putParcelableArrayListExtra("topicWords", new ArrayList<Word>(wordList));
@@ -152,6 +159,10 @@ public class HocFlashCard extends AppCompatActivity {
         cardViewNopBaiFC = findViewById(R.id.cardViewNopBaiFC);
         btnAutoPlayFC = findViewById(R.id.btnAutoPlayFC);
 
+        db = FirebaseFirestore.getInstance();
+        topicId = getIntent().getStringExtra("topicID");
+        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
         textToSpeech = new TextToSpeech(this, status -> {
             if (status != TextToSpeech.ERROR) {
                 textToSpeech.setLanguage(Locale.US);
@@ -190,6 +201,30 @@ public class HocFlashCard extends AppCompatActivity {
             textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, utteranceId);
         } else {
             ToastUtils.showShortToast(this, "Text to speech is not available!");
+        }
+    }
+
+    @Override
+    public void onWordMarked(Word word, boolean isMarked) {
+        if (isMarked) {
+            db.collection("topics").document(topicId)
+                    .collection("markedList").document(userId)
+                    .update("wordIds", FieldValue.arrayUnion(word.getId()))
+                    .addOnFailureListener(e -> {
+                        if (e.getMessage().contains("No document to update")) {
+                            HashMap<String, Object> data = new HashMap<>();
+                            data.put("wordIds", FieldValue.arrayUnion(word.getId()));
+                            db.collection("topics").document(topicId)
+                                    .collection("markedList").document(userId)
+                                    .set(data);
+                        } else {
+                            Toast.makeText(this, "Marking failed", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        } else {
+            db.collection("topics").document(topicId)
+                    .collection("markedList").document(userId)
+                    .update("wordIds", FieldValue.arrayRemove(word.getId()));
         }
     }
 

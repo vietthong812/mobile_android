@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
@@ -19,22 +20,26 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import tdtu.EStudy_App.R;
+import tdtu.EStudy_App.adapters.OnWordMarkedListener;
 import tdtu.EStudy_App.adapters.WordListAdapter;
 import tdtu.EStudy_App.models.Word;
 import tdtu.EStudy_App.utils.ToastUtils;
 import tdtu.EStudy_App.viewmodels.QuizViewModel;
 
-public class TopicDetail extends AppCompatActivity {
+public class TopicDetail extends AppCompatActivity  implements OnWordMarkedListener {
     TextView nameTopic, numWord, author, date, status;
     RecyclerView recyclerViewTatCaCacThe;
     List<Word> wordList;
@@ -45,7 +50,9 @@ public class TopicDetail extends AppCompatActivity {
     CardView cardFlashcard, cardTracNghiem, cardGoTu, cardRank, cardXuatFile;
     QuizViewModel quizViewModel;
     int count = 0;
-    String statusTopic;
+    private String topicId;
+    private String userId;
+    private String statusTopic;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +69,7 @@ public class TopicDetail extends AppCompatActivity {
             intent.putExtra("topicID", getIntent().getStringExtra("topicID"));
             intent.putExtra("type", "flashcard");
             intent.putExtra("topicName", nameTopic.getText().toString());
-            intent.putExtra("wordList", (ArrayList<Word>) wordList);
+            intent.putParcelableArrayListExtra("wordList", new ArrayList<>(wordList));
             startActivity(intent);
         });
 
@@ -131,18 +138,33 @@ public class TopicDetail extends AppCompatActivity {
 
         wordList = new ArrayList<>();
         quizViewModel = new ViewModelProvider(this).get(QuizViewModel.class);
-        quizViewModel.loadWordList(id, new QuizViewModel.WordListCallback() {
+//        quizViewModel.loadWordList(id, new QuizViewModel.WordListCallback() {
+//            @Override
+//            public void onWordListLoaded(List<Word> words) {
+//                wordList = words;
+//                wordListAdapter = new WordListAdapter(TopicDetail.this, words);
+//                recyclerViewTatCaCacThe.setAdapter(wordListAdapter);
+//                numWord.setText(getString(R.string.num_words, String.format(Locale.getDefault(), "%d", words.size())));
+//            }
+//
+//            @Override
+//            public void onError(Exception e) {
+//                ToastUtils.showShortToast(TopicDetail.this, "Error: " + e.getMessage());
+//            }
+//        });
+
+        quizViewModel.loadWordsAndMarkedWords(topicId, userId, new QuizViewModel.WordListCallback() {
             @Override
             public void onWordListLoaded(List<Word> words) {
                 wordList = words;
-                wordListAdapter = new WordListAdapter(TopicDetail.this, words);
+                wordListAdapter = new WordListAdapter(TopicDetail.this, words, TopicDetail.this);
                 recyclerViewTatCaCacThe.setAdapter(wordListAdapter);
                 numWord.setText(getString(R.string.num_words, String.format(Locale.getDefault(), "%d", words.size())));
             }
 
             @Override
             public void onError(Exception e) {
-                ToastUtils.showShortToast(TopicDetail.this, "Error: " + e.getMessage());
+                Toast.makeText(TopicDetail.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -213,6 +235,8 @@ public class TopicDetail extends AppCompatActivity {
         recyclerViewTatCaCacThe.setLayoutManager(new LinearLayoutManager(this));
         wordList = new ArrayList<>();
         db = FirebaseFirestore.getInstance();
+        topicId = getIntent().getStringExtra("topicID");
+        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         btnLuuTopic = findViewById(R.id.btnLuuTopic);
         cardXuatFile = findViewById(R.id.xuatFile);
     }
@@ -220,7 +244,7 @@ public class TopicDetail extends AppCompatActivity {
 
     //Chỗ nầy để kiểm tra hiển thị c nút tương ứng
     private void showCaseButton() {
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         String topicId = getIntent().getStringExtra("topicID");
         db.collection("topics").document(topicId).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -326,5 +350,31 @@ public class TopicDetail extends AppCompatActivity {
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+
+
+    @Override
+    public void onWordMarked(Word word, boolean isMarked) {
+        if (isMarked) {
+            db.collection("topics").document(topicId)
+                    .collection("markedList").document(userId)
+                    .update("wordIds", FieldValue.arrayUnion(word.getId()))
+                    .addOnFailureListener(e -> {
+                        if (e.getMessage().contains("No document to update")) {
+                            HashMap<String, Object> data = new HashMap<>();
+                            data.put("wordIds", FieldValue.arrayUnion(word.getId()));
+                            db.collection("topics").document(topicId)
+                                    .collection("markedList").document(userId)
+                                    .set(data);
+                        } else {
+                            Toast.makeText(this, "Marking failed", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        } else {
+            db.collection("topics").document(topicId)
+                    .collection("markedList").document(userId)
+                    .update("wordIds", FieldValue.arrayRemove(word.getId()));
+        }
     }
 }

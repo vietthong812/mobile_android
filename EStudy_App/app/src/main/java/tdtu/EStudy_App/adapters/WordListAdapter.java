@@ -6,7 +6,6 @@ import android.speech.tts.UtteranceProgressListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,39 +19,41 @@ import java.util.Locale;
 import tdtu.EStudy_App.R;
 import tdtu.EStudy_App.models.Word;
 
-public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordViewHolder>{
+public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordViewHolder> {
     private Context context;
     private List<Word> wordList;
     private TextToSpeech textToSpeech;
+    private OnWordMarkedListener onWordMarkedListener;
 
-    public WordListAdapter(Context context, List<Word> wordList) {
+    public WordListAdapter(Context context, List<Word> wordList, OnWordMarkedListener onWordMarkedListener) {
         this.context = context;
         this.wordList = wordList;
+        this.onWordMarkedListener = onWordMarkedListener;
 
         textToSpeech = new TextToSpeech(context, status -> {
             if (status != TextToSpeech.ERROR) {
                 textToSpeech.setLanguage(Locale.US);
             } else {
-                Toast.makeText(context, "Xuất hiện lỗi trong quá trình khởi tạo TextToSpeech", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Error initializing TextToSpeech", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     @NonNull
     @Override
-    public WordListAdapter.WordViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public WordViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.word_item, parent, false);
-        return new WordListAdapter.WordViewHolder(view);
+        return new WordViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull WordListAdapter.WordViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull WordViewHolder holder, int position) {
         Word word = wordList.get(position);
         holder.edtWordName.setText(word.getName());
         holder.edtWordMean.setText(word.getMeaning());
 
         holder.btnSound.setOnClickListener(v -> {
-            holder.btnSound.setBackgroundResource(R.drawable.sound_icon_selected); // Thay đổi icon khi bắt đầu phát âm
+            holder.btnSound.setBackgroundResource(R.drawable.sound_icon_selected);
             String text = word.getName();
 
             String utteranceId = String.valueOf(System.currentTimeMillis());
@@ -71,7 +72,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
                 @Override
                 public void onError(String utteranceId) {
                     holder.btnSound.post(() -> holder.btnSound.setBackgroundResource(R.drawable.mic_icon));
-                    Toast.makeText(context, "Lỗi phát âm", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Pronunciation error", Toast.LENGTH_SHORT).show();
                 }
             });
         });
@@ -79,12 +80,13 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
         holder.btnSave.setOnClickListener(v -> {
             boolean isMarked = word.isMarked();
             word.setMarked(!isMarked);
-            if (word.isMarked()) {
-                holder.btnSave.setBackgroundResource(R.drawable.star_icon_selected);
-            } else {
-                holder.btnSave.setBackgroundResource(R.drawable.star_icon);
+            if (onWordMarkedListener != null) {
+                onWordMarkedListener.onWordMarked(word, word.isMarked());
             }
+            holder.btnSave.setBackgroundResource(word.isMarked() ? R.drawable.star_icon_selected : R.drawable.star_icon);
         });
+
+        holder.btnSave.setBackgroundResource(word.isMarked() ? R.drawable.star_icon_selected : R.drawable.star_icon);
     }
 
     @Override

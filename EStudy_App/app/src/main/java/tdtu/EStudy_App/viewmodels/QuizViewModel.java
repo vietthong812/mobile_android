@@ -129,4 +129,50 @@ public class QuizViewModel extends ViewModel {
                         Log.w("saveLearningResult", "Error getting document", task.getException());
                     }
                 });
-    }}
+    }
+
+    public void loadWordsAndMarkedWords(String topicId, String userId, WordListCallback callback) {
+        db.collection("topics").document(topicId).collection("words")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        List<Word> allWords = new ArrayList<>();
+                        for (DocumentSnapshot document : task.getResult()) {
+                            Word word = new Word();
+                            word.setId(document.getId()); // This line sets the word ID
+                            word.setName(document.getString("name"));
+                            word.setMeaning(document.getString("meaning"));
+                            word.setPronunciation(document.getString("pronunciation"));
+                            word.setState(document.getString("state"));
+                            word.setMarked(false); // Initialize as not marked
+                            allWords.add(word);
+                        }
+
+                        db.collection("topics").document(topicId)
+                                .collection("markedList").document(userId)
+                                .get()
+                                .addOnCompleteListener(markedTask -> {
+                                    if (markedTask.isSuccessful() && markedTask.getResult() != null) {
+                                        List<String> markedWordIds = (List<String>) markedTask.getResult().get("wordIds");
+                                        if (markedWordIds != null) {
+                                            for (Word word : allWords) {
+                                                if (markedWordIds.contains(word.getId())) {
+                                                    word.setMarked(true);
+                                                }
+                                            }
+                                        }
+                                        callback.onWordListLoaded(allWords);
+                                    } else {
+                                        callback.onError(markedTask.getException());
+                                    }
+                                });
+                    } else {
+                        callback.onError(task.getException());
+                    }
+                });
+    }
+
+
+}
+
+

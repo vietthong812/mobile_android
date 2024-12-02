@@ -16,23 +16,27 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.List;
 import java.util.Locale;
 
 import tdtu.EStudy_App.models.Word;
 import tdtu.EStudy_App.R;
 
-public class CardAdapter extends RecyclerView.Adapter<CardAdapter.WordViewHolder> {
+public class CardAdapter extends RecyclerView.Adapter<CardAdapter.WordViewHolder>{
     private Context context;
     private List<Word> wordList;
     private TextToSpeech textToSpeech;
     private String option; //CHỗ này
     private Boolean isEnglishFront;
+    private OnWordMarkedListener onWordMarkedListener;
 
-    public CardAdapter(Context context, List<Word> wordList, String option) {
+    public CardAdapter(Context context, List<Word> wordList, String option, OnWordMarkedListener onWordMarkedListener) {
         this.context = context;
         this.wordList = wordList;
         this.option = option;
+        this.onWordMarkedListener = onWordMarkedListener;
 
         textToSpeech = new TextToSpeech(context, status -> {
             if (status != TextToSpeech.ERROR) {
@@ -107,19 +111,14 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.WordViewHolder
         holder.btnSave.setOnClickListener(v -> {
             boolean isMarked = word.isMarked();
             word.setMarked(!isMarked);
-
-            if (word.isMarked()) {
-                holder.btnSave.setBackgroundResource(R.drawable.star_icon_selected);
-            } else {
-                holder.btnSave.setBackgroundResource(R.drawable.star_icon);
+            if (onWordMarkedListener != null) {
+                onWordMarkedListener.onWordMarked(word, word.isMarked());
             }
+            holder.btnSave.setBackgroundResource(word.isMarked() ? R.drawable.star_icon_selected : R.drawable.star_icon);
         });
 
-        if (word.isMarked()) {
-            holder.btnSave.setBackgroundResource(R.drawable.star_icon_selected);
-        } else {
-            holder.btnSave.setBackgroundResource(R.drawable.star_icon);
-        }
+        // Khởi taạo marked tương ứng band dầu
+        holder.btnSave.setBackgroundResource(word.isMarked() ? R.drawable.star_icon_selected : R.drawable.star_icon);
 
         holder.cardView.setOnClickListener(v -> flipCard(holder));
     }

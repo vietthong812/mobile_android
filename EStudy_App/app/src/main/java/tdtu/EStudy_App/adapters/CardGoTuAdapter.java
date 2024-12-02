@@ -27,11 +27,13 @@ public class CardGoTuAdapter extends RecyclerView.Adapter<CardGoTuAdapter.WordVi
     private List<Word> wordList;
     private TextToSpeech textToSpeech;
     private boolean isEnglishFront; //CHỗ này
+    private OnWordMarkedListener onWordMarkedListener;
 
-    public CardGoTuAdapter(Context context, List<Word> wordList, boolean isEnglishFront) {
+    public CardGoTuAdapter(Context context, List<Word> wordList, boolean isEnglishFront, OnWordMarkedListener onWordMarkedListener) {
         this.context = context;
         this.wordList = wordList;
         this.isEnglishFront = isEnglishFront;
+        this.onWordMarkedListener = onWordMarkedListener;
 
         textToSpeech = new TextToSpeech(context, status -> {
             if (status != TextToSpeech.ERROR) {
@@ -97,19 +99,14 @@ public class CardGoTuAdapter extends RecyclerView.Adapter<CardGoTuAdapter.WordVi
         holder.btnSave.setOnClickListener(v -> {
             boolean isMarked = word.isMarked();
             word.setMarked(!isMarked);
-
-            if (word.isMarked()) {
-                holder.btnSave.setBackgroundResource(R.drawable.star_icon_selected);
-            } else {
-                holder.btnSave.setBackgroundResource(R.drawable.star_icon);
+            if (onWordMarkedListener != null) {
+                onWordMarkedListener.onWordMarked(word, word.isMarked());
             }
+            holder.btnSave.setBackgroundResource(word.isMarked() ? R.drawable.star_icon_selected : R.drawable.star_icon);
         });
 
-        if (word.isMarked()) {
-            holder.btnSave.setBackgroundResource(R.drawable.star_icon_selected);
-        } else {
-            holder.btnSave.setBackgroundResource(R.drawable.star_icon);
-        }
+        // Khởi taạo marked tương ứng band dầu
+        holder.btnSave.setBackgroundResource(word.isMarked() ? R.drawable.star_icon_selected : R.drawable.star_icon);
     }
 
     @Override
