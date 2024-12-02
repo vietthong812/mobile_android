@@ -108,6 +108,9 @@ public class QuizViewModel extends ViewModel {
                                     } else {
                                         learningWordsMap.put(wordId, count);
                                     }
+                                } else if(learnedWordsMap.containsKey(wordId)) {
+                                    Long count = learnedWordsMap.get(wordId) + 1l;
+                                    learnedWordsMap.put(wordId, count);
                                 }
                             }
 

@@ -1,6 +1,8 @@
 package tdtu.EStudy_App.adapters;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 import android.util.SparseArray;
@@ -15,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import java.util.Set;
 import java.util.HashSet;
@@ -37,15 +40,16 @@ public class CardTracNghiemAdapter extends RecyclerView.Adapter<CardTracNghiemAd
     private String option;
     private boolean isEnglishFront;
     private OnWordMarkedListener onWordMarkedListener;
-
+    private ViewPager2 viewPagerCardTN;
     private Set<Word> learnedWords = new HashSet<>();
     private Set<Word> wrongWordsList = new HashSet<>();
 
-    public CardTracNghiemAdapter(Context context, List<Word> wordList, String option, OnWordMarkedListener onWordMarkedListener) {
+    public CardTracNghiemAdapter(Context context, List<Word> wordList, String option, OnWordMarkedListener onWordMarkedListener, ViewPager2 viewPagerCardTN) {
         this.context = context;
         this.wordList = wordList;
         this.onWordMarkedListener = onWordMarkedListener;
         this.option = option;
+        this.viewPagerCardTN = viewPagerCardTN;
 
         textToSpeech = new TextToSpeech(context, status -> {
             if (status != TextToSpeech.ERROR) {
@@ -175,6 +179,15 @@ public class CardTracNghiemAdapter extends RecyclerView.Adapter<CardTracNghiemAd
             wrongWordsList.add(word);
             learnedWords.remove(word);
         }
+
+        if (option != null && option.equals("ShowAnswer")) {
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                int currentItem = viewPagerCardTN.getCurrentItem();
+                if (currentItem < wordList.size() - 1) {
+                    viewPagerCardTN.setCurrentItem(currentItem + 1);
+                }
+            }, 2000);
+        }
     }
     private void updateCardBackground(WordViewHolder holder, int position) {
         int selectedCardIndex = selectedPositions.get(position, -1);
@@ -193,8 +206,10 @@ public class CardTracNghiemAdapter extends RecyclerView.Adapter<CardTracNghiemAd
 
                     if (isEnglishFront && selectedAnswer.equals(word.getMeaning()) || !isEnglishFront && selectedAnswer.equals(word.getName())) {
                         backgroundColor = context.getResources().getColor(R.color.green); // Màu xanh cho đáp án đúng
+                        textColor = context.getResources().getColor(R.color.white);
                     } else {
                         backgroundColor = context.getResources().getColor(R.color.red); // Màu đỏ cho đáp án sai
+                        textColor = context.getResources().getColor(R.color.white);
                     }
                 } else {
                     backgroundColor = context.getResources().getColor(R.color.deepblue);

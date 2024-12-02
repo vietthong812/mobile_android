@@ -64,6 +64,9 @@ public class ChonOptionStudy extends AppCompatActivity {
                     intent1.putExtra("Option", "ShowAnswer");
                     intent1.putParcelableArrayListExtra("wordList", getIntent().getParcelableArrayListExtra("wordList"));
                 }
+                else if(checkHocDanhDau.isChecked()){
+                    intent1.putParcelableArrayListExtra("wordList", getMarkedWords(getIntent().getParcelableArrayListExtra("wordList")));
+                }
                 else{
                     intent1.putParcelableArrayListExtra("wordList", getIntent().getParcelableArrayListExtra("wordList"));
                 }

@@ -48,7 +48,6 @@ public class KetQuaHocTap extends AppCompatActivity {
         switch (learningType){
             case "flashcard":
                 getResultFlashCard();
-
                 break;
             case "quiz":
                 getResultQuiz();
