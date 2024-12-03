@@ -2,6 +2,7 @@ package tdtu.EStudy_App.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -31,6 +32,7 @@ public class KetQuaHocTap extends AppCompatActivity {
     private ArrayList<Word> wrongWordsList;
     private ArrayList<Word> topicWords;
     private QuizViewModel quizViewModel;
+    private TextView viewSai, viewDung;
 
     private LinearLayout correctAnswer, wrongAnswer;
 
@@ -70,6 +72,9 @@ public class KetQuaHocTap extends AppCompatActivity {
 
         soLuongDung.setText(learnedWords.size() + "/" + topicWords.size());
         soLuongSai.setText(wrongWordsList.size() + "/" + topicWords.size());
+
+        displayWrongWords(wrongWordsList);
+        displayCorrectWords(learnedWords);
     }
 
     private void getResultQuiz() {
@@ -82,7 +87,8 @@ public class KetQuaHocTap extends AppCompatActivity {
         soLuongDung.setText(learnedWords.size() + "/" + topicWords.size());
         soLuongSai.setText(wrongWordsList.size() + "/" + topicWords.size());
 
-
+        displayWrongWords(wrongWordsList);
+        displayCorrectWords(learnedWords);
     }
 
     protected void init(){
@@ -93,7 +99,8 @@ public class KetQuaHocTap extends AppCompatActivity {
         wrongAnswer = findViewById(R.id.wrongAnswer);
         quizViewModel = new QuizViewModel();
         intent = getIntent();
-
+        viewSai = findViewById(R.id.ViewTraLoiSai);
+        viewDung = findViewById(R.id.ViewTraLoiDung);
     }
 
     private void getResultFlashCard(){
@@ -106,5 +113,33 @@ public class KetQuaHocTap extends AppCompatActivity {
         tvDung = findViewById(R.id.tvDung);
         tvDung.setText("Đã học");
         soLuongDung.setText(learnedWords.size() + "/" + topicWords.size());
+    }
+
+    private void displayWrongWords(ArrayList<Word> wrongWordsList) {
+        StringBuilder wrongWordsBuilder = new StringBuilder();
+        for (Word word : wrongWordsList) {
+            wrongWordsBuilder.append(word.getName()).append(", ");
+        }
+
+        // Remove the last comma and space
+        if (wrongWordsBuilder.length() > 0) {
+            wrongWordsBuilder.setLength(wrongWordsBuilder.length() - 2);
+        }
+
+        viewSai.setText(wrongWordsBuilder.toString());
+    }
+
+    private void displayCorrectWords(ArrayList<Word> correctWordsList) {
+        StringBuilder correctWordsBuilder = new StringBuilder();
+        for (Word word : correctWordsList) {
+            correctWordsBuilder.append(word.getName()).append(", ");
+        }
+
+        // Remove the last comma and space
+        if (correctWordsBuilder.length() > 0) {
+            correctWordsBuilder.setLength(correctWordsBuilder.length() - 2);
+        }
+
+        viewDung.setText(correctWordsBuilder.toString());
     }
 }
