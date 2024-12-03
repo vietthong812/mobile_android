@@ -23,13 +23,19 @@ import tdtu.EStudy_App.models.Word;
 public class WordAddAdapter extends RecyclerView.Adapter<WordAddAdapter.WordAddViewHolder> {
     private Context context;
     private ArrayList<Word> wordList;
-
-    public WordAddAdapter(Context context, ArrayList<Word> wordList) {
+    private OnWordDeleteClickListener listener;
+    public WordAddAdapter(Context context, ArrayList<Word> wordList, OnWordDeleteClickListener listener) {
         this.context = context;
         this.wordList = wordList;
+        this.listener = listener;
     }
     public ArrayList<Word> getWordList() {
         return wordList;
+    }
+    public void updateWordList(ArrayList<Word> newWordList) {
+        this.wordList.clear();
+        this.wordList.addAll(newWordList);
+        notifyDataSetChanged();
     }
     @NonNull
     @Override
@@ -74,14 +80,10 @@ public class WordAddAdapter extends RecyclerView.Adapter<WordAddAdapter.WordAddV
             }
         });
 
-        holder.btnDeleteWord.setOnClickListener(v -> removeItem(position));
+        holder.btnDeleteWord.setOnClickListener(v -> listener.onWordDeleteClick(word));
 
     }
-    public void removeItem(int position) {
-        wordList.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, wordList.size()-position);
-    }
+
     @Override
     public int getItemCount() {
         return wordList.size();

@@ -4,19 +4,17 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.cardview.widget.CardView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,31 +31,54 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
 import tdtu.EStudy_App.R;
-
 import tdtu.EStudy_App.adapters.OnWordDeleteClickListener;
 import tdtu.EStudy_App.adapters.WordAddAdapter;
+import tdtu.EStudy_App.adapters.WordListAdapter;
 import tdtu.EStudy_App.models.Word;
 import tdtu.EStudy_App.utils.ToastUtils;
+import tdtu.EStudy_App.viewmodels.QuizViewModel;
+import tdtu.EStudy_App.viewmodels.TopicViewModel;
 
-public class AddTopic extends AppCompatActivity implements OnWordDeleteClickListener {
+public class EditTopic extends AppCompatActivity implements OnWordDeleteClickListener {
     AppCompatButton btnSave,btnCancel;
     FirebaseFirestore db;
     FirebaseUser user;
     EditText editTopicName;
     CardView themTuMoi,themTuFile;
     RecyclerView recyclerViewThemTu;
-    ArrayList<Word> wordList;
+    List<Word> wordList;
     WordAddAdapter wordAddAdapter;
-    CheckBox checkBox;
+    QuizViewModel quizViewModel;
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.them_tu_vao_topic);
+        setContentView(R.layout.activity_edit_topic);
         init();
+        Intent intent = getIntent();
+        String id = intent.getStringExtra("topicID");
+        db.collection("topics").document(id).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                editTopicName.setText(task.getResult().getString("name"));
+            }
+        });
+        quizViewModel.loadWordList(id, new QuizViewModel.WordListCallback() {
+            public void onWordListLoaded(List<Word> words) {
+                wordList = words;
+                wordAddAdapter = new WordAddAdapter(EditTopic.this, (ArrayList<Word>) wordList, EditTopic.this);
+                recyclerViewThemTu.setAdapter(wordAddAdapter);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                ToastUtils.showShortToast(EditTopic.this, "Không thể tải danh sách từ vựng");
+            }
+        });
         btnCancel.setOnClickListener(v -> {
             finish();
         });
@@ -66,11 +87,6 @@ public class AddTopic extends AppCompatActivity implements OnWordDeleteClickList
             wordList.add(word);
             wordAddAdapter.notifyItemInserted(wordList.size() - 1);
         });
-        themTuFile.setOnClickListener(v -> {
-            Intent intentAddFromCSV = new Intent(Intent.ACTION_GET_CONTENT);
-            intentAddFromCSV.setType("text/csv");
-            startActivityForResult(intentAddFromCSV, 1);
-        });
         btnSave.setOnClickListener(v -> {
             String topicName = editTopicName.getText().toString();
             if (topicName.isEmpty()) {
@@ -78,51 +94,39 @@ public class AddTopic extends AppCompatActivity implements OnWordDeleteClickList
                 return;
             }
             db.collection("topics").get().addOnSuccessListener(queryDocumentSnapshots -> {
-                for (int i = 0; i < queryDocumentSnapshots.size(); i++) {
-                    if (Objects.equals(queryDocumentSnapshots.getDocuments().get(i).getString("name"), topicName)) {
-                        editTopicName.setError("Tên chủ đề đã tồn tại");
-                        return;
-                    }
-                }
-                String userId = user.getUid();
                 String name = editTopicName.getText().toString();
                 long numWord=wordAddAdapter.getItemCount();
-
-                //Kiểm tra để add trạng thái topic
-                String status = "private";
-                if (checkBox.isChecked()) {
-                    status = "public";
-                }
-                Timestamp timestamp = Timestamp.now();
-                DocumentReference reference=db.collection("users").document(userId);
                 Map<String, Object> topic = new HashMap<>();
                 topic.put("name", name);
                 topic.put("numWord", numWord);
-                topic.put("status", status);
-                topic.put("userCreate", reference);
-                topic.put("createTime", timestamp);
-                db.collection("topics").add(topic).addOnSuccessListener(documentReference -> {
+                db.collection("topics").document(id).update(topic).addOnSuccessListener(aVoid -> {
                     for (int i = 0; i < wordList.size(); i++) {
-                        Word word = wordAddAdapter.getWordList().get(i);
+                        Word word = wordList.get(i);
                         Map<String, Object> wordMap = new HashMap<>();
-                        wordMap.put("marked", false);
-                        wordMap.put("name", word.getName());
-                        if (word.getMeaning().isEmpty()||word.getMeaning()==null) {
-                            wordMap.put("meaning", "Chưa có nghĩa");
-                        } else{
-                            wordMap.put("meaning", word.getMeaning());
+                        wordMap.put("name", word.getName() != null ? word.getName() : "");
+                        wordMap.put("meaning", word.getMeaning() != null ? word.getMeaning() : "Chưa có nghĩa");
+                        wordMap.put("pronunciation", word.getPronunciation() != null ? word.getPronunciation() : "");
+                        wordMap.put("state", word.getState() != null ? word.getState() : "Chưa được học");
+                        wordMap.put("marked", word.isMarked());
+                        if (word.getId() != null && !word.getId().isEmpty()) {
+                            // Update existing word
+                            db.collection("topics").document(id).collection("words").document(word.getId()).update(wordMap);
+                        } else {
+                            // Add new word
+                            db.collection("topics").document(id).collection("words").add(wordMap).addOnSuccessListener(documentReference -> {
+                                word.setId(documentReference.getId());
+                            });
                         }
-                        wordMap.put("meaning", word.getMeaning());
-                        wordMap.put("pronunciation", "");
-                        wordMap.put("state","chưa được học");
-                        documentReference.collection("words").add(wordMap);
                     }
                 });
-                Intent resultIntent = new Intent();
-                setResult(Activity.RESULT_OK, resultIntent);
-                ToastUtils.showShortToast(this, "Thêm chủ đề thành công");
+                ToastUtils.showShortToast(this, "Chỉnh sửa topic thành công");
                 finish();
             });
+        });
+        themTuFile.setOnClickListener(v -> {
+            Intent intentAddFromCSV = new Intent(Intent.ACTION_GET_CONTENT);
+            intentAddFromCSV.setType("text/csv");
+            startActivityForResult(intentAddFromCSV, 1);
         });
     }
     public void init() {
@@ -131,25 +135,35 @@ public class AddTopic extends AppCompatActivity implements OnWordDeleteClickList
         btnCancel = findViewById(R.id.btnCancel);
         editTopicName = findViewById(R.id.editTopicName);
         themTuMoi = findViewById(R.id.themTuMoi);
-        checkBox = findViewById(R.id.checkShareTopic);
         themTuFile = findViewById(R.id.themTuFile);
-
         // Initialize RecyclerView
         recyclerViewThemTu = findViewById(R.id.recyclerViewThemTu);
         recyclerViewThemTu.setLayoutManager(new LinearLayoutManager(this));
         wordList = new ArrayList<>();
-        wordAddAdapter = new WordAddAdapter(this, wordList,this );
-        recyclerViewThemTu.setAdapter(wordAddAdapter);
-
+        quizViewModel = new ViewModelProvider(this).get(QuizViewModel.class);
         // Initialize Firebase Auth
         db = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
 
     }
+    @Override
     public void onWordDeleteClick(Word word) {
-        wordList.remove(word);
-        wordAddAdapter.notifyItemRemoved(wordList.indexOf(word));
-        wordAddAdapter.notifyItemRangeChanged(wordList.indexOf(word), wordList.size()-wordList.indexOf(word));
+        new AlertDialog.Builder(this)
+                .setTitle("Xoá từ vựng")
+                .setMessage("Bạn có chắc chắn muốn xoá từ vựng này không?")
+                .setPositiveButton("Ok", (dialog, which) -> {
+                    Intent intent = getIntent();
+                    String id = intent.getStringExtra("topicID");
+                    wordList.remove(word);
+                    wordAddAdapter.notifyItemRemoved(wordList.indexOf(word));
+                    wordAddAdapter.notifyItemRangeChanged(wordList.indexOf(word), wordList.size() - wordList.indexOf(word));
+                    if (word.getId() != null && !word.getId().isEmpty()) {
+                        db.collection("topics").document(id).collection("words").document(word.getId()).delete();
+                    }
+                })
+                .setNegativeButton("Thoát", (dialog, which) -> dialog.dismiss())
+                .create()
+                .show();
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

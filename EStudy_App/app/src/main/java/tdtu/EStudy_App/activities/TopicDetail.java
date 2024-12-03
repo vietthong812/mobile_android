@@ -62,11 +62,7 @@ public class TopicDetail extends AppCompatActivity  implements OnWordMarkedListe
     TopicViewModel topicViewModel;
 
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        fetchWordList();
-    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,7 +150,11 @@ public class TopicDetail extends AppCompatActivity  implements OnWordMarkedListe
         wordList = new ArrayList<>();
         fetchWordList();
 
-
+        btnEdit.setOnClickListener(view -> {
+            Intent intent1 = new Intent(TopicDetail.this, EditTopic.class);
+            intent1.putExtra("topicID", id);
+            startActivity(intent1);
+        });
 
         btnDelete.setOnClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -433,6 +433,20 @@ public class TopicDetail extends AppCompatActivity  implements OnWordMarkedListe
             @Override
             public void onError(Exception e) {
                 Toast.makeText(TopicDetail.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        fetchWordList();
+        String id = getIntent().getStringExtra("topicID");
+        db.collection("topics").document(id).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                String topicName = task.getResult().getString("name");
+                nameTopic.setText(topicName);
+            } else {
+                Toast.makeText(TopicDetail.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

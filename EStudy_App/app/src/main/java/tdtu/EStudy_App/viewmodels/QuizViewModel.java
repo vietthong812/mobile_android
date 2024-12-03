@@ -40,7 +40,7 @@ public class QuizViewModel extends ViewModel {
                             word.setMeaning(document.getString("meaning"));
                             word.setPronunciation(document.getString("pronunciation"));
                             word.setState(document.getString("state"));
-                            word.setMarked(document.getBoolean("marked"));
+                            word.setMarked(false); // Initialize as not marked
                             words.add(word);
                         }
                         callback.onWordListLoaded(words);
@@ -183,5 +183,6 @@ public class QuizViewModel extends ViewModel {
 
 
 }
+
 
 

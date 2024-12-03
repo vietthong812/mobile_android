@@ -59,6 +59,16 @@ public class Tag2Fragment extends Fragment implements OnTopicClickListener {
         });
         return view;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (user != null) {
+            String userId = user.getUid();
+            topicViewModel.loadTopics(userId);
+        }
+    }
+
     @Override
     public void onTopicClick(Topic topic) {
         Intent intent = new Intent(getContext(), TopicDetail.class);

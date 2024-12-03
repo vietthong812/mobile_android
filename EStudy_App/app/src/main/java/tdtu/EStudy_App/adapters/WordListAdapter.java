@@ -44,6 +44,12 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
         });
     }
 
+    public void updateWordList(List<Word> newWordList) {
+        this.wordList.clear();
+        this.wordList.addAll(newWordList);
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public WordViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
