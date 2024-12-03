@@ -1,7 +1,9 @@
 package tdtu.EStudy_App.activities;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,9 +13,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -53,6 +58,11 @@ public class AddTopic extends AppCompatActivity implements OnWordDeleteClickList
     ArrayList<Word> wordList;
     WordAddAdapter wordAddAdapter;
     CheckBox checkBox;
+
+    private static final int REQUEST_CODE_READ_EXTERNAL_STORAGE = 1;
+    private static final int REQUEST_CODE_SELECT_CSV = 2;
+
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
@@ -65,11 +75,14 @@ public class AddTopic extends AppCompatActivity implements OnWordDeleteClickList
             Word word = new Word();
             wordList.add(word);
             wordAddAdapter.notifyItemInserted(wordList.size() - 1);
+            recyclerViewThemTu.scrollToPosition(wordList.size() - 1);
         });
         themTuFile.setOnClickListener(v -> {
-            Intent intentAddFromCSV = new Intent(Intent.ACTION_GET_CONTENT);
-            intentAddFromCSV.setType("text/csv");
-            startActivityForResult(intentAddFromCSV, 1);
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_READ_EXTERNAL_STORAGE);
+            } else {
+                selectCSVFile();
+            }
         });
         btnSave.setOnClickListener(v -> {
             String topicName = editTopicName.getText().toString();
@@ -151,16 +164,35 @@ public class AddTopic extends AppCompatActivity implements OnWordDeleteClickList
         wordAddAdapter.notifyItemRemoved(wordList.indexOf(word));
         wordAddAdapter.notifyItemRangeChanged(wordList.indexOf(word), wordList.size()-wordList.indexOf(word));
     }
+    private void selectCSVFile() {
+        Intent intentAddFromCSV = new Intent(Intent.ACTION_GET_CONTENT);
+        intentAddFromCSV.setType("text/csv");
+        startActivityForResult(intentAddFromCSV, REQUEST_CODE_SELECT_CSV);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CODE_READ_EXTERNAL_STORAGE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                selectCSVFile();
+            } else {
+                ToastUtils.showShortToast(this, "Chưa cấp quyền đọc dữ liệu b nhớ ngoài");
+            }
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
+        if (requestCode == REQUEST_CODE_SELECT_CSV && resultCode == RESULT_OK && data != null) {
             Uri uri = data.getData();
             if (uri != null) {
                 try {
                     List<Word> wordsFromFile = readWordsFromCSV(uri);
                     wordList.addAll(wordsFromFile);
                     wordAddAdapter.notifyDataSetChanged();
+                    ToastUtils.showShortToast(this, "Đã thêm từ từ file CSV");
                 } catch (IOException e) {
                     ToastUtils.showShortToast(this, "Lỗi đọc file CSV");
                 }
@@ -170,11 +202,18 @@ public class AddTopic extends AppCompatActivity implements OnWordDeleteClickList
 
     private List<Word> readWordsFromCSV(Uri uri) throws IOException {
         List<Word> words = new ArrayList<>();
+
         try (InputStream inputStream = getContentResolver().openInputStream(uri);
              BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
             String line;
+            boolean isFirstLine = true;
             while ((line = reader.readLine()) != null) {
+                if (isFirstLine) {
+                    isFirstLine = false;
+                    continue; // Skip the first line
+                }
                 String[] tokens = line.split(",");
+
                 if (tokens.length >= 2) {
                     Word word = new Word();
                     word.setName(tokens[0].trim());
@@ -183,6 +222,9 @@ public class AddTopic extends AppCompatActivity implements OnWordDeleteClickList
                 }
             }
         }
+
         return words;
     }
+
+
 }

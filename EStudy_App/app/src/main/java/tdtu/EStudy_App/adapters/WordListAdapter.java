@@ -72,6 +72,9 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
         } else if (unlearnWordsMap.containsKey(word.getId())) {
             holder.statusWord.setText("Chưa học");
             holder.statusWord.setTextColor(context.getResources().getColor(R.color.red));
+        } else {
+            holder.statusWord.setText("Chưa học");
+            holder.statusWord.setTextColor(context.getResources().getColor(R.color.red));
         }
 
         holder.btnSound.setOnClickListener(v -> {
