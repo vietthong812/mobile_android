@@ -399,7 +399,11 @@ public class TopicDetail extends AppCompatActivity  implements OnWordMarkedListe
         String fileName = "word_list_ex_" + currentDate + ".csv";
 
         File downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        File csvFile = new File(downloadDir, fileName);
+        File estudyDir = new File(downloadDir, "Estudy/exported");
+        if (!estudyDir.exists()) {
+            estudyDir.mkdirs();
+        }
+        File csvFile = new File(estudyDir, fileName);
 
         try (FileWriter writer = new FileWriter(csvFile)) {
             writer.write(csvContent);

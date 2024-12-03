@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -148,5 +149,86 @@ public class TopicViewModel extends ViewModel {
 
     public interface OnProgressLoadedListener {
         void onProgressLoaded(Map<String, Integer> learnedWordsMap, Map<String, Integer> learningWordsMap, Map<String, Integer> unlearnWordsMap);
+    }
+
+    public void loadTopicForAddFolder(String userId, String folderId) {
+        List<Topic> allUserTopics = new ArrayList<>();
+        List<Topic> savedTopics = new ArrayList<>();
+
+        db.collection("topics")
+                .whereEqualTo("userCreate", db.document("users/" + userId))
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            String name = document.getString("name");
+                            String status = document.getString("status");
+                            String id = document.getId();
+                            int numWord = document.getLong("numWord").intValue();
+                            Topic topic = new Topic(id, name, status, userId, document.getTimestamp("createTime"), numWord);
+                            allUserTopics.add(topic);
+                        }
+
+                        // Fetch topics saved by the user
+                        db.collection("users").document(userId).get().addOnCompleteListener(savedTask -> {
+                            if (savedTask.isSuccessful()) {
+                                DocumentSnapshot document = savedTask.getResult();
+                                if (document.exists()) {
+                                    List<DocumentReference> loadSavedTopic = (List<DocumentReference>) document.get("saveTopic");
+                                    if (loadSavedTopic != null) {
+                                        for (DocumentReference topicRef : loadSavedTopic) {
+                                            topicRef.get().addOnCompleteListener(task1 -> {
+                                                if (task1.isSuccessful()) {
+                                                    DocumentSnapshot document1 = task1.getResult();
+                                                    if (document1.exists()) {
+                                                        String id = document1.getId();
+                                                        String name = document1.getString("name");
+                                                        Timestamp createTime = document1.getTimestamp("createTime");
+                                                        long numWord = document1.getLong("numWord");
+                                                        String status = document1.getString("status");
+                                                        DocumentReference userCreateRef = document1.getDocumentReference("userCreate");
+                                                        String userIdOfTopic = userCreateRef != null ? userCreateRef.getId() : null;
+
+                                                        Topic topic = new Topic(id, name, status, userIdOfTopic, createTime, (int) numWord);
+                                                        savedTopics.add(topic);
+
+                                                        combineAndFilterTopics(allUserTopics, savedTopics, folderId);
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
+    }
+
+    private void combineAndFilterTopics(List<Topic> allUserTopics, List<Topic> savedTopics, String folderId) {
+        List<Topic> combinedTopics = new ArrayList<>(allUserTopics);
+        combinedTopics.addAll(savedTopics);
+
+        db.collection("folders").document(folderId).get().addOnCompleteListener(folderTask -> {
+            if (folderTask.isSuccessful()) {
+                DocumentSnapshot folderDocument = folderTask.getResult();
+                List<DocumentReference> savedTopicRefs = (List<DocumentReference>) folderDocument.get("topics");
+                List<String> savedTopicIds = new ArrayList<>();
+                if (savedTopicRefs != null) {
+                    for (DocumentReference ref : savedTopicRefs) {
+                        savedTopicIds.add(ref.getId());
+                    }
+                }
+
+                List<Topic> topicsToAdd = new ArrayList<>();
+                for (Topic topic : combinedTopics) {
+                    if (!savedTopicIds.contains(topic.getId())) {
+                        topicsToAdd.add(topic);
+                    }
+                }
+
+                topics.setValue(topicsToAdd);
+            }
+        });
     }
 }
