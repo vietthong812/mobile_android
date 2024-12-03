@@ -113,13 +113,19 @@ public class HocGoTu extends AppCompatActivity implements OnWordMarkedListener {
             learnedWords = cardGoTuAdapter.getLearnedWords();
             wrongWordsList = cardGoTuAdapter.getWrongWordsList();
 
+            for (Word word : wordList) {
+                if (!learnedWords.contains(word) && !wrongWordsList.contains(word)) {
+                    wrongWordsList.add(word);
+                }
+            }
+
             Intent intent1 = new Intent(HocGoTu.this, KetQuaHocTap.class);
             intent1.putExtra("topicID", topicId);
             intent1.putExtra("topicName", topicName);
             intent1.putParcelableArrayListExtra("learnedWords", new ArrayList<>(learnedWords));
             intent1.putParcelableArrayListExtra("wrongWordsList", new ArrayList<>(wrongWordsList));
             intent1.putExtra("learningType", "translate");
-            intent1.putParcelableArrayListExtra("topicWords", new ArrayList<Word>(wordList));
+            intent1.putParcelableArrayListExtra("topicWords", new ArrayList<>(wordList));
 
             startActivity(intent1);
             finish();

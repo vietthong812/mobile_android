@@ -121,6 +121,13 @@ public class HocTracNghiem extends AppCompatActivity implements OnWordMarkedList
             wrongWordsList = cardTracNghiemAdapter.getWrongWordsList();
             long finishTime = System.currentTimeMillis() - startTime;
 
+            // Nếu chưa trả lời thì tự động trả về sai cho từ đó
+            for (Word word : wordList) {
+                if (!learnedWords.contains(word) && !wrongWordsList.contains(word)) {
+                    wrongWordsList.add(word);
+                }
+            }
+
             Intent intent1 = new Intent(HocTracNghiem.this, KetQuaHocTap.class);
             intent1.putExtra("topicID", topicID);
             intent1.putExtra("topicName", topicName);
@@ -130,7 +137,7 @@ public class HocTracNghiem extends AppCompatActivity implements OnWordMarkedList
             intent1.putParcelableArrayListExtra("topicWords", new ArrayList<Word>(wordList));
 
             saveFinishTimeToFirestore(finishTime);
-            
+
             startActivity(intent1);
             finish();
         });

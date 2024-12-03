@@ -19,8 +19,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import tdtu.EStudy_App.models.Word;
 import tdtu.EStudy_App.R;
@@ -33,6 +35,8 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.WordViewHolder
     private Boolean isEnglishFront;
     private OnWordMarkedListener onWordMarkedListener;
     private SparseArray<WordViewHolder> viewHolderCache = new SparseArray<>();
+    private Set<Word> learnedWords = new HashSet<>();
+    private Set<Word> wrongWordsList = new HashSet<>();
 
     public CardAdapter(Context context, List<Word> wordList, String option, OnWordMarkedListener onWordMarkedListener) {
         this.context = context;
@@ -186,6 +190,14 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.WordViewHolder
     public void setEnglishFront(boolean isEnglishFront) {
         this.isEnglishFront = isEnglishFront;
         notifyDataSetChanged();
+    }
+
+    public Set<Word> getLearnedWords() {
+        return learnedWords;
+    }
+
+    public Set<Word> getWrongWordsList() {
+        return wrongWordsList;
     }
 
 

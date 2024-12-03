@@ -46,6 +46,7 @@ public class HocFlashCard extends AppCompatActivity implements OnWordMarkedListe
     private TextView titleFC;
     private CardView cardViewNopBaiFC;
     private Set<Word> learnedWords = new HashSet<>();
+    private Set<Word> wrongWordsList = new HashSet<>();
     private boolean isAutoPlaying = false;
     private Handler autoPlayHandler = new Handler(Looper.getMainLooper());
     private TextToSpeech textToSpeech;
@@ -122,13 +123,20 @@ public class HocFlashCard extends AppCompatActivity implements OnWordMarkedListe
         });
 
         cardViewNopBaiFC.setOnClickListener(v -> {
+            // Check for unlearned words and add them to the wrongWordsList
+            for (Word word : wordList) {
+                if (!learnedWords.contains(word)) {
+                    wrongWordsList.add(word);
+                }
+            }
 
             Intent intent1 = new Intent(HocFlashCard.this, KetQuaHocTap.class);
             intent1.putExtra("topicID", topicId);
             intent1.putExtra("topicName", topicName);
-            intent1.putParcelableArrayListExtra("learnedWords", new ArrayList<Word>(learnedWords));
-            intent1.putParcelableArrayListExtra("topicWords", new ArrayList<Word>(wordList));
+            intent1.putParcelableArrayListExtra("learnedWords", new ArrayList<>(learnedWords));
+            intent1.putParcelableArrayListExtra("wrongWordsList", new ArrayList<>(wrongWordsList));
             intent1.putExtra("learningType", "flashcard");
+            intent1.putParcelableArrayListExtra("topicWords", new ArrayList<>(wordList));
 
             startActivity(intent1);
             finish();
