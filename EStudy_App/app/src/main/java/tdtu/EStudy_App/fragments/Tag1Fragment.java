@@ -8,9 +8,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,6 +33,7 @@ public class Tag1Fragment extends Fragment {
     FirebaseUser user;
     FirebaseAuth mAuth;
     LinearLayout btnAdd;
+    EditText searchFolder;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -46,6 +50,24 @@ public class Tag1Fragment extends Fragment {
             Intent intent = new Intent(getContext(), AddFolder.class);
             startActivity(intent);
         });
+
+        searchFolder.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Do nothing
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                folderListAdapter.filter(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Do nothing
+            }
+        });
+
         return view;
     }
 
@@ -69,5 +91,7 @@ public class Tag1Fragment extends Fragment {
         folderViewModel = new ViewModelProvider(this).get(FolderViewModel.class);
         folderListAdapter = new FolderListAdapter(getContext(), new ArrayList<>());
         recyclerViewFolder.setAdapter(folderListAdapter);
+        searchFolder = view.findViewById(R.id.searchFolder);
+
     }
 }

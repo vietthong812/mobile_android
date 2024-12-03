@@ -12,21 +12,25 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import tdtu.EStudy_App.R;
 import tdtu.EStudy_App.activities.TopicDetail;
+import tdtu.EStudy_App.models.Folder;
 import tdtu.EStudy_App.models.Topic;
 
 public class TopicListAdapter extends RecyclerView.Adapter<TopicListAdapter.TopicViewHolder> {
     private Context context;
     private List<Topic> topicList;
+    private List<Topic> topicListFilter;
     private OnTopicClickListener listener;
 
     public TopicListAdapter(Context context, List<Topic> topicList, OnTopicClickListener listener) {
         this.context = context;
         this.topicList = topicList;
         this.listener = listener;
+        this.topicListFilter = new ArrayList<>(topicList);
     }
     public void removeTopicById(String topicId) {
         for (int i = 0; i < topicList.size(); i++) {
@@ -40,6 +44,8 @@ public class TopicListAdapter extends RecyclerView.Adapter<TopicListAdapter.Topi
     public void updateTopics(List<Topic> newTopics) {
         this.topicList.clear();
         this.topicList.addAll(newTopics);
+        this.topicListFilter.clear();
+        this.topicListFilter.addAll(newTopics);
         notifyDataSetChanged();
     }
     @NonNull
@@ -77,5 +83,22 @@ public class TopicListAdapter extends RecyclerView.Adapter<TopicListAdapter.Topi
             tvDate = itemView.findViewById(R.id.tvDate);
         }
 
+    }
+
+    public void filter(String text) {
+        topicList.clear();
+        if (text.isEmpty()) {
+            topicList.addAll(topicListFilter);
+        } else {
+            text = text.toLowerCase();
+            for (Topic topic : topicListFilter) {
+                if (topic.getName().toLowerCase().contains(text)
+                        || String.valueOf(topic.getNumWord()).contains(text)
+                        || topic.convertTimestampToString(topic.getCreateTime()).contains(text)) {
+                    topicList.add(topic);
+                }
+            }
+        }
+        notifyDataSetChanged(); // Cập nhật lại giao diện
     }
 }

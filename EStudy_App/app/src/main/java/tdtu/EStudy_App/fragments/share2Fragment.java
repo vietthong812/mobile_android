@@ -9,10 +9,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.firebase.Timestamp;
@@ -39,6 +41,7 @@ public class share2Fragment extends Fragment implements TopicBrowseAdapter.OnTop
     FirebaseFirestore db;
     FirebaseUser user;
     TopicBrowseAdapter topicBrowseAdapter;
+    EditText searchYourTopicShare;
     public share2Fragment() {
         // Required empty public constructor
     }
@@ -48,6 +51,23 @@ public class share2Fragment extends Fragment implements TopicBrowseAdapter.OnTop
         View view = inflater.inflate(R.layout.fragment_share2, container, false);
         init(view);
         loadYourTopicsShared();
+
+        searchYourTopicShare.addTextChangedListener(new android.text.TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Do nothing
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                topicBrowseAdapter.filter(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Do nothing
+            }
+        });
         return view;
     }
 
@@ -58,6 +78,7 @@ public class share2Fragment extends Fragment implements TopicBrowseAdapter.OnTop
         topicBrowseAdapter = new TopicBrowseAdapter(getContext(), new ArrayList<>(), this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(topicBrowseAdapter);
+        searchYourTopicShare = view.findViewById(R.id.searchYourTopicShare);
     }
 
     private void loadYourTopicsShared() {

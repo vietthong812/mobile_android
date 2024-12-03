@@ -16,7 +16,7 @@
 
 
             <EditText
-                android:id="@+id/search"
+                android:id="@+id/searchFolder"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@drawable/input_text_shape"
@@ -25,9 +25,12 @@
                 android:drawableTint="@color/black"
                 android:gravity="center_vertical"
                 android:hint="Tìm kiếm folder"
-                android:maxLines="@integer/material_motion_duration_long_1"
+                android:inputType="text"
+                android:singleLine="true"
+                android:maxLines="1"
                 android:padding="10dp"
                 android:paddingStart="20dp"
+
                 android:layout_marginBottom="10dp"
                 android:textSize="18sp" />
             <LinearLayout

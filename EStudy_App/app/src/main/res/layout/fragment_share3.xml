@@ -16,7 +16,7 @@
 
 
             <EditText
-                android:id="@+id/searchYourTopicShare"
+                android:id="@+id/searchYourTopicSaved"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@drawable/input_text_shape"

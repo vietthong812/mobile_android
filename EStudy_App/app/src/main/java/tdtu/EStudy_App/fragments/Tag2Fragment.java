@@ -9,9 +9,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,8 +33,8 @@ import tdtu.EStudy_App.viewmodels.TopicViewModel;
 
 
 public class Tag2Fragment extends Fragment implements OnTopicClickListener {
-    private static final int REQUEST_CODE_REMOVE= 1;// Define REQUEST_CODE_REMOVE as a constant
-    private static final int REQUEST_CODE_ADD= 2;// Define REQUEST_CODE_REMOVE as a constant
+    private static final int REQUEST_CODE_REMOVE= 1;
+    private static final int REQUEST_CODE_ADD= 2;
 
     LinearLayout btnAddTopic;
     RecyclerView recyclerViewTopic;
@@ -39,6 +42,7 @@ public class Tag2Fragment extends Fragment implements OnTopicClickListener {
     TopicViewModel topicViewModel;
     FirebaseAuth mAuth;
     FirebaseUser user;
+    EditText searchTopic;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -56,6 +60,23 @@ public class Tag2Fragment extends Fragment implements OnTopicClickListener {
         btnAddTopic.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), AddTopic.class);
             startActivityForResult(intent, REQUEST_CODE_ADD);
+        });
+
+        searchTopic.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Do nothing
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                topicListAdapter.filter(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Do nothing
+            }
         });
         return view;
     }
@@ -106,5 +127,6 @@ public class Tag2Fragment extends Fragment implements OnTopicClickListener {
         topicViewModel = new ViewModelProvider(this).get(TopicViewModel.class);
         topicListAdapter = new TopicListAdapter(getContext(), new ArrayList<>(), this);
         recyclerViewTopic.setAdapter(topicListAdapter);
+        searchTopic = view.findViewById(R.id.searchTopic);
     }
 }

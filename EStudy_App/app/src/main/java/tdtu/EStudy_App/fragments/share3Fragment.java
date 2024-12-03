@@ -2,9 +2,11 @@ package tdtu.EStudy_App.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -33,6 +35,7 @@ public class share3Fragment extends Fragment implements TopicBrowseAdapter.OnTop
     FirebaseFirestore db;
     FirebaseUser user;
     TopicBrowseAdapter topicBrowseAdapter;
+    EditText searchYourTopicSaved;
     private static final int REQUEST_CODE_TOPIC_DETAIL = 1;
 
     public share3Fragment() {
@@ -44,6 +47,23 @@ public class share3Fragment extends Fragment implements TopicBrowseAdapter.OnTop
         View view = inflater.inflate(R.layout.fragment_share3, container, false);
         init(view);
         loadSavedTopics();
+
+        searchYourTopicSaved.addTextChangedListener(new android.text.TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Do nothing
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                topicBrowseAdapter.filter(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Do nothing
+            }
+        });
         return view;
     }
 
@@ -54,6 +74,7 @@ public class share3Fragment extends Fragment implements TopicBrowseAdapter.OnTop
         topicBrowseAdapter = new TopicBrowseAdapter(getContext(), new ArrayList<>(), this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(topicBrowseAdapter);
+        searchYourTopicSaved = view.findViewById(R.id.searchYourTopicSaved);
     }
 
     private void loadSavedTopics() {
