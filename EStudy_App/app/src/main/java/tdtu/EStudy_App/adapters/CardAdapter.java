@@ -192,13 +192,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.WordViewHolder
         notifyDataSetChanged();
     }
 
-    public Set<Word> getLearnedWords() {
-        return learnedWords;
-    }
 
-    public Set<Word> getWrongWordsList() {
-        return wrongWordsList;
-    }
 
 
 }

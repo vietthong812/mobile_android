@@ -109,12 +109,20 @@ public class HocFlashCard extends AppCompatActivity implements OnWordMarkedListe
             }
         });
 
+        Boolean checkReverse;
+        if (option != null && option.equals("Reverse")) {
+           checkReverse = false;
+        }
+        else{
+            checkReverse = true;
+        }
+
         viewPagerCardFC.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 learnedWords.add(wordList.get(position));
-                cardAdapter.setEnglishFront(true);
+                cardAdapter.setEnglishFront(checkReverse);
                 countNumFC.setText((position + 1) + "/" + wordList.size());
                 if(option != null && option.equals("AutoPronunciation" )){
                     playWordSound(wordList.get(position).getName());
