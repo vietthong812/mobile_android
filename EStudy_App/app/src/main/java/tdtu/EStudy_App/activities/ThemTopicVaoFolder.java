@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -46,7 +47,8 @@ public class ThemTopicVaoFolder extends AppCompatActivity {
         btnCancleThemTopicFolder.setOnClickListener(view -> finish());
         Intent intent = getIntent();
         String folderId = intent.getStringExtra("folderId");
-        topicViewModel.loadAllTopics();
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        topicViewModel.loadTopicForAddFolder(userId, folderId);
         topicViewModel.getTopics().observe(this, topics -> {
             topicSelectionAdapter.updateTopics(topics);
         });

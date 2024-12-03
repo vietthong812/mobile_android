@@ -72,6 +72,10 @@ public class UserFragment extends Fragment {
             startActivity(intent);
         });
 
+        cardAchive.setOnClickListener(v -> {
+            ToastUtils.showShortToast(getContext(), "Chức năng này đang được phát triển");
+        });
+
 
         return view;
     }
