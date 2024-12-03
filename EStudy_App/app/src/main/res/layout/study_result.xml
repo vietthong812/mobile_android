@@ -90,7 +90,7 @@
 
                 <View
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1" />
 
 
@@ -106,10 +106,11 @@
                     android:textStyle="bold" />
 
             </LinearLayout>
+
             <TextView
+                android:id="@+id/ViewTraLoiDung"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/ViewTraLoiDung"/>
+                android:layout_height="wrap_content" />
 
             <LinearLayout
                 android:id="@+id/wrongAnswer"
@@ -156,11 +157,12 @@
                     android:textStyle="bold" />
 
             </LinearLayout>
+
             <TextView
+                android:id="@+id/ViewTraLoiSai"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="50dp"
-                android:id="@+id/ViewTraLoiSai"/>
+                android:layout_marginBottom="50dp" />
         </LinearLayout>
 
     </ScrollView>
