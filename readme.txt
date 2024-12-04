@@ -25,7 +25,7 @@
    - Hãy đặt các file nhập, xuất mẫu vào các thư mục dễ nhận thấy và cho phép ứng dụng truy cập 'documents'.
    - Hãy chạy thử nghiệm ứng dụng ở chế độ DEBUG MODE.
 
-2. Build infomations:
+2. Thông tin phần mềm:
    - compileSdk = 34
    - minSdk = 24
    - targetSdk = 34
@@ -44,6 +44,7 @@
 	Các tài khoản sẵn có:
 		thongcv12vn@gmail.com - password: 123456
 		bdtd1ad@gmail.com - password: 123456
+        dogiahuy2252004@gmail.com - password: 123456
     Sử dụng email để đăng nhập, đăng ký tài khoản. Nhằm đảm bảo tính bảo mật tài khoản người dùng, xin hãy
     sử dụng email thật và không sử dụng email của người khác. Các chức năng Đổi mật khẩu, Quên mật khẩu đều sẽ cần
     truy xuất dữ liệu thông qua email.
@@ -51,7 +52,7 @@
 
 
 
-4. Tập tin có sănz:
+4. Tập tin có sẵn:
     ! Xin hãy kiểm tra trong dự án gồm 1 file mẫu Nhập từ vựng vào topic và 1 tập tin .apk
     - File nhập từ vựng mẫu: word_list_ex_04_12_2024_142726.csv
     - Tập tin .apk: EStudy.apk
