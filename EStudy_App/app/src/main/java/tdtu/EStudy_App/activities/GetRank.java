@@ -131,24 +131,17 @@ public class GetRank extends AppCompatActivity {
     }
     private void setCurrentUserInfo(List<Map.Entry<String, Long>> sortedEntries) {
         rank = 1;
-        boolean userFound = false;
         for (Map.Entry<String, Long> entry : sortedEntries) {
             if (entry.getKey().equals(currentUserId)) {
-                userFound = true;
                 db.collection("users").document(currentUserId)
                         .get()
                         .addOnSuccessListener(documentSnapshot -> {
-                            String fullName = documentSnapshot.getString("fullName");
-                            String avatarUri = documentSnapshot.getString("avatar");
-                            if (fullName != null && avatarUri != null) {
-                                tvMyName.setText(fullName);
                                 long finishTime = entry.getValue();
                                 long minutes = (finishTime / 1000) / 60;
                                 long seconds = (finishTime / 1000) % 60;
                                 String formattedTime = String.format("%d:%02d", minutes, seconds);
                                 tvMyFinishTime.setText(formattedTime);
                                 tvMyRank.setText(String.valueOf(rank));
-                                Glide.with(this).load(avatarUri).into(avtCuaBan);
                                 if (rank == 1) {
                                     badgeCuaBan.setImageResource(R.drawable.badge1_icon);
                                     badgeCuaBan.setVisibility(View.VISIBLE);
@@ -165,39 +158,24 @@ public class GetRank extends AppCompatActivity {
                                     badgeCuaBan.setVisibility(View.GONE);
                                     tvMyRank.setVisibility(View.VISIBLE);
                                 }
-                            }
                         })
                         .addOnFailureListener(e -> Log.w("setCurrentUserInfo", "Error getting user document", e));
                 break;
             }
             rank++;
         }
-        if (!userFound) {
-            db.collection("users").document(currentUserId)
-                    .get()
-                    .addOnSuccessListener(documentSnapshot -> {
-                        String fullName = documentSnapshot.getString("fullName");
-                        String avatarUri = documentSnapshot.getString("avatar");
-                        if (fullName != null && avatarUri != null) {
-                            tvMyName.setText(fullName);
-                            tvMyFinishTime.setText("--");
-                            tvMyRank.setText("--");
-                            Glide.with(this).load(avatarUri).into(avtCuaBan);
-                            badgeCuaBan.setVisibility(View.GONE);
-                        }
-                    })
-                    .addOnFailureListener(e -> Log.w("setCurrentUserInfo", "Error getting user document", e));
-        }
     }
 
     private void setImageUser(){
         db.document("users/" + currentUserId).get().addOnSuccessListener(documentSnapshot -> {
             String imageUrl = documentSnapshot.getString("avatar");
+            String fullname = documentSnapshot.getString("fullName");
             if (imageUrl != null && !imageUrl.isEmpty()) {
                 Glide.with(this).load(imageUrl).into(avtCuaBan);
             } else {
                 avtCuaBan.setImageResource(R.drawable.bg_main_cat);
             }
+            tvMyName.setText(fullname);
         });
     }
 }
