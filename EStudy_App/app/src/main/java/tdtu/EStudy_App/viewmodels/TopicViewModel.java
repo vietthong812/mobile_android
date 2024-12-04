@@ -192,12 +192,13 @@ public class TopicViewModel extends ViewModel {
                                                         Topic topic = new Topic(id, name, status, userIdOfTopic, createTime, (int) numWord);
                                                         savedTopics.add(topic);
 
-                                                        combineAndFilterTopics(allUserTopics, savedTopics, folderId);
+
                                                     }
                                                 }
                                             });
                                         }
                                     }
+                                    combineAndFilterTopics(allUserTopics, savedTopics, folderId);
                                 }
                             }
                         });
@@ -207,28 +208,33 @@ public class TopicViewModel extends ViewModel {
 
     private void combineAndFilterTopics(List<Topic> allUserTopics, List<Topic> savedTopics, String folderId) {
         List<Topic> combinedTopics = new ArrayList<>(allUserTopics);
-        combinedTopics.addAll(savedTopics);
+        if (savedTopics != null){
+            combinedTopics.addAll(savedTopics);
 
-        db.collection("folders").document(folderId).get().addOnCompleteListener(folderTask -> {
-            if (folderTask.isSuccessful()) {
-                DocumentSnapshot folderDocument = folderTask.getResult();
-                List<DocumentReference> savedTopicRefs = (List<DocumentReference>) folderDocument.get("topics");
-                List<String> savedTopicIds = new ArrayList<>();
-                if (savedTopicRefs != null) {
-                    for (DocumentReference ref : savedTopicRefs) {
-                        savedTopicIds.add(ref.getId());
+            db.collection("folders").document(folderId).get().addOnCompleteListener(folderTask -> {
+                if (folderTask.isSuccessful()) {
+                    DocumentSnapshot folderDocument = folderTask.getResult();
+                    List<DocumentReference> savedTopicRefs = (List<DocumentReference>) folderDocument.get("topics");
+                    List<String> savedTopicIds = new ArrayList<>();
+                    if (savedTopicRefs != null) {
+                        for (DocumentReference ref : savedTopicRefs) {
+                            savedTopicIds.add(ref.getId());
+                        }
                     }
-                }
 
-                List<Topic> topicsToAdd = new ArrayList<>();
-                for (Topic topic : combinedTopics) {
-                    if (!savedTopicIds.contains(topic.getId())) {
-                        topicsToAdd.add(topic);
+                    List<Topic> topicsToAdd = new ArrayList<>();
+                    for (Topic topic : combinedTopics) {
+                        if (!savedTopicIds.contains(topic.getId())) {
+                            topicsToAdd.add(topic);
+                        }
                     }
-                }
 
-                topics.setValue(topicsToAdd);
-            }
-        });
+                    topics.setValue(topicsToAdd);
+                }
+            });
+        }
+        else {
+            topics.setValue(allUserTopics);
+        }
     }
 }
