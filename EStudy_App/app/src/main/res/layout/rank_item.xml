@@ -66,8 +66,8 @@
             android:layout_height="55dp"
             android:layout_gravity="center"
             android:layout_margin="10dp"
-            android:scaleType="centerInside"
-            android:background="@drawable/badge1_icon" />
+            android:visibility="gone"
+            android:scaleType="centerInside" />
         <TextView
             android:id="@+id/tvRank"
             android:layout_width="50dp"
