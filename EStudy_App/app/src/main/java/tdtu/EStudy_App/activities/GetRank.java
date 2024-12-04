@@ -126,14 +126,14 @@ public class GetRank extends AppCompatActivity {
             long minutes = (topFinishTimes.get(1) / 1000) / 60;
             long seconds = (topFinishTimes.get(1) / 1000) % 60;
             String formattedTime = String.format("%d:%02d", minutes, seconds);
-            finishTimeRank1.setText(formattedTime);
+            finishTimeRank2.setText(formattedTime);
         }
         if (topUserNames.size() > 2) {
             rank3.setText(topUserNames.get(2));
             long minutes = (topFinishTimes.get(2) / 1000) / 60;
             long seconds = (topFinishTimes.get(2) / 1000) % 60;
             String formattedTime = String.format("%d:%02d", minutes, seconds);
-            finishTimeRank1.setText(formattedTime);
+            finishTimeRank3.setText(formattedTime);
         }
     }
 
