@@ -1,17 +1,18 @@
 package tdtu.EStudy_App.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.auth.FirebaseUser;
+import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -22,42 +23,44 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import tdtu.EStudy_App.R;
-import tdtu.EStudy_App.utils.FirebaseUserUtils;
+import tdtu.EStudy_App.adapters.RankAdapter;
 
 public class GetRank extends AppCompatActivity {
 
-    private AppCompatButton btnCancleRank;
-    private Intent intent;
-    private String topicId;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private FirebaseUser user = FirebaseUserUtils.getInstance();
-    Map<String, Long> finishTimes = new HashMap<>();
+    private Map<String, Long> finishTimes = new HashMap<>();
+    private RecyclerView recyclerViewRank;
+    private RankAdapter rankAdapter;
+    private TextView tvMyRank, tvMyFinishTime, tvMyName;
+    private ImageView avtCuaBan, badgeCuaBan;
+    private AppCompatButton btnCancleRank;
+    private String currentUserId;
+    private int rank;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.ranking);
-
-        btnCancleRank = findViewById(R.id.btnCancelRank);
-        btnCancleRank.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
 
         init();
         getRank();
-        displayCurrentUser();
+        btnCancleRank.setOnClickListener(v -> finish());
     }
 
-    private void init(){
-        intent = new Intent();
-        topicId = getIntent().getStringExtra("topicID");
+    private void init() {
+        tvMyRank = findViewById(R.id.tvMyRank);
+        tvMyFinishTime = findViewById(R.id.finishTimeCurrentUser);
+        tvMyName = findViewById(R.id.currentUser);
+        avtCuaBan = findViewById(R.id.avtCuaBan);
+        badgeCuaBan = findViewById(R.id.imageMyRank);
+        recyclerViewRank = findViewById(R.id.viewRanking);
+        recyclerViewRank.setLayoutManager(new LinearLayoutManager(this));
+        btnCancleRank = findViewById(R.id.btnCancelRank);
+        currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
     private void getRank() {
+        String topicId = getIntent().getStringExtra("topicID");
         db.collection("topics").document(topicId).collection("progress")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
@@ -68,98 +71,120 @@ public class GetRank extends AppCompatActivity {
                         }
                     }
 
-                    // Sort the map by finish time
                     List<Map.Entry<String, Long>> sortedEntries = new ArrayList<>(finishTimes.entrySet());
                     sortedEntries.sort(Map.Entry.comparingByValue());
-
-                    // Get top 3 userIds with the shortest finish times
-                    List<String> topUserIds = sortedEntries.stream()
-                            .limit(3)
-                            .map(Map.Entry::getKey)
-                            .collect(Collectors.toList());
-
-                    // Get full names and finish times of top 3 users
-                    getTopUserNamesAndTimes(topUserIds, finishTimes);
+                    fetchUserDetails(sortedEntries);
                 })
                 .addOnFailureListener(e -> Log.w("getRank", "Error getting documents", e));
     }
 
-    private void getTopUserNamesAndTimes(List<String> userIds, Map<String, Long> finishTimes) {
-        List<String> topUserNames = new ArrayList<>();
-        List<Long> topFinishTimes = new ArrayList<>();
-        for (String userId : userIds) {
+    private void fetchUserDetails(List<Map.Entry<String, Long>> sortedEntries) {
+        List<String> topUserNames = new ArrayList<>(sortedEntries.size());
+        List<String> topFinishTimes = new ArrayList<>(sortedEntries.size());
+        List<String> topAvatarUris = new ArrayList<>(sortedEntries.size());
+
+        for (int i = 0; i < sortedEntries.size(); i++) {
+            topUserNames.add(null);
+            topFinishTimes.add(null);
+            topAvatarUris.add(null);
+        }
+
+        int totalUsers = sortedEntries.size();
+        final int[] completedFetches = {0};
+
+        for (int i = 0; i < sortedEntries.size(); i++) {
+            int index = i;
+            String userId = sortedEntries.get(index).getKey();
+            Long finishTime = sortedEntries.get(index).getValue();
+
             db.collection("users").document(userId)
                     .get()
                     .addOnSuccessListener(documentSnapshot -> {
                         String fullName = documentSnapshot.getString("fullName");
-                        if (fullName != null) {
-                            topUserNames.add(fullName);
-                            topFinishTimes.add(finishTimes.get(userId));
+                        String avatarUri = documentSnapshot.getString("avatar");
+
+                        if (fullName != null && avatarUri != null && finishTime != null) {
+                            topUserNames.set(index, fullName);
+                            long minutes = (finishTime / 1000) / 60;
+                            long seconds = (finishTime / 1000) % 60;
+                            String formattedTime = String.format("%d:%02d", minutes, seconds);
+                            topFinishTimes.set(index, formattedTime);
+                            topAvatarUris.set(index, avatarUri);
                         }
-                        if (topUserNames.size() == userIds.size()) {
-                            displayRanking(topUserNames, topFinishTimes);
+
+                        completedFetches[0]++;
+                        if (completedFetches[0] == totalUsers) {
+                            updateAdapter(topUserNames, topFinishTimes, topAvatarUris);
+                            setCurrentUserInfo(sortedEntries);
                         }
                     })
-                    .addOnFailureListener(e -> Log.w("getTopUserNamesAndTimes", "Error getting user document", e));
+                    .addOnFailureListener(e -> Log.w("fetchUserDetails", "Error getting user document", e));
         }
     }
 
-    private void displayRanking(List<String> topUserNames, List<Long> topFinishTimes) {
-        // Assuming you have TextViews with ids: rank1, rank2, rank3 in ranking.xml
-        TextView rank1 = findViewById(R.id.name1st);
-        TextView rank2 = findViewById(R.id.name2nd);
-        TextView rank3 = findViewById(R.id.name3rd);
 
-        TextView finishTimeRank1 = findViewById(R.id.finishTime1st);
-        TextView finishTimeRank2 = findViewById(R.id.finishTime2nd);
-        TextView finishTimeRank3 = findViewById(R.id.finishTime3rd);
-
-        if (topUserNames.size() > 0) {
-            rank1.setText(topUserNames.get(0));
-            long minutes = (topFinishTimes.get(0) / 1000) / 60;
-            long seconds = (topFinishTimes.get(0) / 1000) % 60;
-            String formattedTime = String.format("%d:%02d", minutes, seconds);
-            finishTimeRank1.setText(formattedTime);
-        }
-        if (topUserNames.size() > 1) {
-            rank2.setText(topUserNames.get(1));
-            long minutes = (topFinishTimes.get(1) / 1000) / 60;
-            long seconds = (topFinishTimes.get(1) / 1000) % 60;
-            String formattedTime = String.format("%d:%02d", minutes, seconds);
-            finishTimeRank1.setText(formattedTime);
-        }
-        if (topUserNames.size() > 2) {
-            rank3.setText(topUserNames.get(2));
-            long minutes = (topFinishTimes.get(2) / 1000) / 60;
-            long seconds = (topFinishTimes.get(2) / 1000) % 60;
-            String formattedTime = String.format("%d:%02d", minutes, seconds);
-            finishTimeRank1.setText(formattedTime);
-        }
+    private void updateAdapter(List<String> userNames, List<String> finishTimes, List<String> avatarUris) {
+        rankAdapter = new RankAdapter(this, userNames, finishTimes, avatarUris);
+        recyclerViewRank.setAdapter(rankAdapter);
     }
-
-    private void displayCurrentUser(){
-        // Display current user's finish time
-        String currentUserId = user.getUid();
-        db.collection("users").document(currentUserId)
-                .get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    String currentUserName = documentSnapshot.getString("fullName");
-                    Long currentUserFinishTime = finishTimes.get(currentUserId);
-
-                    TextView currentUserTextView = findViewById(R.id.currentUser);
-                    TextView finishTimeCurrentUser = findViewById(R.id.finishTimeCurrentUser);
-
-                    if (currentUserName != null) {
-                        currentUserTextView.setText(currentUserName);
-                    }
-                    if (currentUserFinishTime != null) {
-                        long minutes = (currentUserFinishTime / 1000) / 60;
-                        long seconds = (currentUserFinishTime / 1000) % 60;
-                        String formattedTime = String.format("%d:%02d", minutes, seconds);
-                        finishTimeCurrentUser.setText(formattedTime);
-                    }
-                })
-                .addOnFailureListener(e -> Log.w("displayRanking", "Error getting current user document", e));
-
+    private void setCurrentUserInfo(List<Map.Entry<String, Long>> sortedEntries) {
+        rank = 1;
+        boolean userFound = false;
+        for (Map.Entry<String, Long> entry : sortedEntries) {
+            if (entry.getKey().equals(currentUserId)) {
+                userFound = true;
+                db.collection("users").document(currentUserId)
+                        .get()
+                        .addOnSuccessListener(documentSnapshot -> {
+                            String fullName = documentSnapshot.getString("fullName");
+                            String avatarUri = documentSnapshot.getString("avatar");
+                            if (fullName != null && avatarUri != null) {
+                                tvMyName.setText(fullName);
+                                long finishTime = entry.getValue();
+                                long minutes = (finishTime / 1000) / 60;
+                                long seconds = (finishTime / 1000) % 60;
+                                String formattedTime = String.format("%d:%02d", minutes, seconds);
+                                tvMyFinishTime.setText(formattedTime);
+                                tvMyRank.setText(String.valueOf(rank));
+                                Glide.with(this).load(avatarUri).into(avtCuaBan);
+                                if (rank == 1) {
+                                    badgeCuaBan.setImageResource(R.drawable.badge1_icon);
+                                    badgeCuaBan.setVisibility(View.VISIBLE);
+                                    tvMyRank.setVisibility(View.GONE);
+                                } else if (rank == 2) {
+                                    badgeCuaBan.setImageResource(R.drawable.badge2);
+                                    badgeCuaBan.setVisibility(View.VISIBLE);
+                                    tvMyRank.setVisibility(View.GONE);
+                                } else if (rank == 3) {
+                                    badgeCuaBan.setImageResource(R.drawable.badge3);
+                                    badgeCuaBan.setVisibility(View.VISIBLE);
+                                    tvMyRank.setVisibility(View.GONE);
+                                } else {
+                                    badgeCuaBan.setVisibility(View.GONE);
+                                    tvMyRank.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        })
+                        .addOnFailureListener(e -> Log.w("setCurrentUserInfo", "Error getting user document", e));
+                break;
+            }
+            rank++;
+        }
+        if (!userFound) {
+            db.collection("users").document(currentUserId)
+                    .get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        String fullName = documentSnapshot.getString("fullName");
+                        String avatarUri = documentSnapshot.getString("avatar");
+                        if (fullName != null && avatarUri != null) {
+                            tvMyName.setText(fullName);
+                            tvMyFinishTime.setText("--");
+                            tvMyRank.setText("--");
+                            Glide.with(this).load(avatarUri).into(avtCuaBan);
+                            badgeCuaBan.setVisibility(View.GONE);
+                        }
+                    })
+                    .addOnFailureListener(e -> Log.w("setCurrentUserInfo", "Error getting user document", e));
+        }
     }
 }
