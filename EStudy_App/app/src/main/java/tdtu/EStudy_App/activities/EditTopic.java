@@ -179,8 +179,9 @@ public class EditTopic extends AppCompatActivity implements OnWordDeleteClickLis
     }
     private void selectCSVFile() {
         Intent intentAddFromCSV = new Intent(Intent.ACTION_GET_CONTENT);
-        intentAddFromCSV.setType("text/csv");
-        startActivityForResult(intentAddFromCSV, REQUEST_CODE_SELECT_CSV);
+        intentAddFromCSV.setType("*/*");
+        intentAddFromCSV.addCategory(Intent.CATEGORY_OPENABLE);
+        startActivityForResult(Intent.createChooser(intentAddFromCSV, "Select a file"), REQUEST_CODE_SELECT_CSV);
     }
 
     @Override
