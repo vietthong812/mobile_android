@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">EStudy_App</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="num_words">Số lượng từ: %1$s</string>
+    <string name="create_topic">Ngày tạo: %1$s</string>
+    <string name="author">Tác giả: %1$s</string>
+    <string name="tenfolder">Tên Folder: %1$s</string>
+</resources>

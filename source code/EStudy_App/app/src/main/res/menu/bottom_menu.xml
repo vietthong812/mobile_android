@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/home"
+        android:title="Trang chủ"
+        android:icon="@drawable/home_button"/>
+
+    <item
+        android:id="@+id/topic"
+        android:title="Thư viện"
+        android:icon="@drawable/folder_button"/>
+
+    <item
+        android:id="@+id/fab"
+        android:title=""
+        android:enabled="false"/>
+
+    <item
+        android:id="@+id/browse"
+        android:title="Chia sẻ"
+        android:icon="@drawable/share_button"/>
+
+    <item
+        android:id="@+id/user"
+        android:title="Cá nhân"
+        android:icon="@drawable/user_button"/>
+
+</menu>
