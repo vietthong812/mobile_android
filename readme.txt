@@ -55,7 +55,7 @@
 4. Tập tin có sẵn:
     ! Xin hãy kiểm tra trong dự án gồm 1 file mẫu Nhập từ vựng vào topic và 1 tập tin .apk
     - File nhập từ vựng mẫu: word_list_ex_04_12_2024_142726.csv
-    - Tập tin .apk: EStudy.apk
+    - Tập tin .apk: app.apk
     - Nên đặt file demo trong thư mục 'documents' trong Android
     - Tất cả các file xuất sẽ được lưu tại: storage/emulated/0/Download/EStudy/exported/
 
