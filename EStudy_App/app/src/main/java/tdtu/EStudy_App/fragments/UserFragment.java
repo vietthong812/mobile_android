@@ -185,8 +185,10 @@ public class UserFragment extends Fragment {
         editor.clear();
         editor.apply();
 
+
         // Sign out from FirebaseAuth
         mAuth.signOut();
+
 
         // Redirect to the SignIn activity
         Intent intent = new Intent(getActivity(), SignIn.class);

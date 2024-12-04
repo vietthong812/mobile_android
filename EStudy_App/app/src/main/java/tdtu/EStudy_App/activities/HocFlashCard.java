@@ -166,6 +166,7 @@ public class HocFlashCard extends AppCompatActivity implements OnWordMarkedListe
         db = FirebaseFirestore.getInstance();
         topicId = getIntent().getStringExtra("topicID");
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Log.d("HocFlashCard", "userID: " + userId);
 
         textToSpeech = new TextToSpeech(this, status -> {
             if (status != TextToSpeech.ERROR) {

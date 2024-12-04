@@ -43,7 +43,9 @@ public class GetRank extends AppCompatActivity {
         setContentView(R.layout.ranking);
 
         init();
+        setImageUser();
         getRank();
+
         btnCancleRank.setOnClickListener(v -> finish());
     }
 
@@ -186,5 +188,16 @@ public class GetRank extends AppCompatActivity {
                     })
                     .addOnFailureListener(e -> Log.w("setCurrentUserInfo", "Error getting user document", e));
         }
+    }
+
+    private void setImageUser(){
+        db.document("users/" + currentUserId).get().addOnSuccessListener(documentSnapshot -> {
+            String imageUrl = documentSnapshot.getString("avatar");
+            if (imageUrl != null && !imageUrl.isEmpty()) {
+                Glide.with(this).load(imageUrl).into(avtCuaBan);
+            } else {
+                avtCuaBan.setImageResource(R.drawable.bg_main_cat);
+            }
+        });
     }
 }
